@@ -362,9 +362,12 @@ th{
   box-shadow:0 5px 20px rgba(0,0,0,.2);
 }
 
-.toast.error{background:var(--danger)}
+.toast.error{
+  background:var(--danger);
+}
 
 @media(max-width:750px){
+
   .stats{
     grid-template-columns:repeat(2,1fr);
   }
@@ -380,6 +383,7 @@ th{
   .header-user{
     font-size:11px;
   }
+
 }
 </style>
 </head>
@@ -387,18 +391,33 @@ th{
 <body>
 
 <header id="header" class="hidden">
+
   <div class="header-inner">
+
     <div>
-      <div class="brand">Garapan Penjahit Kimonik</div>
-      <div style="font-size:11px;opacity:.65;margin-top:3px">V35</div>
+
+      <div class="brand">
+        Garapan Penjahit Kimonik
+      </div>
+
+      <div style="font-size:11px;opacity:.65;margin-top:3px">
+        V35
+      </div>
+
     </div>
 
     <div class="header-user">
+
       <div id="userName">-</div>
+
       <div id="userRole">-</div>
+
     </div>
+
   </div>
+
 </header>
+
 
 <main class="container">
 
@@ -413,20 +432,38 @@ th{
     </p>
 
     <div class="field">
+
       <label>Email</label>
-      <input id="loginEmail" type="email" autocomplete="username">
+
+      <input
+        id="loginEmail"
+        type="email"
+        autocomplete="username">
+
     </div>
 
     <div class="field">
+
       <label>Password</label>
-      <input id="loginPassword" type="password" autocomplete="current-password">
+
+      <input
+        id="loginPassword"
+        type="password"
+        autocomplete="current-password">
+
     </div>
 
-    <button class="btn" style="width:100%" onclick="login()">
+    <button
+      class="btn"
+      style="width:100%"
+      onclick="login()">
+
       Masuk
+
     </button>
 
-    <div id="loginError"
+    <div
+      id="loginError"
       style="color:var(--danger);font-size:13px;margin-top:12px">
     </div>
 
@@ -439,12 +476,20 @@ th{
 
   <div class="toolbar">
 
-    <button class="btn small" onclick="loadAll()">
+    <button
+      class="btn small"
+      onclick="loadAll()">
+
       Refresh
+
     </button>
 
-    <button class="btn secondary small" onclick="logout()">
+    <button
+      class="btn secondary small"
+      onclick="logout()">
+
       Keluar
+
     </button>
 
   </div>
@@ -457,23 +502,70 @@ th{
   <div class="stats">
 
     <div class="stat">
-      <div class="stat-label">Total Garapan</div>
-      <div class="stat-value" id="statGarapan">0</div>
+
+      <div class="stat-label">
+        Total Garapan
+      </div>
+
+      <div
+        class="stat-value"
+        id="statGarapan">
+
+        0
+
+      </div>
+
     </div>
 
-    <div class="stat">
-      <div class="stat-label">Total Order</div>
-      <div class="stat-value" id="statOrder">0</div>
-    </div>
 
     <div class="stat">
-      <div class="stat-label">Sudah Selesai</div>
-      <div class="stat-value" id="statSelesai">0</div>
+
+      <div class="stat-label">
+        Total Order
+      </div>
+
+      <div
+        class="stat-value"
+        id="statOrder">
+
+        0
+
+      </div>
+
     </div>
 
+
     <div class="stat">
-      <div class="stat-label">Menunggu Approval</div>
-      <div class="stat-value" id="statPending">0</div>
+
+      <div class="stat-label">
+        Sudah Selesai
+      </div>
+
+      <div
+        class="stat-value"
+        id="statSelesai">
+
+        0
+
+      </div>
+
+    </div>
+
+
+    <div class="stat">
+
+      <div class="stat-label">
+        Menunggu Approval
+      </div>
+
+      <div
+        class="stat-value"
+        id="statPending">
+
+        0
+
+      </div>
+
     </div>
 
   </div>
@@ -484,23 +576,50 @@ th{
     <h3>Tambah Garapan</h3>
 
     <div class="field">
+
       <label>Produk</label>
-      <input id="addProduk" placeholder="Contoh: Kemeja Tenun">
+
+      <input
+        id="addProduk"
+        placeholder="Contoh: Kemeja Tenun">
+
     </div>
 
+
     <div class="field">
+
       <label>SKU</label>
-      <input id="addSku" placeholder="SKU">
+
+      <input
+        id="addSku"
+        placeholder="SKU">
+
     </div>
 
+
     <div class="field">
+
       <label>Jumlah</label>
-      <input id="addJumlah" type="number" min="1" placeholder="Contoh: 10">
+
+      <input
+        id="addJumlah"
+        type="number"
+        min="1"
+        placeholder="Contoh: 10">
+
     </div>
 
+
     <div class="field">
+
       <label>Harga / pcs</label>
-      <input id="addHarga" type="number" min="0" placeholder="Contoh: 25000">
+
+      <input
+        id="addHarga"
+        type="number"
+        min="0"
+        placeholder="Contoh: 25000">
+
     </div>
 
 
@@ -509,36 +628,64 @@ th{
       <label>Pilih Penjahit</label>
 
       <select id="addPenjahitSelect">
+
         <option value="">
           Memuat daftar penjahit...
         </option>
+
       </select>
 
-      <div style="color:var(--muted);font-size:11px;margin-top:5px">
-        Nama penjahit diambil otomatis dari akun dengan role penjahit.
+      <div
+        style="color:var(--muted);font-size:11px;margin-top:5px">
+
+        Nama penjahit diambil otomatis
+        dari akun dengan role penjahit.
+
       </div>
 
     </div>
 
 
     <div class="field">
+
       <label>Tanggal Kirim</label>
-      <input id="addTanggal" type="date">
+
+      <input
+        id="addTanggal"
+        type="date">
+
     </div>
 
+
     <div class="field">
+
       <label>Target Selesai</label>
-      <input id="addTarget" type="date">
+
+      <input
+        id="addTarget"
+        type="date">
+
     </div>
+
 
     <div class="field">
+
       <label>Catatan</label>
-      <textarea id="addCatatan" rows="3"
+
+      <textarea
+        id="addCatatan"
+        rows="3"
         placeholder="Catatan untuk penjahit..."></textarea>
+
     </div>
 
-    <button class="btn" onclick="tambahGarapan()">
+
+    <button
+      class="btn"
+      onclick="tambahGarapan()">
+
       Tambah Garapan
+
     </button>
 
   </div>
@@ -589,10 +736,15 @@ th{
 </section>
 
 </section>
+
 </main>
 
 
-<div id="setorModal" class="modal hidden">
+<!-- MODAL SETOR -->
+
+<div
+  id="setorModal"
+  class="modal hidden">
 
   <div class="modal-box">
 
@@ -602,42 +754,68 @@ th{
         Setor Garapan
       </h3>
 
-      <button class="close" onclick="closeSetorModal()">
+      <button
+        class="close"
+        onclick="closeSetorModal()">
+
         ×
+
       </button>
 
     </div>
 
+
     <div id="setorInfo"></div>
+
 
     <div class="setor-box">
 
-      <div style="font-size:13px;color:var(--muted)">
+      <div
+        style="font-size:13px;color:var(--muted)">
+
         Jumlah yang bisa disetor
+
       </div>
 
       <div class="big-progress">
-        <span id="setorAvailable">0</span> pcs
+
+        <span id="setorAvailable">
+          0
+        </span>
+        pcs
+
       </div>
 
-      <div style="font-size:12px;color:var(--muted)">
-        Tidak termasuk setoran yang masih menunggu approval.
+      <div
+        style="font-size:12px;color:var(--muted)">
+
+        Tidak termasuk setoran
+        yang masih menunggu approval.
+
       </div>
 
     </div>
 
-    <div class="field" style="margin-top:15px">
 
-      <label>Jumlah yang disetor</label>
+    <div
+      class="field"
+      style="margin-top:15px">
 
-      <input id="setorJumlah"
+      <label>
+        Jumlah yang disetor
+      </label>
+
+      <input
+        id="setorJumlah"
         type="number"
         min="1"
         value="1">
 
     </div>
 
-    <button class="btn success"
+
+    <button
+      class="btn success"
       style="width:100%"
       onclick="submitSetoran()">
 
@@ -650,7 +828,11 @@ th{
 </div>
 
 
-<div id="editModal" class="modal hidden">
+<!-- MODAL EDIT -->
+
+<div
+  id="editModal"
+  class="modal hidden">
 
   <div class="modal-box">
 
@@ -660,62 +842,114 @@ th{
         Edit Garapan
       </h3>
 
-      <button class="close" onclick="closeEditModal()">
+      <button
+        class="close"
+        onclick="closeEditModal()">
+
         ×
+
       </button>
 
     </div>
 
-    <input type="hidden" id="editId">
+
+    <input
+      type="hidden"
+      id="editId">
+
 
     <div class="field">
+
       <label>Produk</label>
+
       <input id="editProduk">
+
     </div>
 
+
     <div class="field">
+
       <label>SKU</label>
+
       <input id="editSku">
+
     </div>
 
+
     <div class="field">
+
       <label>Jumlah Order</label>
-      <input id="editJumlah" type="number" min="1">
+
+      <input
+        id="editJumlah"
+        type="number"
+        min="1">
+
     </div>
 
+
     <div class="field">
+
       <label>Harga / pcs</label>
-      <input id="editHarga" type="number" min="0">
+
+      <input
+        id="editHarga"
+        type="number"
+        min="0">
+
     </div>
+
 
     <div class="field">
 
       <label>Penjahit</label>
 
       <select id="editPenjahitSelect">
+
         <option value="">
           Memuat daftar penjahit...
         </option>
+
       </select>
 
     </div>
 
+
     <div class="field">
+
       <label>Tanggal Kirim</label>
-      <input id="editTanggal" type="date">
+
+      <input
+        id="editTanggal"
+        type="date">
+
     </div>
 
+
     <div class="field">
+
       <label>Target Selesai</label>
-      <input id="editTarget" type="date">
+
+      <input
+        id="editTarget"
+        type="date">
+
     </div>
+
 
     <div class="field">
+
       <label>Catatan</label>
-      <textarea id="editCatatan" rows="3"></textarea>
+
+      <textarea
+        id="editCatatan"
+        rows="3"></textarea>
+
     </div>
 
-    <button class="btn"
+
+    <button
+      class="btn"
       style="width:100%"
       onclick="simpanEdit()">
 
@@ -728,7 +962,10 @@ th{
 </div>
 
 
-<div id="toast" class="toast hidden"></div>
+<div
+  id="toast"
+  class="toast hidden">
+</div>
 
 
 <script>
@@ -785,6 +1022,7 @@ function rupiah(value){
       maximumFractionDigits:0
     }
   ).format(Number(value||0));
+
 }
 
 
@@ -809,13 +1047,16 @@ function dateID(value){
   }catch(e){
 
     return value;
+
   }
+
 }
 
 
 function showToast(message,error=false){
 
-  const el=document.getElementById("toast");
+  const el=
+    document.getElementById("toast");
 
   el.textContent=message;
 
@@ -828,8 +1069,11 @@ function showToast(message,error=false){
   }
 
   setTimeout(()=>{
+
     el.classList.add("hidden");
+
   },3500);
+
 }
 
 
@@ -855,6 +1099,7 @@ function statusBadge(status){
       ${esc(status||"-")}
     </span>
   `;
+
 }
 
 
@@ -865,24 +1110,32 @@ function statusBadge(status){
 async function login(){
 
   const email=
-    document.getElementById("loginEmail")
-      .value.trim();
+    document
+      .getElementById("loginEmail")
+      .value
+      .trim();
 
   const password=
-    document.getElementById("loginPassword")
+    document
+      .getElementById("loginPassword")
       .value;
 
-  document.getElementById("loginError")
+  document
+    .getElementById("loginError")
     .textContent="";
+
 
   if(!email || !password){
 
-    document.getElementById("loginError")
+    document
+      .getElementById("loginError")
       .textContent=
       "Email dan password wajib diisi.";
 
     return;
+
   }
+
 
   const {data,error}=
     await supabaseClient.auth
@@ -891,18 +1144,23 @@ async function login(){
         password
       });
 
+
   if(error){
 
-    document.getElementById("loginError")
+    document
+      .getElementById("loginError")
       .textContent=
       error.message;
 
     return;
+
   }
+
 
   currentUser=data.user;
 
   await loadProfile();
+
 }
 
 
@@ -915,14 +1173,18 @@ async function logout(){
   currentUser=null;
   currentProfile=null;
 
-  document.getElementById("appPage")
+  document
+    .getElementById("appPage")
     .classList.add("hidden");
 
-  document.getElementById("header")
+  document
+    .getElementById("header")
     .classList.add("hidden");
 
-  document.getElementById("loginPage")
+  document
+    .getElementById("loginPage")
     .classList.remove("hidden");
+
 }
 
 
@@ -936,12 +1198,14 @@ async function loadProfile(){
     return;
   }
 
+
   const {data,error}=
     await supabaseClient
       .from("profiles")
       .select("*")
       .eq("id",currentUser.id)
       .single();
+
 
   if(error){
 
@@ -954,26 +1218,36 @@ async function loadProfile(){
     );
 
     return;
+
   }
+
 
   currentProfile=data;
 
-  document.getElementById("loginPage")
+
+  document
+    .getElementById("loginPage")
     .classList.add("hidden");
 
-  document.getElementById("appPage")
+  document
+    .getElementById("appPage")
     .classList.remove("hidden");
 
-  document.getElementById("header")
+  document
+    .getElementById("header")
     .classList.remove("hidden");
 
-  document.getElementById("userName")
+
+  document
+    .getElementById("userName")
     .textContent=
     data.nama ||
     data.name ||
     currentUser.email;
 
-  document.getElementById("userRole")
+
+  document
+    .getElementById("userRole")
     .textContent=
     data.role || "-";
 
@@ -986,29 +1260,39 @@ async function loadProfile(){
 
   if(role==="admin"){
 
-    document.getElementById("adminPage")
+    document
+      .getElementById("adminPage")
       .classList.remove("hidden");
 
-    document.getElementById("penjahitPage")
+    document
+      .getElementById("penjahitPage")
       .classList.add("hidden");
 
     await loadPenjahitList();
 
   }else{
 
-    document.getElementById("adminPage")
+    document
+      .getElementById("adminPage")
       .classList.add("hidden");
 
-    document.getElementById("penjahitPage")
+    document
+      .getElementById("penjahitPage")
       .classList.remove("hidden");
+
   }
 
+
   await loadAll();
+
 }
 
 
 /* =====================================================
    LOAD PENJAHIT V35
+   FIX:
+   Jangan meminta kolom email karena kemungkinan
+   kolom email tidak ada di tabel profiles.
 ===================================================== */
 
 async function loadPenjahitList(){
@@ -1046,13 +1330,19 @@ async function loadPenjahitList(){
   }
 
 
+  /*
+    PENTING:
+    Hanya mengambil kolom yang memang digunakan
+    pada profiles.
+  */
+
   const {
     data,
     error
   }=
     await supabaseClient
       .from("profiles")
-      .select("id,nama,name,email,role")
+      .select("id,nama,name,role")
       .order("nama",{ascending:true});
 
 
@@ -1065,6 +1355,7 @@ async function loadPenjahitList(){
 
     penjahitList=[];
 
+
     if(add){
 
       add.innerHTML=`
@@ -1074,6 +1365,7 @@ async function loadPenjahitList(){
       `;
 
     }
+
 
     if(edit){
 
@@ -1085,13 +1377,15 @@ async function loadPenjahitList(){
 
     }
 
+
     showToast(
-      "Gagal membaca profiles: "+
+      "Gagal membaca daftar penjahit: "+
       error.message,
       true
     );
 
     return;
+
   }
 
 
@@ -1137,20 +1431,41 @@ async function loadPenjahitList(){
 
 
 /* =====================================================
-   DROPDOWN PENJAHIT V35
+   NAMA PENJAHIT
 ===================================================== */
 
 function getPenjahitName(p){
 
-  return(
-    p.nama ||
-    p.name ||
-    p.email ||
-    "Penjahit"
-  );
+  if(!p){
+    return "Penjahit";
+  }
+
+
+  const nama=
+    String(p.nama||"").trim();
+
+  const name=
+    String(p.name||"").trim();
+
+
+  if(nama){
+    return nama;
+  }
+
+
+  if(name){
+    return name;
+  }
+
+
+  return "Penjahit";
 
 }
 
+
+/* =====================================================
+   DROPDOWN PENJAHIT
+===================================================== */
 
 function renderPenjahitDropdown(){
 
@@ -1185,6 +1500,7 @@ function renderPenjahitDropdown(){
     `;
 
     return;
+
   }
 
 
@@ -1207,7 +1523,9 @@ function renderPenjahitDropdown(){
 
 
   add.innerHTML=options;
+
   edit.innerHTML=options;
+
 }
 
 
@@ -1221,10 +1539,13 @@ async function loadAll(){
     return;
   }
 
+
   await loadGarapan();
+
   await loadSetoran();
 
   renderAll();
+
 }
 
 
@@ -1274,10 +1595,12 @@ async function loadGarapan(){
     garapanList=[];
 
     return;
+
   }
 
 
   garapanList=data||[];
+
 }
 
 
@@ -1327,10 +1650,12 @@ async function loadSetoran(){
     setoranList=[];
 
     return;
+
   }
 
 
   setoranList=data||[];
+
 }
 
 
@@ -1358,6 +1683,7 @@ function renderAll(){
     renderPenjahitSetoran();
 
   }
+
 }
 
 
@@ -1370,12 +1696,14 @@ function renderAdminStats(){
   const totalGarapan=
     garapanList.length;
 
+
   const totalOrder=
     garapanList.reduce(
       (a,x)=>
         a+Number(x.jumlah||0),
       0
     );
+
 
   const totalSelesai=
     garapanList.reduce(
@@ -1384,23 +1712,36 @@ function renderAdminStats(){
       0
     );
 
+
   const pending=
     setoranList.filter(
       x=>x.status==="Menunggu"
     ).length;
 
 
-  document.getElementById("statGarapan")
-    .textContent=totalGarapan;
+  document
+    .getElementById("statGarapan")
+    .textContent=
+    totalGarapan;
 
-  document.getElementById("statOrder")
-    .textContent=totalOrder;
 
-  document.getElementById("statSelesai")
-    .textContent=totalSelesai;
+  document
+    .getElementById("statOrder")
+    .textContent=
+    totalOrder;
 
-  document.getElementById("statPending")
-    .textContent=pending;
+
+  document
+    .getElementById("statSelesai")
+    .textContent=
+    totalSelesai;
+
+
+  document
+    .getElementById("statPending")
+    .textContent=
+    pending;
+
 }
 
 
@@ -1425,6 +1766,7 @@ function renderAdminGarapan(){
     `;
 
     return;
+
   }
 
 
@@ -1475,6 +1817,7 @@ function renderAdminGarapan(){
 
                 SKU:
                 ${esc(x.sku||"-")}
+
                 <br>
 
                 Penjahit:
@@ -1569,7 +1912,9 @@ function renderAdminGarapan(){
             <button
               class="btn secondary small"
               onclick="openEdit('${x.id}')">
+
               Edit
+
             </button>
 
 
@@ -1579,7 +1924,9 @@ function renderAdminGarapan(){
                 <button
                   class="btn blue small"
                   onclick="adminSetStatus('${x.id}')">
+
                   Update Status
+
                 </button>
               `
               :""
@@ -1589,7 +1936,9 @@ function renderAdminGarapan(){
             <button
               class="btn danger small"
               onclick="hapusGarapan('${x.id}')">
+
               Hapus
+
             </button>
 
           </div>
@@ -1600,6 +1949,7 @@ function renderAdminGarapan(){
 
       })
       .join("");
+
 }
 
 
@@ -1631,6 +1981,7 @@ function renderAdminSetoran(){
     `;
 
     return;
+
   }
 
 
@@ -1645,14 +1996,23 @@ function renderAdminSetoran(){
               String(s.garapan_id)
           );
 
+
         const qty=
-          Number(s.jumlah_diajukan||0);
+          Number(
+            s.jumlah_diajukan||0
+          );
+
 
         const order=
-          Number(g?.jumlah||0);
+          Number(
+            g?.jumlah||0
+          );
+
 
         const selesai=
-          Number(g?.jumlah_selesai||0);
+          Number(
+            g?.jumlah_selesai||0
+          );
 
 
         return`
@@ -1664,14 +2024,19 @@ function renderAdminSetoran(){
             <div>
 
               <div class="product">
-                ${esc(g?.produk||"Garapan")}
+                ${esc(
+                  g?.produk||
+                  "Garapan"
+                )}
               </div>
 
               <div class="meta">
 
                 Penjahit:
                 <strong>
-                  ${esc(g?.penjahit||"-")}
+                  ${esc(
+                    g?.penjahit||"-"
+                  )}
                 </strong>
 
                 <br>
@@ -1687,7 +2052,9 @@ function renderAdminSetoran(){
                 <br>
 
                 Diajukan sekarang:
-                <strong>${qty} pcs</strong>
+                <strong>
+                  ${qty} pcs
+                </strong>
 
                 <br>
 
@@ -1713,13 +2080,18 @@ function renderAdminSetoran(){
             <button
               class="btn success"
               onclick="approveSetoran('${s.id}')">
+
               Approve ${qty} pcs
+
             </button>
+
 
             <button
               class="btn danger small"
               onclick="rejectSetoran('${s.id}')">
+
               Tolak
+
             </button>
 
           </div>
@@ -1730,6 +2102,7 @@ function renderAdminSetoran(){
 
       })
       .join("");
+
 }
 
 
@@ -1754,6 +2127,7 @@ function renderPenjahitGarapan(){
     `;
 
     return;
+
   }
 
 
@@ -1808,13 +2182,17 @@ function renderPenjahitGarapan(){
                 <br>
 
                 Harga:
-                ${rupiah(x.harga_per_pcs)}
+                ${rupiah(
+                  x.harga_per_pcs
+                )}
                 / pcs
 
                 <br>
 
                 Target:
-                ${dateID(x.target_selesai)}
+                ${dateID(
+                  x.target_selesai
+                )}
 
               </div>
 
@@ -1838,6 +2216,7 @@ function renderPenjahitGarapan(){
               </strong>
 
             </div>
+
 
             <div class="progress">
 
@@ -1877,7 +2256,9 @@ function renderPenjahitGarapan(){
                 <button
                   class="btn success"
                   onclick="openSetorModal('${x.id}')">
+
                   Setor / Ajukan Approval
+
                 </button>
               `
               :
@@ -1887,7 +2268,10 @@ function renderPenjahitGarapan(){
                 <button
                   class="btn secondary"
                   disabled>
-                  Menunggu Approval ${pending} pcs
+
+                  Menunggu Approval
+                  ${pending} pcs
+
                 </button>
               `
               :
@@ -1895,7 +2279,9 @@ function renderPenjahitGarapan(){
                 <button
                   class="btn secondary"
                   disabled>
+
                   Sudah Selesai
+
                 </button>
               `
             }
@@ -1908,6 +2294,7 @@ function renderPenjahitGarapan(){
 
       })
       .join("");
+
 }
 
 
@@ -1932,6 +2319,7 @@ function renderPenjahitSetoran(){
     `;
 
     return;
+
   }
 
 
@@ -1946,13 +2334,19 @@ function renderPenjahitSetoran(){
           <thead>
 
             <tr>
+
               <th>Produk</th>
+
               <th>Jumlah</th>
+
               <th>Status</th>
+
               <th>Tanggal</th>
+
             </tr>
 
           </thead>
+
 
           <tbody>
 
@@ -1973,7 +2367,9 @@ function renderPenjahitSetoran(){
                   <tr>
 
                     <td>
-                      ${esc(g?.produk||"-")}
+                      ${esc(
+                        g?.produk||"-"
+                      )}
                     </td>
 
                     <td>
@@ -1983,11 +2379,15 @@ function renderPenjahitSetoran(){
                     </td>
 
                     <td>
-                      ${statusBadge(s.status)}
+                      ${statusBadge(
+                        s.status
+                      )}
                     </td>
 
                     <td>
-                      ${dateID(s.created_at)}
+                      ${dateID(
+                        s.created_at
+                      )}
                     </td>
 
                   </tr>
@@ -2007,6 +2407,7 @@ function renderPenjahitSetoran(){
     </div>
 
   `;
+
 }
 
 
@@ -2027,9 +2428,12 @@ function getPendingQty(garapanId){
     .reduce(
       (total,s)=>
         total+
-        Number(s.jumlah_diajukan||0),
+        Number(
+          s.jumlah_diajukan||0
+        ),
       0
     );
+
 }
 
 
@@ -2055,6 +2459,7 @@ function openSetorModal(id){
     );
 
     return;
+
   }
 
 
@@ -2082,66 +2487,90 @@ function openSetorModal(id){
     );
 
     return;
+
   }
 
 
   selectedSetorGarapan=g;
 
 
-  document.getElementById("setorInfo")
+  document
+    .getElementById("setorInfo")
     .innerHTML=`
 
       <div>
-        <strong>${esc(g.produk||"-")}</strong>
+
+        <strong>
+          ${esc(g.produk||"-")}
+        </strong>
+
       </div>
 
       <div class="meta">
 
         Order awal:
-        <strong>${jumlah} pcs</strong>
+        <strong>
+          ${jumlah} pcs
+        </strong>
 
         <br>
 
         Sudah disetujui:
-        <strong>${selesai} pcs</strong>
+        <strong>
+          ${selesai} pcs
+        </strong>
 
         <br>
 
         Menunggu approval:
-        <strong>${pending} pcs</strong>
+        <strong>
+          ${pending} pcs
+        </strong>
 
         <br>
 
         Sisa yang bisa diajukan:
-        <strong>${available} pcs</strong>
+        <strong>
+          ${available} pcs
+        </strong>
 
       </div>
+
     `;
 
 
-  document.getElementById("setorAvailable")
-    .textContent=available;
+  document
+    .getElementById("setorAvailable")
+    .textContent=
+    available;
 
 
   const input=
-    document.getElementById("setorJumlah");
+    document.getElementById(
+      "setorJumlah"
+    );
+
 
   input.value=available;
   input.min=1;
   input.max=available;
 
 
-  document.getElementById("setorModal")
+  document
+    .getElementById("setorModal")
     .classList.remove("hidden");
+
 }
 
 
 function closeSetorModal(){
 
-  document.getElementById("setorModal")
+  document
+    .getElementById("setorModal")
     .classList.add("hidden");
 
   selectedSetorGarapan=null;
+
 }
 
 
@@ -2156,17 +2585,22 @@ async function submitSetoran(){
   }
 
 
-  const g=selectedSetorGarapan;
+  const g=
+    selectedSetorGarapan;
 
 
   const qty=
     Number(
-      document.getElementById("setorJumlah")
+      document
+        .getElementById("setorJumlah")
         .value
     );
 
 
-  const {data:fresh,error:freshError}=
+  const {
+    data:fresh,
+    error:freshError
+  }=
     await supabaseClient
       .from("garapan_penjahit")
       .select("*")
@@ -2183,10 +2617,14 @@ async function submitSetoran(){
     );
 
     return;
+
   }
 
 
-  const {data:pendingData,error:pendingError}=
+  const {
+    data:pendingData,
+    error:pendingError
+  }=
     await supabaseClient
       .from("garapan_setoran")
       .select("jumlah_diajukan")
@@ -2203,6 +2641,7 @@ async function submitSetoran(){
     );
 
     return;
+
   }
 
 
@@ -2210,16 +2649,25 @@ async function submitSetoran(){
     (pendingData||[])
       .reduce(
         (a,x)=>
-          a+Number(x.jumlah_diajukan||0),
+          a+
+          Number(
+            x.jumlah_diajukan||0
+          ),
         0
       );
 
 
   const selesai=
-    Number(fresh.jumlah_selesai||0);
+    Number(
+      fresh.jumlah_selesai||0
+    );
+
 
   const jumlah=
-    Number(fresh.jumlah||0);
+    Number(
+      fresh.jumlah||0
+    );
+
 
   const available=
     Math.max(
@@ -2228,7 +2676,10 @@ async function submitSetoran(){
     );
 
 
-  if(!Number.isInteger(qty) || qty<1){
+  if(
+    !Number.isInteger(qty) ||
+    qty<1
+  ){
 
     showToast(
       "Jumlah setor minimal 1 pcs.",
@@ -2236,6 +2687,7 @@ async function submitSetoran(){
     );
 
     return;
+
   }
 
 
@@ -2243,11 +2695,13 @@ async function submitSetoran(){
 
     showToast(
       "Jumlah terlalu banyak. Maksimal "+
-      available+" pcs.",
+      available+
+      " pcs.",
       true
     );
 
     return;
+
   }
 
 
@@ -2273,16 +2727,22 @@ async function submitSetoran(){
     );
 
     return;
+
   }
 
 
   closeSetorModal();
 
+
   showToast(
-    "Setoran "+qty+" pcs berhasil diajukan."
+    "Setoran "+
+    qty+
+    " pcs berhasil diajukan."
   );
 
+
   await loadAll();
+
 }
 
 
@@ -2292,7 +2752,10 @@ async function submitSetoran(){
 
 async function approveSetoran(id){
 
-  const {data:s,error:sError}=
+  const {
+    data:s,
+    error:sError
+  }=
     await supabaseClient
       .from("garapan_setoran")
       .select("*")
@@ -2308,6 +2771,7 @@ async function approveSetoran(id){
     );
 
     return;
+
   }
 
 
@@ -2319,10 +2783,14 @@ async function approveSetoran(id){
     );
 
     return;
+
   }
 
 
-  const {data:g,error:gError}=
+  const {
+    data:g,
+    error:gError
+  }=
     await supabaseClient
       .from("garapan_penjahit")
       .select("*")
@@ -2338,17 +2806,26 @@ async function approveSetoran(id){
     );
 
     return;
+
   }
 
 
   const qty=
-    Number(s.jumlah_diajukan||0);
+    Number(
+      s.jumlah_diajukan||0
+    );
+
 
   const current=
-    Number(g.jumlah_selesai||0);
+    Number(
+      g.jumlah_selesai||0
+    );
+
 
   const order=
-    Number(g.jumlah||0);
+    Number(
+      g.jumlah||0
+    );
 
 
   if(
@@ -2362,10 +2839,13 @@ async function approveSetoran(id){
     );
 
     return;
+
   }
 
 
-  const total=current+qty;
+  const total=
+    current+qty;
+
 
   const newStatus=
     total>=order
@@ -2373,14 +2853,17 @@ async function approveSetoran(id){
     : "Diproses";
 
 
-  const {error:updateError}=
+  const {
+    error:updateError
+  }=
     await supabaseClient
       .from("garapan_penjahit")
       .update({
 
         jumlah_selesai:total,
         status:newStatus,
-        updated_at:new Date().toISOString()
+        updated_at:
+          new Date().toISOString()
 
       })
       .eq("id",g.id);
@@ -2395,27 +2878,44 @@ async function approveSetoran(id){
     );
 
     return;
+
   }
 
 
-  await supabaseClient
-    .from("garapan_progress")
-    .insert({
+  const {
+    error:progressError
+  }=
+    await supabaseClient
+      .from("garapan_progress")
+      .insert({
 
-      garapan_id:g.id,
-      tambahan_selesai:qty
+        garapan_id:g.id,
+        tambahan_selesai:qty
 
-    });
+      });
 
 
-  const {error:approvalError}=
+  if(progressError){
+
+    console.error(
+      "Gagal mencatat progress:",
+      progressError
+    );
+
+  }
+
+
+  const {
+    error:approvalError
+  }=
     await supabaseClient
       .from("garapan_setoran")
       .update({
 
         status:"Disetujui",
         approved_by:currentUser.id,
-        approved_at:new Date().toISOString()
+        approved_at:
+          new Date().toISOString()
 
       })
       .eq("id",id)
@@ -2433,14 +2933,19 @@ async function approveSetoran(id){
     await loadAll();
 
     return;
+
   }
 
 
   showToast(
-    "Approval "+qty+" pcs berhasil."
+    "Approval "+
+    qty+
+    " pcs berhasil."
   );
 
+
   await loadAll();
+
 }
 
 
@@ -2469,12 +2974,17 @@ async function rejectSetoran(id){
     );
 
     return;
+
   }
 
 
-  showToast("Setoran ditolak.");
+  showToast(
+    "Setoran ditolak."
+  );
+
 
   await loadAll();
+
 }
 
 
@@ -2485,22 +2995,31 @@ async function rejectSetoran(id){
 async function tambahGarapan(){
 
   const produk=
-    document.getElementById("addProduk")
-      .value.trim();
+    document
+      .getElementById("addProduk")
+      .value
+      .trim();
+
 
   const sku=
-    document.getElementById("addSku")
-      .value.trim();
+    document
+      .getElementById("addSku")
+      .value
+      .trim();
+
 
   const jumlah=
     Number(
-      document.getElementById("addJumlah")
+      document
+        .getElementById("addJumlah")
         .value
     );
 
+
   const harga=
     Number(
-      document.getElementById("addHarga")
+      document
+        .getElementById("addHarga")
         .value
     );
 
@@ -2525,21 +3044,31 @@ async function tambahGarapan(){
 
   const penjahit=
     selectedPenjahit
-    ? getPenjahitName(selectedPenjahit)
+    ? getPenjahitName(
+        selectedPenjahit
+      )
     : "";
 
 
   const tanggal=
-    document.getElementById("addTanggal")
-      .value || null;
+    document
+      .getElementById("addTanggal")
+      .value ||
+    null;
+
 
   const target=
-    document.getElementById("addTarget")
-      .value || null;
+    document
+      .getElementById("addTarget")
+      .value ||
+    null;
+
 
   const catatan=
-    document.getElementById("addCatatan")
-      .value.trim();
+    document
+      .getElementById("addCatatan")
+      .value
+      .trim();
 
 
   if(!produk){
@@ -2550,6 +3079,7 @@ async function tambahGarapan(){
     );
 
     return;
+
   }
 
 
@@ -2564,6 +3094,7 @@ async function tambahGarapan(){
     );
 
     return;
+
   }
 
 
@@ -2575,6 +3106,19 @@ async function tambahGarapan(){
     );
 
     return;
+
+  }
+
+
+  if(!selectedPenjahit){
+
+    showToast(
+      "Data penjahit tidak ditemukan. Silakan refresh.",
+      true
+    );
+
+    return;
+
   }
 
 
@@ -2588,7 +3132,8 @@ async function tambahGarapan(){
         jumlah,
         harga_per_pcs:harga||0,
         penjahit,
-        penjahit_user_id:penjahitUserId,
+        penjahit_user_id:
+          penjahitUserId,
         tanggal_kirim:tanggal,
         target_selesai:target,
         status:"Dikirim",
@@ -2609,24 +3154,57 @@ async function tambahGarapan(){
     );
 
     return;
+
   }
 
 
-  document.getElementById("addProduk").value="";
-  document.getElementById("addSku").value="";
-  document.getElementById("addJumlah").value="";
-  document.getElementById("addHarga").value="";
-  document.getElementById("addPenjahitSelect").value="";
-  document.getElementById("addTanggal").value="";
-  document.getElementById("addTarget").value="";
-  document.getElementById("addCatatan").value="";
+  document
+    .getElementById("addProduk")
+    .value="";
+
+
+  document
+    .getElementById("addSku")
+    .value="";
+
+
+  document
+    .getElementById("addJumlah")
+    .value="";
+
+
+  document
+    .getElementById("addHarga")
+    .value="";
+
+
+  document
+    .getElementById("addPenjahitSelect")
+    .value="";
+
+
+  document
+    .getElementById("addTanggal")
+    .value="";
+
+
+  document
+    .getElementById("addTarget")
+    .value="";
+
+
+  document
+    .getElementById("addCatatan")
+    .value="";
 
 
   showToast(
     "Garapan berhasil ditambahkan."
   );
 
+
   await loadAll();
+
 }
 
 
@@ -2649,11 +3227,34 @@ function openEdit(id){
   }
 
 
-  document.getElementById("editId").value=x.id;
-  document.getElementById("editProduk").value=x.produk||"";
-  document.getElementById("editSku").value=x.sku||"";
-  document.getElementById("editJumlah").value=x.jumlah||"";
-  document.getElementById("editHarga").value=x.harga_per_pcs||"";
+  document
+    .getElementById("editId")
+    .value=
+    x.id;
+
+
+  document
+    .getElementById("editProduk")
+    .value=
+    x.produk||"";
+
+
+  document
+    .getElementById("editSku")
+    .value=
+    x.sku||"";
+
+
+  document
+    .getElementById("editJumlah")
+    .value=
+    x.jumlah||"";
+
+
+  document
+    .getElementById("editHarga")
+    .value=
+    x.harga_per_pcs||"";
 
 
   const editSelect=
@@ -2666,59 +3267,84 @@ function openEdit(id){
     x.penjahit_user_id||"";
 
 
-  document.getElementById("editTanggal").value=
+  document
+    .getElementById("editTanggal")
+    .value=
     x.tanggal_kirim||"";
 
-  document.getElementById("editTarget").value=
+
+  document
+    .getElementById("editTarget")
+    .value=
     x.target_selesai||"";
 
-  document.getElementById("editCatatan").value=
+
+  document
+    .getElementById("editCatatan")
+    .value=
     x.catatan||"";
 
 
-  document.getElementById("editModal")
+  document
+    .getElementById("editModal")
     .classList.remove("hidden");
+
 }
 
 
 function closeEditModal(){
 
-  document.getElementById("editModal")
+  document
+    .getElementById("editModal")
     .classList.add("hidden");
+
 }
 
 
 async function simpanEdit(){
 
   const id=
-    document.getElementById("editId")
+    document
+      .getElementById("editId")
       .value;
 
+
   const produk=
-    document.getElementById("editProduk")
-      .value.trim();
+    document
+      .getElementById("editProduk")
+      .value
+      .trim();
+
 
   const sku=
-    document.getElementById("editSku")
-      .value.trim();
+    document
+      .getElementById("editSku")
+      .value
+      .trim();
+
 
   const jumlah=
     Number(
-      document.getElementById("editJumlah")
+      document
+        .getElementById("editJumlah")
         .value
     );
 
+
   const harga=
     Number(
-      document.getElementById("editHarga")
+      document
+        .getElementById("editHarga")
         .value
     );
 
 
   const penjahitUserId=
-    document.getElementById(
-      "editPenjahitSelect"
-    ).value;
+    document
+      .getElementById(
+        "editPenjahitSelect"
+      )
+      .value;
 
 
   const selected=
@@ -2736,16 +3362,24 @@ async function simpanEdit(){
 
 
   const tanggal=
-    document.getElementById("editTanggal")
-      .value || null;
+    document
+      .getElementById("editTanggal")
+      .value ||
+    null;
+
 
   const target=
-    document.getElementById("editTarget")
-      .value || null;
+    document
+      .getElementById("editTarget")
+      .value ||
+    null;
+
 
   const catatan=
-    document.getElementById("editCatatan")
-      .value.trim();
+    document
+      .getElementById("editCatatan")
+      .value
+      .trim();
 
 
   const existing=
@@ -2757,7 +3391,36 @@ async function simpanEdit(){
 
 
   const selesai=
-    Number(existing?.jumlah_selesai||0);
+    Number(
+      existing?.jumlah_selesai||0
+    );
+
+
+  if(!produk){
+
+    showToast(
+      "Produk wajib diisi.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  if(
+    !Number.isInteger(jumlah) ||
+    jumlah<1
+  ){
+
+    showToast(
+      "Jumlah order minimal 1.",
+      true
+    );
+
+    return;
+
+  }
 
 
   if(jumlah<selesai){
@@ -2768,6 +3431,7 @@ async function simpanEdit(){
     );
 
     return;
+
   }
 
 
@@ -2779,6 +3443,19 @@ async function simpanEdit(){
     );
 
     return;
+
+  }
+
+
+  if(!selected){
+
+    showToast(
+      "Data penjahit tidak ditemukan. Silakan refresh.",
+      true
+    );
+
+    return;
+
   }
 
 
@@ -2792,11 +3469,13 @@ async function simpanEdit(){
         jumlah,
         harga_per_pcs:harga||0,
         penjahit,
-        penjahit_user_id:penjahitUserId,
+        penjahit_user_id:
+          penjahitUserId,
         tanggal_kirim:tanggal,
         target_selesai:target,
         catatan:catatan||null,
-        updated_at:new Date().toISOString()
+        updated_at:
+          new Date().toISOString()
 
       })
       .eq("id",id);
@@ -2811,16 +3490,20 @@ async function simpanEdit(){
     );
 
     return;
+
   }
 
 
   closeEditModal();
 
+
   showToast(
     "Garapan berhasil diperbarui."
   );
 
+
   await loadAll();
+
 }
 
 
@@ -2876,6 +3559,7 @@ async function adminSetStatus(id){
     );
 
     return;
+
   }
 
 
@@ -2885,7 +3569,8 @@ async function adminSetStatus(id){
       .update({
 
         status,
-        updated_at:new Date().toISOString()
+        updated_at:
+          new Date().toISOString()
 
       })
       .eq("id",id);
@@ -2900,6 +3585,7 @@ async function adminSetStatus(id){
     );
 
     return;
+
   }
 
 
@@ -2907,7 +3593,9 @@ async function adminSetStatus(id){
     "Status berhasil diperbarui."
   );
 
+
   await loadAll();
+
 }
 
 
@@ -2933,11 +3621,13 @@ async function updateProgressDb(id,value){
   const jumlah=
     Number(x.jumlah||0);
 
+
   const old=
     Number(x.jumlah_selesai||0);
 
 
-  let v=Number(value);
+  let v=
+    Number(value);
 
 
   v=
@@ -2947,7 +3637,8 @@ async function updateProgressDb(id,value){
     );
 
 
-  let status="Diproses";
+  let status=
+    "Diproses";
 
 
   if(v===0){
@@ -2967,7 +3658,8 @@ async function updateProgressDb(id,value){
 
         jumlah_selesai:v,
         status,
-        updated_at:new Date().toISOString()
+        updated_at:
+          new Date().toISOString()
 
       })
       .eq("id",id);
@@ -2982,19 +3674,34 @@ async function updateProgressDb(id,value){
     );
 
     return;
+
   }
 
 
   if(v>old){
 
-    await supabaseClient
-      .from("garapan_progress")
-      .insert({
+    const {
+      error:progressError
+    }=
+      await supabaseClient
+        .from("garapan_progress")
+        .insert({
 
-        garapan_id:id,
-        tambahan_selesai:v-old
+          garapan_id:id,
+          tambahan_selesai:v-old
 
-      });
+        });
+
+
+    if(progressError){
+
+      console.error(
+        "Gagal mencatat progress:",
+        progressError
+      );
+
+    }
+
   }
 
 
@@ -3002,7 +3709,9 @@ async function updateProgressDb(id,value){
     "Progress berhasil diperbarui."
   );
 
+
   await loadAll();
+
 }
 
 
@@ -3023,16 +3732,42 @@ async function hapusGarapan(id){
   }
 
 
-  await supabaseClient
-    .from("garapan_progress")
-    .delete()
-    .eq("garapan_id",id);
+  const {
+    error:progressDeleteError
+  }=
+    await supabaseClient
+      .from("garapan_progress")
+      .delete()
+      .eq("garapan_id",id);
 
 
-  await supabaseClient
-    .from("garapan_setoran")
-    .delete()
-    .eq("garapan_id",id);
+  if(progressDeleteError){
+
+    console.error(
+      "Gagal menghapus progress:",
+      progressDeleteError
+    );
+
+  }
+
+
+  const {
+    error:setoranDeleteError
+  }=
+    await supabaseClient
+      .from("garapan_setoran")
+      .delete()
+      .eq("garapan_id",id);
+
+
+  if(setoranDeleteError){
+
+    console.error(
+      "Gagal menghapus setoran:",
+      setoranDeleteError
+    );
+
+  }
 
 
   const {error}=
@@ -3051,6 +3786,7 @@ async function hapusGarapan(id){
     );
 
     return;
+
   }
 
 
@@ -3058,7 +3794,9 @@ async function hapusGarapan(id){
     "Garapan berhasil dihapus."
   );
 
+
   await loadAll();
+
 }
 
 
@@ -3073,10 +3811,13 @@ supabaseClient
 
       if(session?.user){
 
-        currentUser=session.user;
+        currentUser=
+          session.user;
 
 
-        if(event==="INITIAL_SESSION"){
+        if(
+          event==="INITIAL_SESSION"
+        ){
 
           await loadProfile();
 
@@ -3085,16 +3826,21 @@ supabaseClient
       }else{
 
         currentUser=null;
+
         currentProfile=null;
 
-        document.getElementById("appPage")
+        document
+          .getElementById("appPage")
           .classList.add("hidden");
 
-        document.getElementById("header")
+        document
+          .getElementById("header")
           .classList.add("hidden");
 
-        document.getElementById("loginPage")
+        document
+          .getElementById("loginPage")
           .classList.remove("hidden");
+
       }
 
     }
