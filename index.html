@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Garapan Penjahit Kimonik V35</title>
+<title>Garapan Penjahit Kimonik V36</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -401,7 +401,7 @@ th{
       </div>
 
       <div style="font-size:11px;opacity:.65;margin-top:3px">
-        V35
+        V36
       </div>
 
     </div>
@@ -1289,10 +1289,7 @@ async function loadProfile(){
 
 
 /* =====================================================
-   LOAD PENJAHIT V35
-   FIX:
-   Jangan meminta kolom email karena kemungkinan
-   kolom email tidak ada di tabel profiles.
+   LOAD PENJAHIT V36
 ===================================================== */
 
 async function loadPenjahitList(){
@@ -1331,9 +1328,11 @@ async function loadPenjahitList(){
 
 
   /*
-    PENTING:
-    Hanya mengambil kolom yang memang digunakan
-    pada profiles.
+    V36:
+    Tidak lagi memaksakan kolom tertentu
+    seperti nama/name/email di SELECT.
+
+    Kita baca struktur profiles apa adanya.
   */
 
   const {
@@ -1342,8 +1341,7 @@ async function loadPenjahitList(){
   }=
     await supabaseClient
       .from("profiles")
-      .select("id,nama,name,role")
-      .order("nama",{ascending:true});
+      .select("*");
 
 
   if(error){
@@ -1379,7 +1377,7 @@ async function loadPenjahitList(){
 
 
     showToast(
-      "Gagal membaca daftar penjahit: "+
+      "Gagal membaca profiles: "+
       error.message,
       true
     );
@@ -1390,10 +1388,15 @@ async function loadPenjahitList(){
 
 
   console.log(
-    "SEMUA PROFILES:",
+    "SEMUA PROFILES V36:",
     data
   );
 
+
+  /*
+    Hanya akun dengan role penjahit
+    yang dimasukkan ke dropdown.
+  */
 
   penjahitList=
     (data||[])
@@ -1410,7 +1413,7 @@ async function loadPenjahitList(){
 
 
   console.log(
-    "DAFTAR PENJAHIT:",
+    "DAFTAR PENJAHIT V36:",
     penjahitList
   );
 
@@ -1421,7 +1424,7 @@ async function loadPenjahitList(){
   if(!penjahitList.length){
 
     showToast(
-      "Profiles terbaca, tetapi belum ada akun dengan role penjahit.",
+      "Profiles terbaca, tetapi akun dengan role penjahit belum ditemukan.",
       true
     );
 
@@ -1442,10 +1445,16 @@ function getPenjahitName(p){
 
 
   const nama=
-    String(p.nama||"").trim();
+    String(p.nama||"")
+      .trim();
 
   const name=
-    String(p.name||"").trim();
+    String(p.name||"")
+      .trim();
+
+  const email=
+    String(p.email||"")
+      .trim();
 
 
   if(nama){
@@ -1455,6 +1464,11 @@ function getPenjahitName(p){
 
   if(name){
     return name;
+  }
+
+
+  if(email){
+    return email;
   }
 
 
