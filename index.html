@@ -3,197 +3,2660 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Garapan Penjahit Kimonik V32</title>
+<title>Garapan Penjahit Kimonik V33</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root{
-  color-scheme:light dark;
+  color-scheme:light;
   --bg:#f6f3ee;
   --surface:#fff;
-  --text:#24211e;
-  --muted:#756e66;
-  --line:#e5ded5;
-  --accent:#6f4b32;
-  --accent2:#9b7657;
-  --good:#3e7654;
-  --warn:#a06b28;
+  --surface2:#f1eee8;
+  --text:#292621;
+  --muted:#777168;
+  --line:#ded8cf;
+  --primary:#292621;
+  --success:#2f7d4a;
+  --warning:#b7791f;
+  --danger:#b33a3a;
+  --blue:#4267a8;
 }
 
 *{box-sizing:border-box}
 
 body{
   margin:0;
-  font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;
+  font-family:Arial,Helvetica,sans-serif;
   background:var(--bg);
-  color:var(--text)
+  color:var(--text);
 }
 
 button,input,select,textarea{
-  font-family:inherit
+  font:inherit;
 }
 
 button{
-  border:1px solid var(--line);
-  background:var(--surface);
-  color:var(--text);
-  border-radius:10px;
-  padding:10px 14px;
-  font-weight:650;
-  cursor:pointer
+  cursor:pointer;
 }
 
-button:disabled{
-  opacity:.55;
-  cursor:not-allowed
-}
-
-button.primary{
-  background:var(--accent);
+header{
+  background:var(--primary);
   color:#fff;
-  border-color:var(--accent)
+  padding:18px 16px;
+  position:sticky;
+  top:0;
+  z-index:20;
 }
 
-button.danger{
-  background:#9b3d3d;
-  color:#fff;
-  border-color:#9b3d3d
-}
-
-button.good{
-  background:var(--good);
-  color:#fff;
-  border-color:var(--good)
-}
-
-#app{
-  min-height:100vh;
-  background:var(--bg)
-}
-
-.wrap{
-  max-width:1180px;
+.header-inner{
+  max-width:1100px;
   margin:auto;
-  padding:28px 20px 50px
-}
-
-.top{
   display:flex;
   justify-content:space-between;
-  align-items:end;
-  gap:20px;
-  margin-bottom:24px
+  align-items:center;
+  gap:15px;
 }
 
-.eyebrow{
+.brand{
+  font-size:20px;
+  font-weight:700;
+}
+
+.header-user{
+  font-size:13px;
+  opacity:.8;
+  text-align:right;
+}
+
+.container{
+  max-width:1100px;
+  margin:0 auto;
+  padding:20px 14px 60px;
+}
+
+.login-box{
+  max-width:420px;
+  margin:60px auto;
+  background:var(--surface);
+  padding:25px;
+  border-radius:16px;
+  box-shadow:0 4px 20px rgba(0,0,0,.06);
+}
+
+h1,h2,h3{
+  margin-top:0;
+}
+
+input,select,textarea{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:11px 12px;
+  background:#fff;
+  color:var(--text);
+  outline:none;
+}
+
+input:focus,select:focus,textarea:focus{
+  border-color:#999;
+}
+
+label{
+  display:block;
+  font-size:13px;
+  font-weight:600;
+  margin-bottom:6px;
+}
+
+.field{
+  margin-bottom:14px;
+}
+
+.btn{
+  border:0;
+  border-radius:10px;
+  padding:10px 15px;
+  background:var(--primary);
+  color:#fff;
+  font-weight:600;
+}
+
+.btn:hover{
+  opacity:.9;
+}
+
+.btn.secondary{
+  background:var(--surface2);
+  color:var(--text);
+}
+
+.btn.success{
+  background:var(--success);
+}
+
+.btn.warning{
+  background:var(--warning);
+}
+
+.btn.danger{
+  background:var(--danger);
+}
+
+.btn.blue{
+  background:var(--blue);
+}
+
+.btn.small{
+  padding:7px 10px;
   font-size:12px;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  color:var(--accent2);
-  font-weight:700
 }
 
-.title{
-  font-size:30px;
-  font-weight:800;
-  margin:5px 0
+.btn:disabled{
+  opacity:.45;
+  cursor:not-allowed;
 }
 
-.sub{
-  color:var(--muted);
-  font-size:14px
-}
-
-.tabs{
+.toolbar{
   display:flex;
+  flex-wrap:wrap;
   gap:8px;
-  flex-wrap:wrap
+  margin-bottom:18px;
 }
 
-.tab.active{
-  background:var(--accent);
-  color:white;
-  border-color:var(--accent)
-}
-
-.cards{
+.stats{
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  gap:12px;
-  margin-bottom:18px
+  gap:10px;
+  margin-bottom:20px;
+}
+
+.stat{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:15px;
+}
+
+.stat-label{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.stat-value{
+  font-size:23px;
+  font-weight:700;
+  margin-top:5px;
 }
 
 .card{
   background:var(--surface);
   border:1px solid var(--line);
   border-radius:15px;
-  padding:17px
+  padding:16px;
+  margin-bottom:12px;
 }
 
-.label{
+.card-top{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  align-items:flex-start;
+}
+
+.product{
+  font-size:17px;
+  font-weight:700;
+}
+
+.meta{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.7;
+  margin-top:7px;
+}
+
+.badge{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:700;
+  background:var(--surface2);
+}
+
+.badge.success{
+  background:#e4f2e8;
+  color:var(--success);
+}
+
+.badge.warning{
+  background:#fff1d7;
+  color:#96610d;
+}
+
+.badge.danger{
+  background:#fae3e3;
+  color:var(--danger);
+}
+
+.badge.blue{
+  background:#e6edf9;
+  color:var(--blue);
+}
+
+.progress-wrap{
+  margin-top:13px;
+}
+
+.progress-info{
+  display:flex;
+  justify-content:space-between;
   font-size:12px;
-  color:var(--muted)
+  margin-bottom:6px;
+  color:var(--muted);
 }
 
-.num{
-  font-size:24px;
-  font-weight:800;
-  margin-top:6px
+.progress{
+  height:9px;
+  border-radius:20px;
+  background:#e8e4de;
+  overflow:hidden;
 }
 
-.money{
-  font-size:19px
+.progress-bar{
+  height:100%;
+  background:var(--primary);
+  border-radius:20px;
 }
 
-.panel{
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-top:14px;
+}
+
+.empty{
+  text-align:center;
+  color:var(--muted);
+  padding:40px 20px;
   background:var(--surface);
-  border:1px solid var(--line);
-  border-radius:15px;
-  padding:18px;
-  margin-bottom:18px
+  border:1px dashed var(--line);
+  border-radius:14px;
 }
 
-.panelhead{
+.section-title{
+  margin:25px 0 12px;
+  font-size:18px;
+}
+
+.hidden{
+  display:none!important;
+}
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  z-index:100;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+}
+
+.modal-box{
+  width:min(500px,100%);
+  background:#fff;
+  border-radius:16px;
+  padding:20px;
+  max-height:90vh;
+  overflow:auto;
+}
+
+.modal-head{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:12px;
-  margin-bottom:15px
+  gap:10px;
+  margin-bottom:15px;
 }
 
-.panel h2{
-  font-size:18px;
-  margin:0
+.close{
+  border:0;
+  background:transparent;
+  font-size:25px;
+  cursor:pointer;
 }
 
-.grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px
+.setor-box{
+  background:#f6f3ee;
+  border-radius:12px;
+  padding:14px;
+  margin-top:12px;
 }
 
-.field{
-  display:flex;
-  flex-direction:column;
-  gap:6px
+.big-progress{
+  font-size:22px;
+  font-weight:700;
+  margin:4px 0;
 }
 
-.field label{
-  font-size:12px;
+.table-wrap{
+  overflow:auto;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+}
+
+th,td{
+  border-bottom:1px solid var(--line);
+  padding:10px 7px;
+  text-align:left;
+  white-space:nowrap;
+}
+
+th{
   color:var(--muted);
-  font-weight:650
+  font-size:11px;
+  text-transform:uppercase;
 }
 
-.field input,
-.field select,
-.field textarea{
-  font:inherit;
-  padding:10px 11px;
-  border:1px solid var(--line);
-  border-radius:9px;
-  background:var(--surface);
-  color:var(--text);
-  width:100%
+.notice{
+  padding:12px 14px;
+  border-radius:10px;
+  background:#f4eee3;
+  font-size:13px;
+  margin-bottom:15px;
 }
 
-.field textarea{
-  min-height:42px
+.toast{
+  position:fixed;
+  right:15px;
+  bottom:15px;
+  background:#292621;
+  color:#fff;
+  padding:12px 16px;
+  border-radius:10px;
+  z-index:200;
+  max-width:330px;
+  box-shadow:0 5px 20px rgba(0,0,0,.2);
+}
+
+.toast.error{
+  background:var(--danger);
+}
+
+@media(max-width:750px){
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .card-top{
+    flex-direction:column;
+  }
+
+  .header-inner{
+    align-items:flex-start;
+  }
+
+  .header-user{
+    font-size:11px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header id="header" class="hidden">
+  <div class="header-inner">
+    <div>
+      <div class="brand">Garapan Penjahit Kimonik</div>
+      <div style="font-size:11px;opacity:.65;margin-top:3px">V33</div>
+    </div>
+
+    <div class="header-user">
+      <div id="userName">-</div>
+      <div id="userRole">-</div>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- LOGIN -->
+  <section id="loginPage">
+    <div class="login-box">
+      <h2>Garapan Penjahit Kimonik</h2>
+      <p style="color:var(--muted);font-size:13px">
+        Silakan masuk untuk mengakses garapan.
+      </p>
+
+      <div class="field">
+        <label>Email</label>
+        <input id="loginEmail" type="email" autocomplete="username">
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <input id="loginPassword" type="password" autocomplete="current-password">
+      </div>
+
+      <button class="btn" style="width:100%" onclick="login()">
+        Masuk
+      </button>
+
+      <div id="loginError"
+           style="color:var(--danger);font-size:13px;margin-top:12px"></div>
+    </div>
+  </section>
+
+
+  <!-- APP -->
+  <section id="appPage" class="hidden">
+
+    <div class="toolbar">
+      <button class="btn small" onclick="loadAll()">Refresh</button>
+      <button class="btn secondary small" onclick="logout()">Keluar</button>
+    </div>
+
+    <!-- ADMIN -->
+    <section id="adminPage" class="hidden">
+
+      <h2>Dashboard Admin</h2>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-label">Total Garapan</div>
+          <div class="stat-value" id="statGarapan">0</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">Total Order</div>
+          <div class="stat-value" id="statOrder">0</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">Sudah Selesai</div>
+          <div class="stat-value" id="statSelesai">0</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">Menunggu Approval</div>
+          <div class="stat-value" id="statPending">0</div>
+        </div>
+      </div>
+
+
+      <div class="card">
+        <h3>Tambah Garapan</h3>
+
+        <div class="field">
+          <label>Produk</label>
+          <input id="addProduk" placeholder="Contoh: Kemeja Tenun">
+        </div>
+
+        <div class="field">
+          <label>SKU</label>
+          <input id="addSku" placeholder="SKU">
+        </div>
+
+        <div class="field">
+          <label>Jumlah</label>
+          <input id="addJumlah" type="number" min="1">
+        </div>
+
+        <div class="field">
+          <label>Harga / pcs</label>
+          <input id="addHarga" type="number" min="0">
+        </div>
+
+        <div class="field">
+          <label>Nama Penjahit</label>
+          <input id="addPenjahit" placeholder="Nama penjahit">
+        </div>
+
+        <div class="field">
+          <label>User ID Penjahit</label>
+          <input id="addPenjahitUserId"
+                 placeholder="UUID user penjahit">
+        </div>
+
+        <div class="field">
+          <label>Tanggal Kirim</label>
+          <input id="addTanggal" type="date">
+        </div>
+
+        <div class="field">
+          <label>Target Selesai</label>
+          <input id="addTarget" type="date">
+        </div>
+
+        <div class="field">
+          <label>Catatan</label>
+          <textarea id="addCatatan" rows="3"></textarea>
+        </div>
+
+        <button class="btn" onclick="tambahGarapan()">
+          Tambah Garapan
+        </button>
+      </div>
+
+
+      <h3 class="section-title">Daftar Garapan</h3>
+      <div id="adminGarapan"></div>
+
+
+      <h3 class="section-title">Setoran Menunggu Approval</h3>
+      <div id="adminSetoran"></div>
+
+    </section>
+
+
+    <!-- PENJAHIT -->
+    <section id="penjahitPage" class="hidden">
+
+      <h2>Garapan Saya</h2>
+
+      <div class="notice">
+        Penjahit boleh setor sebagian. Contoh order 10 pcs:
+        bisa setor 5 pcs terlebih dahulu, kemudian sisanya setelah selesai.
+      </div>
+
+      <div id="penjahitGarapan"></div>
+
+      <h3 class="section-title">Riwayat Setoran</h3>
+      <div id="penjahitSetoran"></div>
+
+    </section>
+
+  </section>
+</main>
+
+
+<!-- MODAL SETOR -->
+<div id="setorModal" class="modal hidden">
+  <div class="modal-box">
+
+    <div class="modal-head">
+      <h3 style="margin:0">Setor Garapan</h3>
+      <button class="close" onclick="closeSetorModal()">×</button>
+    </div>
+
+    <div id="setorInfo"></div>
+
+    <div class="setor-box">
+
+      <div style="font-size:13px;color:var(--muted)">
+        Jumlah yang bisa disetor
+      </div>
+
+      <div class="big-progress">
+        <span id="setorAvailable">0</span> pcs
+      </div>
+
+      <div style="font-size:12px;color:var(--muted)">
+        Tidak termasuk setoran yang masih menunggu approval.
+      </div>
+
+    </div>
+
+    <div class="field" style="margin-top:15px">
+      <label>Jumlah yang disetor</label>
+      <input id="setorJumlah"
+             type="number"
+             min="1"
+             value="1">
+    </div>
+
+    <button class="btn success"
+            style="width:100%"
+            onclick="submitSetoran()">
+      Ajukan Approval
+    </button>
+
+  </div>
+</div>
+
+
+<!-- MODAL EDIT -->
+<div id="editModal" class="modal hidden">
+  <div class="modal-box">
+
+    <div class="modal-head">
+      <h3 style="margin:0">Edit Garapan</h3>
+      <button class="close" onclick="closeEditModal()">×</button>
+    </div>
+
+    <input type="hidden" id="editId">
+
+    <div class="field">
+      <label>Produk</label>
+      <input id="editProduk">
+    </div>
+
+    <div class="field">
+      <label>SKU</label>
+      <input id="editSku">
+    </div>
+
+    <div class="field">
+      <label>Jumlah Order</label>
+      <input id="editJumlah" type="number" min="1">
+    </div>
+
+    <div class="field">
+      <label>Harga / pcs</label>
+      <input id="editHarga" type="number" min="0">
+    </div>
+
+    <div class="field">
+      <label>Nama Penjahit</label>
+      <input id="editPenjahit">
+    </div>
+
+    <div class="field">
+      <label>User ID Penjahit</label>
+      <input id="editPenjahitUserId">
+    </div>
+
+    <div class="field">
+      <label>Tanggal Kirim</label>
+      <input id="editTanggal" type="date">
+    </div>
+
+    <div class="field">
+      <label>Target Selesai</label>
+      <input id="editTarget" type="date">
+    </div>
+
+    <div class="field">
+      <label>Catatan</label>
+      <textarea id="editCatatan" rows="3"></textarea>
+    </div>
+
+    <button class="btn" style="width:100%" onclick="simpanEdit()">
+      Simpan Perubahan
+    </button>
+
+  </div>
+</div>
+
+
+<div id="toast" class="toast hidden"></div>
+
+
+<script>
+
+const SUPABASE_URL =
+  "https://ilxahxzrtzpzhnlskfns.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_eetxbGhYGFLhJdXhiU2W0A_qG63dTyU";
+
+const supabaseClient =
+  supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+
+let currentUser = null;
+let currentProfile = null;
+
+let garapanList = [];
+let setoranList = [];
+
+let selectedSetorGarapan = null;
+
+
+/* =========================
+   UTIL
+========================= */
+
+function esc(value){
+  if(value === null || value === undefined){
+    return "";
+  }
+
+  return String(value)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+
+function rupiah(value){
+  return new Intl.NumberFormat("id-ID",{
+    style:"currency",
+    currency:"IDR",
+    maximumFractionDigits:0
+  }).format(Number(value || 0));
+}
+
+
+function dateID(value){
+  if(!value) return "-";
+
+  try{
+    return new Date(value).toLocaleDateString(
+      "id-ID",
+      {
+        day:"2-digit",
+        month:"2-digit",
+        year:"numeric"
+      }
+    );
+  }catch(e){
+    return value;
+  }
+}
+
+
+function showToast(message,error=false){
+
+  const el =
+    document.getElementById("toast");
+
+  el.textContent = message;
+
+  el.classList.remove("hidden");
+
+  if(error){
+    el.classList.add("error");
+  }else{
+    el.classList.remove("error");
+  }
+
+  setTimeout(()=>{
+    el.classList.add("hidden");
+  },3500);
+}
+
+
+function statusBadge(status){
+
+  let cls="";
+
+  if(status==="Selesai"){
+    cls="success";
+  }
+  else if(status==="Diproses"){
+    cls="blue";
+  }
+  else if(status==="Menunggu"){
+    cls="warning";
+  }
+  else if(status==="Ditolak"){
+    cls="danger";
+  }
+
+  return `<span class="badge ${cls}">
+    ${esc(status || "-")}
+  </span>`;
+}
+
+
+/* =========================
+   LOGIN
+========================= */
+
+async function login(){
+
+  const email =
+    document.getElementById("loginEmail").value.trim();
+
+  const password =
+    document.getElementById("loginPassword").value;
+
+  document.getElementById("loginError").textContent="";
+
+  if(!email || !password){
+    document.getElementById("loginError").textContent =
+      "Email dan password wajib diisi.";
+    return;
+  }
+
+  const {data,error} =
+    await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
+
+  if(error){
+    document.getElementById("loginError").textContent =
+      error.message;
+    return;
+  }
+
+  currentUser = data.user;
+
+  await loadProfile();
+
+}
+
+
+async function logout(){
+
+  await supabaseClient.auth.signOut();
+
+  currentUser=null;
+  currentProfile=null;
+
+  document.getElementById("appPage")
+    .classList.add("hidden");
+
+  document.getElementById("header")
+    .classList.add("hidden");
+
+  document.getElementById("loginPage")
+    .classList.remove("hidden");
+}
+
+
+/* =========================
+   PROFILE
+========================= */
+
+async function loadProfile(){
+
+  if(!currentUser){
+    return;
+  }
+
+  const {data,error} =
+    await supabaseClient
+      .from("profiles")
+      .select("*")
+      .eq("id",currentUser.id)
+      .single();
+
+  if(error){
+
+    console.error(error);
+
+    showToast(
+      "Profil tidak ditemukan. Pastikan tabel profiles memiliki data user.",
+      true
+    );
+
+    return;
+  }
+
+  currentProfile=data;
+
+  document.getElementById("loginPage")
+    .classList.add("hidden");
+
+  document.getElementById("appPage")
+    .classList.remove("hidden");
+
+  document.getElementById("header")
+    .classList.remove("hidden");
+
+  document.getElementById("userName").textContent =
+    data.nama || data.name || currentUser.email;
+
+  document.getElementById("userRole").textContent =
+    data.role || "-";
+
+  if(data.role==="admin"){
+
+    document.getElementById("adminPage")
+      .classList.remove("hidden");
+
+    document.getElementById("penjahitPage")
+      .classList.add("hidden");
+
+  }else{
+
+    document.getElementById("adminPage")
+      .classList.add("hidden");
+
+    document.getElementById("penjahitPage")
+      .classList.remove("hidden");
+  }
+
+  await loadAll();
+}
+
+
+/* =========================
+   LOAD DATA
+========================= */
+
+async function loadAll(){
+
+  if(!currentProfile){
+    return;
+  }
+
+  await loadGarapan();
+  await loadSetoran();
+
+  renderAll();
+}
+
+
+async function loadGarapan(){
+
+  let query =
+    supabaseClient
+      .from("garapan_penjahit")
+      .select("*")
+      .order("created_at",{ascending:false});
+
+  if(currentProfile.role==="penjahit"){
+
+    query =
+      query.eq(
+        "penjahit_user_id",
+        currentUser.id
+      );
+  }
+
+  const {data,error}=await query;
+
+  if(error){
+
+    console.error(error);
+
+    showToast(
+      "Gagal mengambil data garapan: "+error.message,
+      true
+    );
+
+    garapanList=[];
+
+    return;
+  }
+
+  garapanList=data || [];
+}
+
+
+async function loadSetoran(){
+
+  let query =
+    supabaseClient
+      .from("garapan_setoran")
+      .select("*")
+      .order("created_at",{ascending:false});
+
+  if(currentProfile.role==="penjahit"){
+
+    query =
+      query.eq(
+        "user_id",
+        currentUser.id
+      );
+  }
+
+  const {data,error}=await query;
+
+  if(error){
+
+    console.error(error);
+
+    showToast(
+      "Gagal mengambil data setoran: "+error.message,
+      true
+    );
+
+    setoranList=[];
+
+    return;
+  }
+
+  setoranList=data || [];
+}
+
+
+/* =========================
+   RENDER
+========================= */
+
+function renderAll(){
+
+  if(currentProfile.role==="admin"){
+
+    renderAdminGarapan();
+    renderAdminSetoran();
+    renderAdminStats();
+
+  }else{
+
+    renderPenjahitGarapan();
+    renderPenjahitSetoran();
+  }
+}
+
+
+/* =========================
+   ADMIN STATS
+========================= */
+
+function renderAdminStats(){
+
+  const totalGarapan =
+    garapanList.length;
+
+  const totalOrder =
+    garapanList.reduce(
+      (a,x)=>a+Number(x.jumlah||0),
+      0
+    );
+
+  const totalSelesai =
+    garapanList.reduce(
+      (a,x)=>a+Number(x.jumlah_selesai||0),
+      0
+    );
+
+  const pending =
+    setoranList.filter(
+      x=>x.status==="Menunggu"
+    ).length;
+
+  document.getElementById("statGarapan")
+    .textContent=totalGarapan;
+
+  document.getElementById("statOrder")
+    .textContent=totalOrder;
+
+  document.getElementById("statSelesai")
+    .textContent=totalSelesai;
+
+  document.getElementById("statPending")
+    .textContent=pending;
+}
+
+
+/* =========================
+   ADMIN GARAPAN
+========================= */
+
+function renderAdminGarapan(){
+
+  const el =
+    document.getElementById("adminGarapan");
+
+  if(!garapanList.length){
+
+    el.innerHTML=
+      `<div class="empty">
+        Belum ada garapan.
+      </div>`;
+
+    return;
+  }
+
+  el.innerHTML =
+    garapanList.map(x=>{
+
+      const jumlah =
+        Number(x.jumlah||0);
+
+      const selesai =
+        Number(x.jumlah_selesai||0);
+
+      const percent =
+        jumlah>0
+          ? Math.min(100,(selesai/jumlah)*100)
+          : 0;
+
+      const pending =
+        getPendingQty(x.id);
+
+      const sisa =
+        Math.max(
+          0,
+          jumlah-selesai-pending
+        );
+
+      return `
+      <div class="card">
+
+        <div class="card-top">
+
+          <div>
+            <div class="product">
+              ${esc(x.produk || "Tanpa Nama")}
+            </div>
+
+            <div class="meta">
+              SKU: ${esc(x.sku || "-")}<br>
+              Penjahit: ${esc(x.penjahit || "-")}<br>
+              Harga: ${rupiah(x.harga_per_pcs)} / pcs<br>
+              Kirim: ${dateID(x.tanggal_kirim)}<br>
+              Target: ${dateID(x.target_selesai)}
+            </div>
+          </div>
+
+          <div>
+            ${statusBadge(x.status)}
+          </div>
+
+        </div>
+
+        <div class="progress-wrap">
+
+          <div class="progress-info">
+            <span>Progress</span>
+            <strong>
+              ${selesai} / ${jumlah} pcs
+            </strong>
+          </div>
+
+          <div class="progress">
+            <div class="progress-bar"
+                 style="width:${percent}%"></div>
+          </div>
+
+        </div>
+
+        <div class="meta" style="margin-top:10px">
+
+          Sudah disetujui:
+          <strong>${selesai} pcs</strong>
+          &nbsp;·&nbsp;
+
+          Menunggu approval:
+          <strong>${pending} pcs</strong>
+          &nbsp;·&nbsp;
+
+          Sisa yang belum disetor:
+          <strong>${sisa} pcs</strong>
+
+        </div>
+
+        ${
+          x.catatan
+          ? `
+            <div class="notice" style="margin-top:12px">
+              ${esc(x.catatan)}
+            </div>
+          `
+          : ""
+        }
+
+        <div class="actions">
+
+          <button class="btn secondary small"
+            onclick="openEdit('${x.id}')">
+            Edit
+          </button>
+
+          ${
+            selesai < jumlah
+            ? `
+              <button class="btn blue small"
+                onclick="adminSetStatus('${x.id}')">
+                Update Status
+              </button>
+            `
+            : ""
+          }
+
+          <button class="btn danger small"
+            onclick="hapusGarapan('${x.id}')">
+            Hapus
+          </button>
+
+        </div>
+
+      </div>
+      `;
+
+    }).join("");
+}
+
+
+/* =========================
+   ADMIN SETORAN
+========================= */
+
+function renderAdminSetoran(){
+
+  const el =
+    document.getElementById("adminSetoran");
+
+  const pending =
+    setoranList.filter(
+      x=>x.status==="Menunggu"
+    );
+
+  if(!pending.length){
+
+    el.innerHTML =
+      `<div class="empty">
+        Tidak ada setoran yang menunggu approval.
+      </div>`;
+
+    return;
+  }
+
+  el.innerHTML =
+    pending.map(s=>{
+
+      const g =
+        garapanList.find(
+          x=>String(x.id)===String(s.garapan_id)
+        );
+
+      const jumlahDiajukan =
+        Number(s.jumlah_diajukan||0);
+
+      const jumlahOrder =
+        Number(g?.jumlah||0);
+
+      const jumlahSelesai =
+        Number(g?.jumlah_selesai||0);
+
+      const masihBisa =
+        jumlahOrder-jumlahSelesai;
+
+      return `
+      <div class="card">
+
+        <div class="card-top">
+
+          <div>
+
+            <div class="product">
+              ${esc(g?.produk || "Garapan")}
+            </div>
+
+            <div class="meta">
+              Penjahit:
+              <strong>
+                ${esc(g?.penjahit || "-")}
+              </strong>
+              <br>
+
+              Order awal:
+              ${jumlahOrder} pcs
+              <br>
+
+              Sudah disetujui:
+              ${jumlahSelesai} pcs
+              <br>
+
+              Diajukan sekarang:
+              <strong>
+                ${jumlahDiajukan} pcs
+              </strong>
+              <br>
+
+              Sisa order:
+              ${Math.max(0,masihBisa)} pcs
+            </div>
+
+          </div>
+
+          <div>
+            ${statusBadge(s.status)}
+          </div>
+
+        </div>
+
+        <div class="actions">
+
+          <button class="btn success"
+            onclick="approveSetoran('${s.id}')">
+            Approve ${jumlahDiajukan} pcs
+          </button>
+
+          <button class="btn danger small"
+            onclick="rejectSetoran('${s.id}')">
+            Tolak
+          </button>
+
+        </div>
+
+      </div>
+      `;
+
+    }).join("");
+}
+
+
+/* =========================
+   PENJAHIT GARAPAN
+========================= */
+
+function renderPenjahitGarapan(){
+
+  const el =
+    document.getElementById("penjahitGarapan");
+
+  if(!garapanList.length){
+
+    el.innerHTML =
+      `<div class="empty">
+        Belum ada garapan yang diberikan.
+      </div>`;
+
+    return;
+  }
+
+  el.innerHTML =
+    garapanList.map(x=>{
+
+      const jumlah =
+        Number(x.jumlah||0);
+
+      const selesai =
+        Number(x.jumlah_selesai||0);
+
+      const pending =
+        getPendingQty(x.id);
+
+      /*
+       * INI BAGIAN UTAMA V33
+       *
+       * Order 10
+       * Sudah approve 5
+       * Pending 0
+       * Available = 5
+       *
+       * Kalau sudah ada pending 3:
+       * Available = 2
+       */
+
+      const available =
+        Math.max(
+          0,
+          jumlah-selesai-pending
+        );
+
+      const percent =
+        jumlah>0
+          ? Math.min(100,(selesai/jumlah)*100)
+          : 0;
+
+      return `
+      <div class="card">
+
+        <div class="card-top">
+
+          <div>
+
+            <div class="product">
+              ${esc(x.produk || "Tanpa Nama")}
+            </div>
+
+            <div class="meta">
+              SKU: ${esc(x.sku || "-")}<br>
+              Harga: ${rupiah(x.harga_per_pcs)} / pcs<br>
+              Target: ${dateID(x.target_selesai)}
+            </div>
+
+          </div>
+
+          <div>
+            ${statusBadge(x.status)}
+          </div>
+
+        </div>
+
+
+        <div class="progress-wrap">
+
+          <div class="progress-info">
+
+            <span>Progress</span>
+
+            <strong>
+              ${selesai} / ${jumlah} pcs
+            </strong>
+
+          </div>
+
+          <div class="progress">
+            <div class="progress-bar"
+                 style="width:${percent}%"></div>
+          </div>
+
+        </div>
+
+
+        <div class="meta">
+
+          Sudah disetujui:
+          <strong>${selesai} pcs</strong>
+          <br>
+
+          Sedang menunggu approval:
+          <strong>${pending} pcs</strong>
+          <br>
+
+          Masih bisa disetor:
+          <strong>${available} pcs</strong>
+
+        </div>
+
+
+        <div class="actions">
+
+          ${
+            available > 0
+            ? `
+              <button class="btn success"
+                onclick="openSetorModal('${x.id}')">
+                Setor / Ajukan Approval
+              </button>
+            `
+            : pending > 0
+            ? `
+              <button class="btn secondary" disabled>
+                Menunggu Approval ${pending} pcs
+              </button>
+            `
+            : `
+              <button class="btn secondary" disabled>
+                Sudah Selesai
+              </button>
+            `
+          }
+
+        </div>
+
+      </div>
+      `;
+
+    }).join("");
+}
+
+
+/* =========================
+   PENJAHIT RIWAYAT SETORAN
+========================= */
+
+function renderPenjahitSetoran(){
+
+  const el =
+    document.getElementById("penjahitSetoran");
+
+  if(!setoranList.length){
+
+    el.innerHTML =
+      `<div class="empty">
+        Belum ada riwayat setoran.
+      </div>`;
+
+    return;
+  }
+
+  el.innerHTML = `
+
+    <div class="card">
+
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+            <tr>
+              <th>Produk</th>
+              <th>Jumlah</th>
+              <th>Status</th>
+              <th>Tanggal</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            ${
+              setoranList.map(s=>{
+
+                const g =
+                  garapanList.find(
+                    x=>String(x.id)===String(s.garapan_id)
+                  );
+
+                return `
+                <tr>
+
+                  <td>
+                    ${esc(g?.produk || "-")}
+                  </td>
+
+                  <td>
+                    ${Number(s.jumlah_diajukan||0)} pcs
+                  </td>
+
+                  <td>
+                    ${statusBadge(s.status)}
+                  </td>
+
+                  <td>
+                    ${dateID(s.created_at)}
+                  </td>
+
+                </tr>
+                `;
+
+              }).join("")
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  `;
+}
+
+
+/* =========================
+   PENDING QTY
+========================= */
+
+function getPendingQty(garapanId){
+
+  return setoranList
+    .filter(s =>
+      String(s.garapan_id)===String(garapanId)
+      &&
+      s.status==="Menunggu"
+    )
+    .reduce(
+      (total,s)=>
+        total+Number(s.jumlah_diajukan||0),
+      0
+    );
+}
+
+
+/* =========================
+   MODAL SETOR
+========================= */
+
+function openSetorModal(id){
+
+  const g =
+    garapanList.find(
+      x=>String(x.id)===String(id)
+    );
+
+  if(!g){
+    showToast(
+      "Garapan tidak ditemukan.",
+      true
+    );
+    return;
+  }
+
+  const jumlah =
+    Number(g.jumlah||0);
+
+  const selesai =
+    Number(g.jumlah_selesai||0);
+
+  const pending =
+    getPendingQty(g.id);
+
+  /*
+   * JUMLAH MAKSIMAL YANG BOLEH DIAJUKAN
+   */
+
+  const available =
+    Math.max(
+      0,
+      jumlah-selesai-pending
+    );
+
+  if(available<=0){
+
+    showToast(
+      "Tidak ada jumlah yang bisa disetor saat ini.",
+      true
+    );
+
+    return;
+  }
+
+  selectedSetorGarapan=g;
+
+  document.getElementById("setorInfo").innerHTML = `
+
+    <div>
+      <strong>${esc(g.produk || "-")}</strong>
+    </div>
+
+    <div class="meta">
+      Order awal:
+      <strong>${jumlah} pcs</strong>
+      <br>
+
+      Sudah disetujui:
+      <strong>${selesai} pcs</strong>
+      <br>
+
+      Menunggu approval:
+      <strong>${pending} pcs</strong>
+      <br>
+
+      Sisa yang bisa diajukan:
+      <strong>${available} pcs</strong>
+    </div>
+
+  `;
+
+  document.getElementById("setorAvailable")
+    .textContent=available;
+
+  const input =
+    document.getElementById("setorJumlah");
+
+  input.value=available;
+  input.min=1;
+  input.max=available;
+
+  document.getElementById("setorModal")
+    .classList.remove("hidden");
+}
+
+
+function closeSetorModal(){
+
+  document.getElementById("setorModal")
+    .classList.add("hidden");
+
+  selectedSetorGarapan=null;
+}
+
+
+/* =========================
+   SUBMIT SETORAN
+========================= */
+
+async function submitSetoran(){
+
+  if(!selectedSetorGarapan){
+    return;
+  }
+
+  const g =
+    selectedSetorGarapan;
+
+  const input =
+    document.getElementById("setorJumlah");
+
+  const qty =
+    Number(input.value);
+
+  /*
+   * CEK ULANG DATA TERBARU
+   * Supaya tidak bisa setor lebih dari sisa.
+   */
+
+  const {data:fresh,error:freshError} =
+    await supabaseClient
+      .from("garapan_penjahit")
+      .select("*")
+      .eq("id",g.id)
+      .single();
+
+  if(freshError){
+
+    showToast(
+      "Gagal mengecek garapan terbaru: "+
+      freshError.message,
+      true
+    );
+
+    return;
+  }
+
+  const {data:pendingData,error:pendingError} =
+    await supabaseClient
+      .from("garapan_setoran")
+      .select("jumlah_diajukan")
+      .eq("garapan_id",g.id)
+      .eq("status","Menunggu");
+
+  if(pendingError){
+
+    showToast(
+      "Gagal mengecek setoran sebelumnya: "+
+      pendingError.message,
+      true
+    );
+
+    return;
+  }
+
+  const pending =
+    (pendingData || [])
+      .reduce(
+        (a,x)=>
+          a+Number(x.jumlah_diajukan||0),
+        0
+      );
+
+  const selesai =
+    Number(fresh.jumlah_selesai||0);
+
+  const jumlah =
+    Number(fresh.jumlah||0);
+
+  const available =
+    Math.max(
+      0,
+      jumlah-selesai-pending
+    );
+
+
+  /*
+   * VALIDASI PALING PENTING V33
+   */
+
+  if(!Number.isInteger(qty) || qty<1){
+
+    showToast(
+      "Jumlah setor harus minimal 1 pcs.",
+      true
+    );
+
+    return;
+  }
+
+  if(qty>available){
+
+    showToast(
+      "Jumlah terlalu banyak. Maksimal "+
+      available+
+      " pcs.",
+      true
+    );
+
+    return;
+  }
+
+
+  const {error} =
+    await supabaseClient
+      .from("garapan_setoran")
+      .insert({
+
+        garapan_id:g.id,
+
+        user_id:currentUser.id,
+
+        jumlah_diajukan:qty,
+
+        status:"Menunggu"
+
+      });
+
+
+  if(error){
+
+    console.error(error);
+
+    showToast(
+      "Gagal mengajukan setoran: "+
+      error.message,
+      true
+    );
+
+    return;
+  }
+
+  closeSetorModal();
+
+  showToast(
+    "Setoran "+qty+" pcs berhasil diajukan."
+  );
+
+  await loadAll();
+}
+
+
+/* =========================
+   APPROVE SETORAN
+========================= */
+
+async function approveSetoran(id){
+
+  const {data:s,error:sError} =
+    await supabaseClient
+      .from("garapan_setoran")
+      .select("*")
+      .eq("id",id)
+      .single();
+
+  if(sError){
+
+    showToast(
+      "Setoran tidak ditemukan.",
+      true
+    );
+
+    return;
+  }
+
+  if(s.status!=="Menunggu"){
+
+    showToast(
+      "Setoran ini sudah diproses.",
+      true
+    );
+
+    return;
+  }
+
+
+  const {data:g,error:gError} =
+    await supabaseClient
+      .from("garapan_penjahit")
+      .select("*")
+      .eq("id",s.garapan_id)
+      .single();
+
+  if(gError){
+
+    showToast(
+      "Garapan tidak ditemukan.",
+      true
+    );
+
+    return;
+  }
+
+
+  const qty =
+    Number(s.jumlah_diajukan||0);
+
+  const current =
+    Number(g.jumlah_selesai||0);
+
+  const jumlahOrder =
+    Number(g.jumlah||0);
+
+  /*
+   * JANGAN PERNAH APPROVE
+   * MELEBIHI ORDER AWAL
+   */
+
+  if(qty<=0){
+
+    showToast(
+      "Jumlah setoran tidak valid.",
+      true
+    );
+
+    return;
+  }
+
+  if(current+qty>jumlahOrder){
+
+    showToast(
+      "Approval dibatalkan. Jumlah akan melebihi order awal.",
+      true
+    );
+
+    return;
+  }
+
+
+  const total =
+    current+qty;
+
+
+  /*
+   * UPDATE PROGRESS
+   */
+
+  const newStatus =
+    total>=jumlahOrder
+      ? "Selesai"
+      : "Diproses";
+
+
+  const {error:updateError} =
+    await supabaseClient
+      .from("garapan_penjahit")
+      .update({
+
+        jumlah_selesai:total,
+
+        status:newStatus,
+
+        updated_at:new Date().toISOString()
+
+      })
+      .eq("id",g.id);
+
+
+  if(updateError){
+
+    showToast(
+      "Gagal update progress: "+
+      updateError.message,
+      true
+    );
+
+    return;
+  }
+
+
+  /*
+   * SIMPAN RIWAYAT PROGRESS
+   */
+
+  const {error:progressError} =
+    await supabaseClient
+      .from("garapan_progress")
+      .insert({
+
+        garapan_id:g.id,
+
+        tambahan_selesai:qty
+
+      });
+
+
+  if(progressError){
+
+    console.warn(
+      "Progress berhasil tetapi riwayat gagal:",
+      progressError
+    );
+  }
+
+
+  /*
+   * BARU SETELAH PROGRESS BERHASIL,
+   * SETORAN DIUBAH MENJADI DISETUJUI
+   */
+
+  const {error:approvalError} =
+    await supabaseClient
+      .from("garapan_setoran")
+      .update({
+
+        status:"Disetujui",
+
+        approved_by:currentUser.id,
+
+        approved_at:new Date().toISOString()
+
+      })
+      .eq("id",id)
+      .eq("status","Menunggu");
+
+
+  if(approvalError){
+
+    showToast(
+      "Progress berubah tetapi approval gagal: "+
+      approvalError.message,
+      true
+    );
+
+    await loadAll();
+
+    return;
+  }
+
+
+  showToast(
+    "Approval "+qty+" pcs berhasil."
+  );
+
+  await loadAll();
+}
+
+
+/* =========================
+   REJECT SETORAN
+========================= */
+
+async function rejectSetoran(id){
+
+  const alasan =
+    prompt(
+      "Alasan penolakan (opsional):"
+    );
+
+  const {error} =
+    await supabaseClient
+      .from("garapan_setoran")
+      .update({
+
+        status:"Ditolak"
+
+      })
+      .eq("id",id)
+      .eq("status","Menunggu");
+
+  if(error){
+
+    showToast(
+      "Gagal menolak setoran: "+
+      error.message,
+      true
+    );
+
+    return;
+  }
+
+  showToast(
+    "Setoran ditolak."
+  );
+
+  await loadAll();
+}
+
+
+/* =========================
+   TAMBAH GARAPAN
+========================= */
+
+async function tambahGarapan(){
+
+  const produk =
+    document.getElementById("addProduk").value.trim();
+
+  const sku =
+    document.getElementById("addSku").value.trim();
+
+  const jumlah =
+    Number(
+      document.getElementById("addJumlah").value
+    );
+
+  const harga =
+    Number(
+      document.getElementById("addHarga").value
+    );
+
+  const penjahit =
+    document.getElementById("addPenjahit").value.trim();
+
+  const penjahitUserId =
+    document.getElementById("addPenjahitUserId").value.trim();
+
+  const tanggal =
+    document.getElementById("addTanggal").value || null;
+
+  const target =
+    document.getElementById("addTarget").value || null;
+
+  const catatan =
+    document.getElementById("addCatatan").value.trim();
+
+
+  if(!produk){
+
+    showToast(
+      "Produk wajib diisi.",
+      true
+    );
+
+    return;
+  }
+
+  if(!Number.isInteger(jumlah) || jumlah<1){
+
+    showToast(
+      "Jumlah harus minimal 1.",
+      true
+    );
+
+    return;
+  }
+
+
+  const {error} =
+    await supabaseClient
+      .from("garapan_penjahit")
+      .insert({
+
+        produk:produk,
+
+        sku:sku || null,
+
+        jumlah:jumlah,
+
+        harga_per_pcs:harga || 0,
+
+        penjahit:penjahit || null,
+
+        penjahit_user_id:
+          penjahitUserId || null,
+
+        tanggal_kirim:
+          tanggal,
+
+        target_selesai:
+          target,
+
+        status:"Dikirim",
+
+        catatan:
+          catatan || null,
+
+        jumlah_selesai:0
+
+      });
+
+
+  if(error){
+
+    console.error(error);
+
+    showToast(
+      "Gagal menambah garapan: "+
+      error.message,
+      true
+    );
+
+    return;
+  }
+
+
+  [
+    "addProduk",
+    "addSku",
+    "addJumlah",
+    "addHarga",
+    "addPenjahit",
+    "addPenjahitUserId",
+    "addTanggal",
+    "addTarget",
+    "addCatatan"
+  ].forEach(id=>{
+    document.getElementById(id).value="";
+  });
+
+
+  showToast(
+    "Garapan berhasil ditambahkan."
+  );
+
+  await loadAll();
+}
+
+
+/* =========================
+   EDIT GARAPAN
+========================= */
+
+function openEdit(id){
+
+  const x =
+    garapanList.find(
+      g=>String(g.id)===String(id)
+    );
+
+  if(!x){
+    return;
+  }
+
+  document.getElementById("editId").value=x.id;
+
+  document.getElementById("editProduk").value=
+    x.produk || "";
+
+  document.getElementById("editSku").value=
+    x.sku || "";
+
+  document.getElementById("editJumlah").value=
+    x.jumlah || "";
+
+  document.getElementById("editHarga").value=
+    x.harga_per_pcs || "";
+
+  document.getElementById("editPenjahit").value=
+    x.penjahit || "";
+
+  document.getElementById("editPenjahitUserId").value=
+    x.penjahit_user_id || "";
+
+  document.getElementById("editTanggal").value=
+    x.tanggal_kirim || "";
+
+  document.getElementById("editTarget").value=
+    x.target_selesai || "";
+
+  document.getElementById("editCatatan").value=
+    x.catatan || "";
+
+  document.getElementById("editModal")
+    .classList.remove("hidden");
+}
+
+
+function closeEditModal(){
+
+  document.getElementById("editModal")
+    .classList.add("hidden");
+}
+
+
+async function simpanEdit(){
+
+  const id =
+    document.getElementById("editId").value;
+
+  const produk =
+    document.getElementById("editProduk").value.trim();
+
+  const sku =
+    document.getElementById("editSku").value.trim();
+
+  const jumlah =
+    Number(
+      document.getElementById("editJumlah").value
+    );
+
+  const harga =
+    Number(
+      document.getElementById("editHarga").value
+    );
+
+  const penjahit =
+    document.getElementById("editPenjahit").value.trim();
+
+  const penjahitUserId =
+    document
+      .getElementById("editPenjahitUserId")
+      .value.trim();
+
+  const tanggal =
+    document.getElementById("editTanggal").value || null;
+
+  const target =
+    document.getElementById("editTarget").value || null;
+
+  const catatan =
+    document.getElementById("editCatatan").value.trim();
+
+
+  const existing =
+    garapanList.find(
+      x=>String(x.id)===String(id)
+    );
+
+  const selesai =
+    Number(existing?.jumlah_selesai||0);
+
+
+  if(jumlah<selesai){
+
+    showToast(
+      "Jumlah order tidak boleh lebih kecil dari jumlah yang sudah selesai.",
+      true
+    );
+
+    return;
+  }
+
+
+  const {error} =
+    await supabaseClient
+      .from("garapan_penjahit")
+      .update({
+
+        produk,
+
+        sku:sku || null,
+
+        jumlah,
+
+        harga_per_pcs:harga || 0,
+
+        penjahit:
+          penjahit || null,
+
+        penjahit_user_id:
+          penjahitUserId || null,
+
+        tanggal_kirim:
+          tanggal,
+
+        target_selesai:
+          target,
+
+        catatan:
+          catatan || null,
+
+        updated_at:
+          new Date().toISOString()
+
+      })
+      .eq("id",id);
+
+
+  if(error){
+
+    showToast(
+      "Gagal menyimpan perubahan: "+
+      error.message,
+      true
+    );
+
+    return;
+  }
+
+
+  closeEditModal();
+
+  showToast(
+    "Garapan berhasil diperbarui."
+  );
+
+  await loadAll();
+}
+
+
+/* =========================
+   UPDATE STATUS ADMIN
+========================= */
+
+async function adminSetStatus(id){
+
+  const x =
+    garapanList.find(
+      g=>String(g.id)===String(id)
+    );
+
+  if(!x){
+    return;
+  }
+
+  const status =
+    prompt(
+      "Masukkan status:\n\nDikirim\nDiproses\nSelesai",
+      x.status || "Diproses"
+    );
+
+  if(!status){
+    return;
+  }
+
+
+  if(status==="Selesai"){
+
+    const yakin =
+      confirm(
+        "Set status Selesai berarti jumlah selesai akan menjadi "+
+        x.jumlah+
+        " pcs. Lanjut?"
+      );
+
+    if(!yakin){
+      return;
+    }
+
+    await updateProgressDb(
+      id,
+      Number(x.jumlah)
+    );
+
+    return;
+  }
+
+
+  const {error} =
+    await supabaseClient
+      .from("garapan_penjahit")
+      .update({
+
+        status:status,
+
+        updated_at:
+          new Date().toISOString()
+
+      })
+      .eq("id",id);
+
+
+  if(error){
+
+    showToast(
+      "Gagal update status: "+
+      error.message,
+      true
+    );
+
+    return;
+  }
+
+  showToast(
+    "Status berhasil diperbarui."
+  );
+
+  await loadAll();
+}
+
+
+/* =========================
+   UPDATE PROGRESS ADMIN
+========================= */
+
+async function updateProgressDb(id,value){
+
+  const x =
+    garapanList.find(
+      g=>String(g.id)===String(id)
+    );
+
+  if(!x){
+    return;
+  }
+
+  const jumlah =
+    Number(x.jumlah||0);
+
+  const old =
+    Number(x.jumlah_selesai||0);
+
+  let v =
+    Number(value);
+
+  v =
+    Math.max(
+      0,
+      Math.min(v,jumlah)
+    );
+
+
+  let status="Diproses";
+
+  if(v===0){
+    status="Dikirim";
+  }
+
+  if(v>=jumlah){
+    status="Selesai";
+  }
+
+
+  const {error} =
+    await supabaseClient
+      .from("garapan_penjahit")
+      .update({
+
+        jumlah_selesai:v,
+
+        status:status,
+
+        updated_at:
+          new Date().toISOString()
+
+      })
+      .eq("id",id);
+
+
+  if(error){
+
+    showToast(
+      "Gagal update progress: "+
+      error.message,
+      true
+    );
+
+    return;
+  }
+
+
+  if(v>old){
+
+    await supabaseClient
+      .from("garapan_progress")
+      .insert({
+
+        garapan_id:id,
+
+        tambahan_selesai:
+          v-old
+
+      });
+  }
+
+
+  showToast(
+    "Progress berhasil diperbarui."
+  );
+
+  await loadAll();
+}
+
+
+/* =========================
+   HAPUS GARAPAN
+========================= */
+
+async function hapusGarapan(id){
+
+  const yakin =
+    confirm(
+      "Yakin ingin menghapus garapan ini?"
+    );
+
+  if(!yakin){
+    return;
+  }
+
+
+  /*
+   * Hapus progress dulu
+   */
+
+  await supabaseClient
+    .from("garapan_progress")
+    .delete()
+    .eq("garapan_id",id);
+
+
+  /*
+   * Hapus setoran
+   */
+
+  await supabaseClient
+    .from("garapan_setoran")
+    .delete()
+    .eq("garapan_id",id);
+
+
+  const {error} =
+    await supabaseClient
+      .from("garapan_penjahit")
+      .delete()
+      .eq("id",id);
+
+
+  if(error){
+
+    showToast(
+      "Gagal menghapus: "+
+      error.message,
+      true
+    );
+
+    return;
+  }
+
+
+  showToast(
+    "Garapan berhasil dihapus."
+  );
+
+  await loadAll();
+}
+
+
+/* =========================
+   AUTH STATE
+========================= */
+
+supabaseClient.auth.onAuthStateChange(
+  async (event,session)=>{
+
+    if(session?.user){
+
+      currentUser=session.user;
+
+      /*
+       * Jangan langsung load dua kali
+       * ketika INITIAL_SESSION dan LOGIN.
+       */
+
+      if(event==="INITIAL_SESSION"){
+
+        await loadProfile();
+
+      }
+
+    }else{
+
+      currentUser=null;
+      currentProfile=null;
+
+      document.getElementById("appPage")
+        .classList.add("hidden");
+
+      document.getElementById("header")
+        .classList.add("hidden");
+
+      document.getElementById("loginPage")
+        .classList.remove("hidden");
+    }
+
+  }
+);
+
+
+/* =========================
+   ENTER LOGIN
+========================= */
+
+document
+  .getElementById("loginPassword")
+  .addEventListener(
+    "keydown",
+    function(e){
+
+      if(e.key==="Enter"){
+        login();
+      }
+
+    }
+  );
+
+</script>
+
+</body>
+</html>
