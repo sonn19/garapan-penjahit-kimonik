@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Garapan Penjahit Kimonik V38</title>
+<title>Garapan Penjahit Kimonik V39</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
@@ -99,11 +99,65 @@ th{color:var(--muted);font-size:11px;text-transform:uppercase}
  border-bottom:1px solid var(--line)
 }
 .cash-row:last-child{border-bottom:0}
+
+/* RIWAYAT PEMBAYARAN */
+.payment-history-card{
+ background:#fff;
+ border:1px solid var(--line);
+ border-radius:15px;
+ padding:16px;
+ margin-bottom:12px
+}
+.payment-history-total{
+ background:#f4eee3;
+ border-radius:12px;
+ padding:14px;
+ margin-bottom:14px
+}
+.payment-history-total .label{
+ color:var(--muted);
+ font-size:12px
+}
+.payment-history-total .amount{
+ font-size:23px;
+ font-weight:700;
+ margin-top:4px
+}
+.payment-history-item{
+ padding:12px 0;
+ border-bottom:1px solid var(--line)
+}
+.payment-history-item:last-child{
+ border-bottom:0
+}
+.payment-history-head{
+ display:flex;
+ justify-content:space-between;
+ align-items:flex-start;
+ gap:12px
+}
+.payment-history-amount{
+ font-size:16px;
+ font-weight:700;
+ color:var(--success)
+}
+.payment-history-date{
+ color:var(--muted);
+ font-size:12px
+}
+.payment-history-note{
+ margin-top:7px;
+ font-size:13px;
+ color:var(--muted);
+ line-height:1.5
+}
+
 @media(max-width:750px){
  .stats{grid-template-columns:repeat(2,1fr)}
  .card-top{flex-direction:column}
  .header-inner{align-items:flex-start}
  .header-user{font-size:11px}
+ .payment-history-head{flex-direction:column}
 }
 </style>
 </head>
@@ -114,7 +168,7 @@ th{color:var(--muted);font-size:11px;text-transform:uppercase}
 <div class="header-inner">
 <div>
 <div class="brand">Garapan Penjahit Kimonik</div>
-<div style="font-size:11px;opacity:.65;margin-top:3px">V38</div>
+<div style="font-size:11px;opacity:.65;margin-top:3px">V39</div>
 </div>
 <div class="header-user">
 <div id="userName">-</div>
@@ -287,6 +341,9 @@ sisa 5 pcs bisa disetor lagi.
 
 <h3 class="section-title">Riwayat Setoran</h3>
 <div id="penjahitSetoran"></div>
+
+<h3 class="section-title">Riwayat Pembayaran</h3>
+<div id="penjahitPembayaran"></div>
 
 </section>
 </section>
@@ -664,6 +721,7 @@ function renderAll(){
   renderPenjahitDashboard();
   renderPenjahitGarapan();
   renderPenjahitSetoran();
+  renderPenjahitPembayaran();
  }
 }
 
@@ -1381,6 +1439,101 @@ function renderPenjahitSetoran(){
  </table>
 
  </div>
+
+ </div>`;
+}
+
+/* RIWAYAT PEMBAYARAN PENJAHIT - V39 */
+function renderPenjahitPembayaran(){
+
+ const el=document.getElementById("penjahitPembayaran");
+
+ if(!el)return;
+
+ const myPayments=pembayaranList
+ .filter(p=>
+  String(p.penjahit_user_id)===String(currentUser.id)
+ )
+ .sort((a,b)=>
+  new Date(b.created_at||0)-new Date(a.created_at||0)
+ );
+
+ if(!myPayments.length){
+  el.innerHTML=`
+   <div class="payment-history-card">
+    <div class="empty">
+     Belum ada pembayaran yang tercatat.
+    </div>
+   </div>`;
+  return;
+ }
+
+ const totalCair=myPayments.reduce(
+  (total,p)=>
+   total+Number(p.jumlah_dibayar||0),
+  0
+ );
+
+ el.innerHTML=`
+ <div class="payment-history-card">
+
+  <div class="payment-history-total">
+   <div class="label">Total seluruh pembayaran yang sudah cair</div>
+   <div class="amount">${rupiah(totalCair)}</div>
+  </div>
+
+  <div>
+   ${myPayments.map(p=>{
+
+    const jumlah=Number(p.jumlah_dibayar||0);
+
+    const periodeMulai=p.periode_mulai;
+    const periodeSelesai=p.periode_selesai;
+
+    let periode="-";
+
+    if(periodeMulai&&periodeSelesai){
+     periode=
+      dateKeyID(periodeMulai)+
+      " – "+
+      dateKeyID(periodeSelesai);
+    }
+
+    return `
+    <div class="payment-history-item">
+
+     <div class="payment-history-head">
+
+      <div>
+       <div style="font-weight:700">
+        Pembayaran Upah
+       </div>
+
+       <div class="payment-history-date">
+        ${dateID(p.created_at)}
+       </div>
+      </div>
+
+      <div class="payment-history-amount">
+       ${rupiah(jumlah)}
+      </div>
+
+     </div>
+
+     <div class="meta">
+      Periode totalan: <strong>${esc(periode)}</strong>
+     </div>
+
+     ${p.catatan
+      ?`<div class="payment-history-note">
+        Catatan: ${esc(p.catatan)}
+       </div>`
+      :""
+     }
+
+    </div>`;
+   }).join("")}
+  </div>
 
  </div>`;
 }
