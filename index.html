@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Garapan Penjahit Kimonik V36</title>
+<title>Garapan Penjahit Kimonik V37</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -170,6 +170,33 @@ label{
   margin-top:5px;
 }
 
+.money-stats{
+  margin-top:-8px;
+}
+
+.money-stat .stat-value{
+  font-size:19px;
+}
+
+.period-box{
+  background:#f4eee3;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:12px 14px;
+  margin-bottom:14px;
+  font-size:13px;
+}
+
+.money-positive{
+  color:var(--success);
+  font-weight:700;
+}
+
+.money-warning{
+  color:var(--warning);
+  font-weight:700;
+}
+
 .card{
   background:var(--surface);
   border:1px solid var(--line);
@@ -292,6 +319,10 @@ label{
   overflow:auto;
 }
 
+.totalan-modal-box{
+  width:min(1000px,100%);
+}
+
 .modal-head{
   display:flex;
   justify-content:space-between;
@@ -349,6 +380,13 @@ th{
   margin-bottom:15px;
 }
 
+.payment-info{
+  background:#f6f3ee;
+  border-radius:12px;
+  padding:14px;
+  margin-bottom:15px;
+}
+
 .toast{
   position:fixed;
   right:15px;
@@ -401,7 +439,7 @@ th{
       </div>
 
       <div style="font-size:11px;opacity:.65;margin-top:3px">
-        V36
+        V37
       </div>
 
     </div>
@@ -567,6 +605,94 @@ th{
       </div>
 
     </div>
+
+  </div>
+
+
+  <!-- TAMBAHAN V37: TOTAL UPAH -->
+
+  <div class="stats money-stats">
+
+    <div class="stat money-stat">
+
+      <div class="stat-label">
+        Total Upah Periode Ini
+      </div>
+
+      <div
+        class="stat-value"
+        id="statUpah">
+
+        Rp0
+
+      </div>
+
+    </div>
+
+
+    <div class="stat money-stat">
+
+      <div class="stat-label">
+        Sudah Dibayar
+      </div>
+
+      <div
+        class="stat-value money-positive"
+        id="statDibayar">
+
+        Rp0
+
+      </div>
+
+    </div>
+
+
+    <div class="stat money-stat">
+
+      <div class="stat-label">
+        Sisa Pembayaran
+      </div>
+
+      <div
+        class="stat-value money-warning"
+        id="statSisa">
+
+        Rp0
+
+      </div>
+
+    </div>
+
+
+    <div class="stat money-stat">
+
+      <div class="stat-label">
+        Periode
+      </div>
+
+      <div
+        class="stat-value"
+        id="statPeriode"
+        style="font-size:15px">
+
+        -
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div style="margin-bottom:20px">
+
+    <button
+      class="btn blue"
+      onclick="openTotalanMingguan()">
+
+      TOTALAN MINGGUAN
+
+    </button>
 
   </div>
 
@@ -962,6 +1088,133 @@ th{
 </div>
 
 
+<!-- MODAL TOTALAN MINGGUAN V37 -->
+
+<div
+  id="totalanModal"
+  class="modal hidden">
+
+  <div class="modal-box totalan-modal-box">
+
+    <div class="modal-head">
+
+      <h3 style="margin:0">
+        Totalan Mingguan
+      </h3>
+
+      <button
+        class="close"
+        onclick="closeTotalanModal()">
+
+        ×
+
+      </button>
+
+    </div>
+
+
+    <div class="period-box">
+
+      <strong>Periode:</strong>
+
+      <span id="totalanPeriod">
+        -
+      </span>
+
+      <br>
+
+      <span style="color:var(--muted)">
+        Yang dihitung adalah setoran yang
+        sudah <strong>Disetujui</strong>.
+        Periode berdasarkan tanggal approval.
+      </span>
+
+    </div>
+
+
+    <div id="totalanContent"></div>
+
+  </div>
+
+</div>
+
+
+<!-- MODAL PEMBAYARAN V37 -->
+
+<div
+  id="paymentModal"
+  class="modal hidden">
+
+  <div class="modal-box">
+
+    <div class="modal-head">
+
+      <h3 style="margin:0">
+        Bayar Upah
+      </h3>
+
+      <button
+        class="close"
+        onclick="closePaymentModal()">
+
+        ×
+
+      </button>
+
+    </div>
+
+
+    <div
+      id="paymentInfo"
+      class="payment-info">
+
+    </div>
+
+
+    <input
+      type="hidden"
+      id="paymentTailorId">
+
+
+    <div class="field">
+
+      <label>Jumlah Dibayar</label>
+
+      <input
+        id="paymentAmount"
+        type="number"
+        min="1"
+        placeholder="Contoh: 500000">
+
+    </div>
+
+
+    <div class="field">
+
+      <label>Catatan</label>
+
+      <textarea
+        id="paymentNote"
+        rows="3"
+        placeholder="Contoh: pembayaran minggu ini"></textarea>
+
+    </div>
+
+
+    <button
+      class="btn success"
+      style="width:100%"
+      onclick="simpanPembayaran()">
+
+      Simpan Pembayaran
+
+    </button>
+
+  </div>
+
+</div>
+
+
 <div
   id="toast"
   class="toast hidden">
@@ -989,6 +1242,7 @@ let currentProfile=null;
 let garapanList=[];
 let setoranList=[];
 let penjahitList=[];
+let pembayaranList=[];
 
 let selectedSetorGarapan=null;
 
@@ -1099,6 +1353,79 @@ function statusBadge(status){
       ${esc(status||"-")}
     </span>
   `;
+
+}
+
+
+/* =====================================================
+   V37 - PERIODE MINGGUAN KAMIS - RABU
+===================================================== */
+
+function getWeeklyPeriod(dateValue){
+
+  const d=
+    dateValue
+    ? new Date(dateValue)
+    : new Date();
+
+  const local=
+    new Date(d);
+
+  local.setHours(0,0,0,0);
+
+  const day=
+    local.getDay();
+
+  const diffFromThursday=
+    (day-4+7)%7;
+
+  const start=
+    new Date(local);
+
+  start.setDate(
+    local.getDate()-
+    diffFromThursday
+  );
+
+  const end=
+    new Date(start);
+
+  end.setDate(
+    start.getDate()+6
+  );
+
+  return {
+    start,
+    end,
+    startKey:dateKey(start),
+    endKey:dateKey(end)
+  };
+
+}
+
+
+function dateKey(d){
+
+  return [
+    d.getFullYear(),
+    String(
+      d.getMonth()+1
+    ).padStart(2,"0"),
+    String(
+      d.getDate()
+    ).padStart(2,"0")
+  ].join("-");
+
+}
+
+
+function periodLabel(period){
+
+  return (
+    dateID(period.startKey)+
+    " – "+
+    dateID(period.endKey)
+  );
 
 }
 
@@ -1290,6 +1617,7 @@ async function loadProfile(){
 
 /* =====================================================
    LOAD PENJAHIT V36
+   JANGAN DIUBAH
 ===================================================== */
 
 async function loadPenjahitList(){
@@ -1326,14 +1654,6 @@ async function loadPenjahitList(){
 
   }
 
-
-  /*
-    V36:
-    Tidak lagi memaksakan kolom tertentu
-    seperti nama/name/email di SELECT.
-
-    Kita baca struktur profiles apa adanya.
-  */
 
   const {
     data,
@@ -1392,11 +1712,6 @@ async function loadPenjahitList(){
     data
   );
 
-
-  /*
-    Hanya akun dengan role penjahit
-    yang dimasukkan ke dropdown.
-  */
 
   penjahitList=
     (data||[])
@@ -1558,6 +1873,8 @@ async function loadAll(){
 
   await loadSetoran();
 
+  await loadPembayaran();
+
   renderAll();
 
 }
@@ -1674,6 +1991,41 @@ async function loadSetoran(){
 
 
 /* =====================================================
+   LOAD PEMBAYARAN V37
+===================================================== */
+
+async function loadPembayaran(){
+
+  const {data,error}=
+    await supabaseClient
+      .from("garapan_pembayaran")
+      .select("*")
+      .order(
+        "created_at",
+        {ascending:false}
+      );
+
+
+  if(error){
+
+    console.error(
+      "Gagal mengambil pembayaran:",
+      error
+    );
+
+    pembayaranList=[];
+
+    return;
+
+  }
+
+
+  pembayaranList=data||[];
+
+}
+
+
+/* =====================================================
    RENDER
 ===================================================== */
 
@@ -1690,6 +2042,7 @@ function renderAll(){
     renderAdminGarapan();
     renderAdminSetoran();
     renderAdminStats();
+    renderMoneyStats();
 
   }else{
 
@@ -1755,6 +2108,902 @@ function renderAdminStats(){
     .getElementById("statPending")
     .textContent=
     pending;
+
+}
+
+
+/* =====================================================
+   V37 - DATA TOTALAN MINGGUAN
+===================================================== */
+
+function getApprovedItemsForPeriod(){
+
+  const period=
+    getWeeklyPeriod();
+
+
+  const items=
+    setoranList.filter(s=>{
+
+      if(s.status!=="Disetujui"){
+        return false;
+      }
+
+      if(!s.approved_at){
+        return false;
+      }
+
+      const approvedDate=
+        new Date(s.approved_at);
+
+      const key=
+        dateKey(approvedDate);
+
+      return (
+        key>=period.startKey &&
+        key<=period.endKey
+      );
+
+    });
+
+
+  return {
+    period,
+    items
+  };
+
+}
+
+
+function getPaidForTailor(
+  tailorId,
+  startKey,
+  endKey
+){
+
+  return pembayaranList
+    .filter(p=>{
+
+      return (
+        String(p.penjahit_user_id)===
+        String(tailorId)
+        &&
+        String(p.periode_mulai)===
+        String(startKey)
+        &&
+        String(p.periode_selesai)===
+        String(endKey)
+      );
+
+    })
+    .reduce(
+      (total,p)=>
+        total+
+        Number(
+          p.jumlah_dibayar||0
+        ),
+      0
+    );
+
+}
+
+
+function getWeeklySummary(){
+
+  const {
+    period,
+    items
+  }=
+    getApprovedItemsForPeriod();
+
+
+  const groups={};
+
+
+  items.forEach(s=>{
+
+    const g=
+      garapanList.find(
+        x=>
+          String(x.id)===
+          String(s.garapan_id)
+      );
+
+
+    if(!g){
+      return;
+    }
+
+
+    const tailorId=
+      g.penjahit_user_id ||
+      s.user_id;
+
+
+    if(!tailorId){
+      return;
+    }
+
+
+    const qty=
+      Number(
+        s.jumlah_diajukan||0
+      );
+
+
+    const price=
+      Number(
+        g.harga_per_pcs||0
+      );
+
+
+    const upah=
+      qty*price;
+
+
+    if(!groups[tailorId]){
+
+      groups[tailorId]={
+        tailorId,
+        tailorName:
+          g.penjahit ||
+          "Penjahit",
+        pcs:0,
+        total:0,
+        details:[]
+      };
+
+    }
+
+
+    groups[tailorId].pcs+=qty;
+
+    groups[tailorId].total+=upah;
+
+    groups[tailorId].details.push({
+
+      produk:
+        g.produk||"-",
+
+      sku:
+        g.sku||"-",
+
+      qty,
+
+      price,
+
+      total:upah,
+
+      approvedAt:
+        s.approved_at
+
+    });
+
+  });
+
+
+  const summary=
+    Object.values(groups);
+
+
+  summary.forEach(row=>{
+
+    row.paid=
+      getPaidForTailor(
+        row.tailorId,
+        period.startKey,
+        period.endKey
+      );
+
+    row.remaining=
+      Math.max(
+        0,
+        row.total-row.paid
+      );
+
+  });
+
+
+  summary.sort(
+    (a,b)=>
+      a.tailorName.localeCompare(
+        b.tailorName,
+        "id"
+      )
+  );
+
+
+  return {
+    period,
+    summary
+  };
+
+}
+
+
+/* =====================================================
+   V37 - STATS UANG
+===================================================== */
+
+function renderMoneyStats(){
+
+  const {
+    period,
+    summary
+  }=
+    getWeeklySummary();
+
+
+  const totalUpah=
+    summary.reduce(
+      (a,x)=>
+        a+Number(x.total||0),
+      0
+    );
+
+
+  const totalDibayar=
+    summary.reduce(
+      (a,x)=>
+        a+Number(x.paid||0),
+      0
+    );
+
+
+  const totalSisa=
+    summary.reduce(
+      (a,x)=>
+        a+Number(x.remaining||0),
+      0
+    );
+
+
+  const upahEl=
+    document.getElementById("statUpah");
+
+  const dibayarEl=
+    document.getElementById("statDibayar");
+
+  const sisaEl=
+    document.getElementById("statSisa");
+
+  const periodeEl=
+    document.getElementById("statPeriode");
+
+
+  if(upahEl){
+    upahEl.textContent=
+      rupiah(totalUpah);
+  }
+
+
+  if(dibayarEl){
+    dibayarEl.textContent=
+      rupiah(totalDibayar);
+  }
+
+
+  if(sisaEl){
+    sisaEl.textContent=
+      rupiah(totalSisa);
+  }
+
+
+  if(periodeEl){
+    periodeEl.textContent=
+      periodLabel(period);
+  }
+
+}
+
+
+/* =====================================================
+   V37 - MODAL TOTALAN
+===================================================== */
+
+async function openTotalanMingguan(){
+
+  await loadPembayaran();
+
+  const {
+    period,
+    summary
+  }=
+    getWeeklySummary();
+
+
+  document
+    .getElementById("totalanPeriod")
+    .textContent=
+    periodLabel(period);
+
+
+  const el=
+    document.getElementById(
+      "totalanContent"
+    );
+
+
+  if(!summary.length){
+
+    el.innerHTML=`
+      <div class="empty">
+
+        Belum ada setoran yang
+        disetujui pada periode ini.
+
+      </div>
+    `;
+
+    document
+      .getElementById("totalanModal")
+      .classList.remove("hidden");
+
+    return;
+
+  }
+
+
+  const totalUpah=
+    summary.reduce(
+      (a,x)=>
+        a+x.total,
+      0
+    );
+
+
+  const totalDibayar=
+    summary.reduce(
+      (a,x)=>
+        a+x.paid,
+      0
+    );
+
+
+  const totalSisa=
+    summary.reduce(
+      (a,x)=>
+        a+x.remaining,
+      0
+    );
+
+
+  el.innerHTML=`
+
+    <div class="card">
+
+      <div class="meta">
+        Total upah periode ini
+      </div>
+
+      <div
+        style="font-size:23px;font-weight:700;margin-top:4px">
+
+        ${rupiah(totalUpah)}
+
+      </div>
+
+      <div class="meta">
+
+        Sudah dibayar:
+        <strong>
+          ${rupiah(totalDibayar)}
+        </strong>
+
+        &nbsp;·&nbsp;
+
+        Sisa:
+        <strong>
+          ${rupiah(totalSisa)}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>Penjahit</th>
+
+              <th>Pcs</th>
+
+              <th>Harga / pcs</th>
+
+              <th>Total Upah</th>
+
+              <th>Dibayar</th>
+
+              <th>Sisa</th>
+
+              <th>Aksi</th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            ${
+              summary
+                .map(row=>{
+
+                  const prices=
+                    [
+                      ...new Set(
+                        row.details.map(
+                          d=>d.price
+                        )
+                      )
+                    ];
+
+
+                  const hargaText=
+                    prices.length===1
+                    ? rupiah(prices[0])
+                    : "Bervariasi";
+
+
+                  return`
+
+                    <tr>
+
+                      <td>
+                        <strong>
+                          ${esc(
+                            row.tailorName
+                          )}
+                        </strong>
+                      </td>
+
+                      <td>
+                        ${row.pcs} pcs
+                      </td>
+
+                      <td>
+                        ${hargaText}
+                      </td>
+
+                      <td>
+                        <strong>
+                          ${rupiah(row.total)}
+                        </strong>
+                      </td>
+
+                      <td>
+                        <span class="money-positive">
+                          ${rupiah(row.paid)}
+                        </span>
+                      </td>
+
+                      <td>
+                        <span class="${
+                          row.remaining>0
+                          ? "money-warning"
+                          : "money-positive"
+                        }">
+
+                          ${rupiah(row.remaining)}
+
+                        </span>
+                      </td>
+
+                      <td>
+
+                        ${
+                          row.remaining>0
+                          ?`
+                            <button
+                              class="btn success small"
+                              onclick="openPaymentModal(
+                                '${esc(row.tailorId)}',
+                                '${esc(row.tailorName)}',
+                                ${row.total},
+                                ${row.paid}
+                              )">
+
+                              Bayar
+
+                            </button>
+                          `
+                          :
+                          `
+                            <span
+                              class="badge success">
+
+                              Lunas
+
+                            </span>
+                          `
+                        }
+
+                      </td>
+
+                    </tr>
+
+                  `;
+
+                })
+                .join("")
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <h3 style="font-size:15px">
+        Rincian Setoran
+      </h3>
+
+      ${
+        summary
+          .map(row=>`
+
+            <div
+              style="
+                padding:12px 0;
+                border-bottom:1px solid var(--line)
+              ">
+
+              <strong>
+                ${esc(row.tailorName)}
+              </strong>
+
+              <div class="meta">
+
+                ${
+                  row.details
+                    .map(d=>`
+
+                      ${esc(d.produk)}
+                      ${
+                        d.sku && d.sku!=="-"
+                        ? " · SKU "+esc(d.sku)
+                        : ""
+                      }
+                      :
+                      ${d.qty} pcs ×
+                      ${rupiah(d.price)}
+                      =
+                      <strong>
+                        ${rupiah(d.total)}
+                      </strong>
+                      · Approval
+                      ${dateID(d.approvedAt)}
+
+                      <br>
+
+                    `)
+                    .join("")
+                }
+
+              </div>
+
+            </div>
+
+          `)
+          .join("")
+      }
+
+    </div>
+
+  `;
+
+
+  document
+    .getElementById("totalanModal")
+    .classList.remove("hidden");
+
+}
+
+
+function closeTotalanModal(){
+
+  document
+    .getElementById("totalanModal")
+    .classList.add("hidden");
+
+}
+
+
+/* =====================================================
+   V37 - MODAL PEMBAYARAN
+===================================================== */
+
+function openPaymentModal(
+  tailorId,
+  tailorName,
+  total,
+  alreadyPaid
+){
+
+  const {
+    period
+  }=
+    getWeeklySummary();
+
+
+  const remaining=
+    Math.max(
+      0,
+      Number(total||0)-
+      Number(alreadyPaid||0)
+    );
+
+
+  if(remaining<=0){
+
+    showToast(
+      "Pembayaran penjahit ini sudah lunas.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  document
+    .getElementById("paymentTailorId")
+    .value=
+    tailorId;
+
+
+  document
+    .getElementById("paymentInfo")
+    .innerHTML=`
+
+    <strong>
+      ${esc(tailorName)}
+    </strong>
+
+    <div class="meta">
+
+      Total upah:
+      <strong>
+        ${rupiah(total)}
+      </strong>
+
+      <br>
+
+      Sudah dibayar:
+      <strong>
+        ${rupiah(alreadyPaid)}
+      </strong>
+
+      <br>
+
+      Sisa:
+      <strong class="money-warning">
+        ${rupiah(remaining)}
+      </strong>
+
+      <br>
+
+      Periode:
+      ${periodLabel(period)}
+
+    </div>
+
+  `;
+
+
+  const amountInput=
+    document.getElementById(
+      "paymentAmount"
+    );
+
+
+  amountInput.value=
+    remaining;
+
+  amountInput.min=1;
+  amountInput.max=remaining;
+
+
+  document
+    .getElementById("paymentNote")
+    .value="";
+
+
+  document
+    .getElementById("paymentModal")
+    .classList.remove("hidden");
+
+}
+
+
+function closePaymentModal(){
+
+  document
+    .getElementById("paymentModal")
+    .classList.add("hidden");
+
+}
+
+
+async function simpanPembayaran(){
+
+  const tailorId=
+    document
+      .getElementById(
+        "paymentTailorId"
+      )
+      .value;
+
+
+  const amount=
+    Number(
+      document
+        .getElementById(
+          "paymentAmount"
+        )
+        .value
+    );
+
+
+  const note=
+    document
+      .getElementById(
+        "paymentNote"
+      )
+      .value
+      .trim();
+
+
+  if(!tailorId){
+
+    showToast(
+      "Penjahit tidak ditemukan.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  if(
+    !Number.isFinite(amount) ||
+    amount<=0
+  ){
+
+    showToast(
+      "Jumlah pembayaran harus lebih dari 0.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  const {
+    period,
+    summary
+  }=
+    getWeeklySummary();
+
+
+  const row=
+    summary.find(
+      x=>
+        String(x.tailorId)===
+        String(tailorId)
+    );
+
+
+  if(!row){
+
+    showToast(
+      "Data totalan penjahit tidak ditemukan.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  const remaining=
+    Math.max(
+      0,
+      row.total-row.paid
+    );
+
+
+  if(amount>remaining){
+
+    showToast(
+      "Pembayaran melebihi sisa. Maksimal "+
+      rupiah(remaining)+".",
+      true
+    );
+
+    return;
+
+  }
+
+
+  const {error}=
+    await supabaseClient
+      .from("garapan_pembayaran")
+      .insert({
+
+        penjahit_user_id:
+          tailorId,
+
+        periode_mulai:
+          period.startKey,
+
+        periode_selesai:
+          period.endKey,
+
+        jumlah_dibayar:
+          amount,
+
+        catatan:
+          note||null,
+
+        paid_by:
+          currentUser.id
+
+      });
+
+
+  if(error){
+
+    console.error(error);
+
+    showToast(
+      "Gagal menyimpan pembayaran: "+
+      error.message,
+      true
+    );
+
+    return;
+
+  }
+
+
+  closePaymentModal();
+
+
+  showToast(
+    "Pembayaran "+
+    rupiah(amount)+
+    " berhasil disimpan."
+  );
+
+
+  await loadAll();
+
+
+  if(
+    !document
+      .getElementById("totalanModal")
+      .classList.contains("hidden")
+  ){
+
+    await openTotalanMingguan();
+
+  }
 
 }
 
