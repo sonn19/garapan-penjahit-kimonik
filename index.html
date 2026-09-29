@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Garapan Penjahit Kimonik V40</title>
+<title>Garapan Penjahit Kimonik V41</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
@@ -100,7 +100,6 @@ th{color:var(--muted);font-size:11px;text-transform:uppercase}
 }
 .cash-row:last-child{border-bottom:0}
 
-/* RIWAYAT PEMBAYARAN */
 .payment-history-card{
  background:#fff;
  border:1px solid var(--line);
@@ -168,7 +167,7 @@ th{color:var(--muted);font-size:11px;text-transform:uppercase}
 <div class="header-inner">
 <div>
 <div class="brand">Garapan Penjahit Kimonik</div>
-<div style="font-size:11px;opacity:.65;margin-top:3px">V40</div>
+<div style="font-size:11px;opacity:.65;margin-top:3px">V41</div>
 </div>
 <div class="header-user">
 <div id="userName">-</div>
@@ -211,7 +210,6 @@ th{color:var(--muted);font-size:11px;text-transform:uppercase}
 ===================================================== -->
 <section id="adminPage" class="hidden">
 
-<!-- 1. APPROVAL / SETORAN MENUNGGU -->
 <h2>Approval</h2>
 
 <div class="notice">
@@ -225,8 +223,6 @@ Setoran Menunggu Approval
 
 <div id="adminSetoran"></div>
 
-
-<!-- 2. DASHBOARD ADMIN -->
 <h2 class="section-title">Dashboard Admin</h2>
 
 <div class="stats">
@@ -283,8 +279,6 @@ TOTALAN MINGGUAN
 </button>
 </div>
 
-
-<!-- 3. TAMBAH GARAPAN -->
 <div class="card">
 <h3>Tambah Garapan</h3>
 
@@ -340,8 +334,6 @@ Tambah Garapan
 
 </div>
 
-
-<!-- 4. DAFTAR GARAPAN -->
 <h3 class="section-title">Daftar Garapan</h3>
 <div id="adminGarapan"></div>
 
@@ -353,22 +345,8 @@ Tambah Garapan
 ===================================================== -->
 <section id="penjahitPage" class="hidden">
 
-<!-- 1. RIWAYAT SETORAN -->
-<h2>Riwayat Setoran</h2>
-
-<div id="penjahitApprovalNotice"></div>
-
-<div id="penjahitSetoran"></div>
-
-
-<!-- 2. RIWAYAT PEMBAYARAN -->
-<h3 class="section-title">Riwayat Pembayaran</h3>
-
-<div id="penjahitPembayaran"></div>
-
-
-<!-- 3. DASHBOARD PENGHASILAN -->
-<h3 class="section-title">Dashboard Penghasilan</h3>
+<!-- 1. DASHBOARD PENGHASILAN -->
+<h2>Dashboard Penghasilan</h2>
 
 <div class="period-box">
 <strong>Periode:</strong>
@@ -411,10 +389,24 @@ Setelah disetujui Admin, sisa 5 pcs bisa disetor lagi.
 </div>
 
 
-<!-- 4. GARAPAN SAYA PALING BAWAH -->
+<!-- 2. RIWAYAT PEMBAYARAN -->
+<h3 class="section-title">Riwayat Pembayaran</h3>
+
+<div id="penjahitPembayaran"></div>
+
+
+<!-- 3. GARAPAN SAYA -->
 <h3 class="section-title">Garapan Saya</h3>
 
 <div id="penjahitGarapan"></div>
+
+
+<!-- 4. RIWAYAT SETORAN -->
+<h3 class="section-title">Riwayat Setoran</h3>
+
+<div id="penjahitApprovalNotice"></div>
+
+<div id="penjahitSetoran"></div>
 
 </section>
 
@@ -1349,10 +1341,8 @@ function getPaidForTailor(
  .filter(p=>
   String(p.penjahit_user_id)===
   String(tailorId)&&
-
   String(p.periode_mulai)===
   String(startKey)&&
-
   String(p.periode_selesai)===
   String(endKey)
  )
@@ -1596,7 +1586,6 @@ async function openTotalanMingguan(){
 
  </div>
 
-
  <div class="card">
 
  <div class="table-wrap">
@@ -1706,7 +1695,6 @@ async function openTotalanMingguan(){
  </div>
 
  </div>
-
 
  <div class="card">
 
@@ -2115,7 +2103,6 @@ function renderAdminGarapan(){
 
   </div>
 
-
   <div class="progress-wrap">
 
    <div class="progress-info">
@@ -2140,7 +2127,6 @@ function renderAdminGarapan(){
    </div>
 
   </div>
-
 
   <div
    class="meta"
@@ -2167,7 +2153,6 @@ function renderAdminGarapan(){
 
   </div>
 
-
   ${
    x.catatan
    ?`
@@ -2179,7 +2164,6 @@ function renderAdminGarapan(){
    `
    :""
   }
-
 
   <div class="actions">
 
@@ -2317,7 +2301,6 @@ function renderAdminSetoran(){
 
   </div>
 
-
   <div class="actions">
 
    <button
@@ -2348,7 +2331,7 @@ function renderAdminSetoran(){
 
 
 /* =====================================================
-   PENJAIT DASHBOARD PENGHASILAN
+   PENJAHIT DASHBOARD PENGHASILAN
 ===================================================== */
 
 function getPenjahitWeeklyData(){
@@ -2371,7 +2354,6 @@ function getPenjahitWeeklyData(){
     )
   );
 
-
  const sudahSetor=
   mySetoran
   .filter(
@@ -2387,7 +2369,6 @@ function getPenjahitWeeklyData(){
     ),
    0
   );
-
 
  const approved=
   mySetoran.filter(s=>{
@@ -2409,7 +2390,6 @@ function getPenjahitWeeklyData(){
    );
 
   });
-
 
  const totalPenghasilan=
   approved.reduce(
@@ -2437,7 +2417,6 @@ function getPenjahitWeeklyData(){
    0
   );
 
-
  const sudahCair=
   pembayaranList
   .filter(p=>
@@ -2461,14 +2440,12 @@ function getPenjahitWeeklyData(){
    0
   );
 
-
  const belumCair=
   Math.max(
    0,
    totalPenghasilan-
    sudahCair
   );
-
 
  return {
 
@@ -2573,7 +2550,6 @@ function renderPenjahitGarapan(){
    )
    :0;
 
-
   const approvedForGarapan=
    weekly.approved.filter(
     s=>
@@ -2596,7 +2572,6 @@ function renderPenjahitGarapan(){
    Number(
     x.harga_per_pcs||0
    );
-
 
   return `
 
@@ -2636,7 +2611,6 @@ function renderPenjahitGarapan(){
 
   </div>
 
-
   <div class="progress-wrap">
 
    <div class="progress-info">
@@ -2662,7 +2636,6 @@ function renderPenjahitGarapan(){
 
   </div>
 
-
   <div class="earnings-detail">
 
    <div class="cash-row">
@@ -2677,7 +2650,6 @@ function renderPenjahitGarapan(){
 
    </div>
 
-
    <div class="cash-row">
 
     <span>
@@ -2690,7 +2662,6 @@ function renderPenjahitGarapan(){
 
    </div>
 
-
    <div class="cash-row">
 
     <span>
@@ -2702,7 +2673,6 @@ function renderPenjahitGarapan(){
     </strong>
 
    </div>
-
 
    <div class="cash-row">
 
@@ -2718,7 +2688,6 @@ function renderPenjahitGarapan(){
 
   </div>
 
-
   ${
    x.catatan
    ?`
@@ -2730,7 +2699,6 @@ function renderPenjahitGarapan(){
    `
    :""
   }
-
 
   <div class="actions">
 
@@ -3046,7 +3014,6 @@ function renderPenjahitPembayaran(){
 
   </div>
 
-
   <div>
 
    ${myPayments.map(p=>{
@@ -3076,7 +3043,6 @@ function renderPenjahitPembayaran(){
 
     }
 
-
     return `
 
     <div class="payment-history-item">
@@ -3101,7 +3067,6 @@ function renderPenjahitPembayaran(){
 
      </div>
 
-
      <div class="meta">
 
       Periode totalan:
@@ -3110,7 +3075,6 @@ function renderPenjahitPembayaran(){
       </strong>
 
      </div>
-
 
      ${
       p.catatan
@@ -3729,7 +3693,6 @@ async function tambahGarapan(){
    "addCatatan"
   ).value.trim();
 
-
  if(!produk){
 
   showToast(
@@ -4000,7 +3963,6 @@ async function simpanEdit(){
   Number(
    existing?.jumlah_selesai||0
   );
-
 
  if(!produk){
 
