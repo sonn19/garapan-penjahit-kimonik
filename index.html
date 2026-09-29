@@ -4888,12 +4888,12 @@ function renderPenjahitPembayaran(){
   });
 
 
- penjahitPembayaranPage=
+penjahitPembayaranPage=
   clampPage(
    penjahitPembayaranPage,
-   filtered.length
+   filtered.length,
+   PENJAHIT_PEMBAYARAN_PAGE_SIZE
   );
-
 
  if(!filtered.length){
 
@@ -4915,14 +4915,14 @@ function renderPenjahitPembayaran(){
   );
 
 
- const start=
+const start=
   (penjahitPembayaranPage-1)*
-  PAGE_SIZE;
+  PENJAHIT_PEMBAYARAN_PAGE_SIZE;
 
- const pageItems=
+const pageItems=
   filtered.slice(
    start,
-   start+PAGE_SIZE
+   start+PENJAHIT_PEMBAYARAN_PAGE_SIZE
   );
 
 
