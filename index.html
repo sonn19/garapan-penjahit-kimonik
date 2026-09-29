@@ -1713,6 +1713,10 @@ let selectedSetorGarapan=null;
 
 const PAGE_SIZE=10;
 
+const PENJAHIT_GARAPAN_PAGE_SIZE=5;
+const PENJAHIT_SETORAN_PAGE_SIZE=10;
+const PENJAHIT_PEMBAYARAN_PAGE_SIZE=5;
+
 let adminGarapanPage=1;
 let adminSetoranPage=1;
 let penjahitGarapanPage=1;
@@ -1720,22 +1724,22 @@ let penjahitSetoranPage=1;
 let penjahitPembayaranPage=1;
 
 
-function totalPages(total){
+function totalPages(total,pageSize=PAGE_SIZE){
 
  return Math.max(
   1,
   Math.ceil(
-   Number(total||0)/PAGE_SIZE
+   Number(total||0)/pageSize
   )
  );
 
 }
 
 
-function clampPage(page,total){
+function clampPage(page,total,pageSize=PAGE_SIZE){
 
  const pages=
-  totalPages(total);
+  totalPages(total,pageSize);
 
  return Math.min(
   Math.max(1,page),
@@ -1748,11 +1752,12 @@ function clampPage(page,total){
 function paginationHtml(
  page,
  total,
- changeFunction
+ changeFunction,
+ pageSize=PAGE_SIZE
 ){
 
  const pages=
-  totalPages(total);
+  totalPages(total,pageSize);
 
  return `
 
