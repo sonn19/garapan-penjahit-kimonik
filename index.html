@@ -81,6 +81,24 @@ th{color:var(--muted);font-size:11px;text-transform:uppercase}
 .toast{position:fixed;right:15px;bottom:15px;background:#292621;color:#fff;padding:12px 16px;border-radius:10px;z-index:200;max-width:330px;box-shadow:0 5px 20px rgba(0,0,0,.2)}
 .toast.error{background:var(--danger)}
 .total-btn{width:100%;font-size:15px;padding:14px 18px;border-radius:12px;box-shadow:0 3px 8px rgba(0,0,0,.08)}
+.earnings-card{margin-bottom:20px}
+.earnings-card .stat-value{font-size:19px}
+.earnings-detail{
+ background:#f6f3ee;
+ border-radius:12px;
+ padding:12px 14px;
+ margin-top:12px
+}
+.earnings-detail strong{font-size:15px}
+.cash-row{
+ display:flex;
+ justify-content:space-between;
+ gap:10px;
+ align-items:center;
+ padding:9px 0;
+ border-bottom:1px solid var(--line)
+}
+.cash-row:last-child{border-bottom:0}
 @media(max-width:750px){
  .stats{grid-template-columns:repeat(2,1fr)}
  .card-top{flex-direction:column}
@@ -227,6 +245,38 @@ Nama penjahit diambil otomatis dari akun dengan role penjahit.
 
 <h2>Garapan Saya</h2>
 
+<!-- DASHBOARD PENGHASILAN PENJAHIT -->
+<div class="period-box">
+<strong>Periode:</strong> <span id="penjahitPeriod">-</span><br>
+<span style="color:var(--muted)">
+Penghasilan dihitung dari setoran yang sudah disetujui Admin.
+</span>
+</div>
+
+<div class="stats money-stats">
+
+<div class="stat money-stat">
+<div class="stat-label">Sudah Setor</div>
+<div class="stat-value" id="penjahitSudahSetor">0 pcs</div>
+</div>
+
+<div class="stat money-stat">
+<div class="stat-label">Sudah Cair</div>
+<div class="stat-value money-positive" id="penjahitSudahCair">Rp0</div>
+</div>
+
+<div class="stat money-stat">
+<div class="stat-label">Belum Cair</div>
+<div class="stat-value money-warning" id="penjahitBelumCair">Rp0</div>
+</div>
+
+<div class="stat money-stat">
+<div class="stat-label">Total Penghasilan</div>
+<div class="stat-value" id="penjahitTotalPenghasilan">Rp0</div>
+</div>
+
+</div>
+
 <div class="notice">
 Penjahit bisa setor sebagian. Contoh: <strong>order 10 pcs</strong>,
 bisa setor <strong>5 pcs</strong> terlebih dahulu. Setelah disetujui Admin,
@@ -360,7 +410,6 @@ function rupiah(value){
  return new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}).format(Number(value||0));
 }
 
-/* V38: tanggal YYYY-MM-DD diperlakukan sebagai tanggal lokal */
 function parseLocalDate(value){
  if(!value)return new Date();
  if(typeof value==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(value)){
@@ -390,7 +439,6 @@ function dateKeyID(value){
  return new Date(y,m-1,d).toLocaleDateString("id-ID",{day:"2-digit",month:"2-digit",year:"numeric"});
 }
 
-/* PERIODE KAMIS - RABU */
 function getWeeklyPeriod(dateValue){
  const local=parseLocalDate(dateValue);
  local.setHours(0,0,0,0);
@@ -453,17 +501,23 @@ async function logout(){
 /* PROFILE */
 async function loadProfile(){
  if(!currentUser)return;
+
  const {data,error}=await supabaseClient.from("profiles").select("*").eq("id",currentUser.id).single();
+
  if(error){
   showToast("Profil tidak ditemukan: "+error.message,true);
   return;
  }
+
  currentProfile=data;
+
  document.getElementById("loginPage").classList.add("hidden");
  document.getElementById("appPage").classList.remove("hidden");
  document.getElementById("header").classList.remove("hidden");
+
  document.getElementById("userName").textContent=data.nama||data.name||currentUser.email;
  document.getElementById("userRole").textContent=data.role||"-";
+
  const role=String(data.role||"").trim().toLowerCase();
 
  if(role==="admin"){
@@ -474,6 +528,7 @@ async function loadProfile(){
   document.getElementById("adminPage").classList.add("hidden");
   document.getElementById("penjahitPage").classList.remove("hidden");
  }
+
  await loadAll();
 }
 
@@ -481,10 +536,12 @@ async function loadProfile(){
 async function loadPenjahitList(){
  const add=document.getElementById("addPenjahitSelect");
  const edit=document.getElementById("editPenjahitSelect");
+
  if(add)add.innerHTML='<option value="">Memuat daftar penjahit...</option>';
  if(edit)edit.innerHTML='<option value="">Memuat daftar penjahit...</option>';
 
  const {data,error}=await supabaseClient.from("profiles").select("*");
+
  if(error){
   penjahitList=[];
   if(add)add.innerHTML='<option value="">Gagal membaca daftar penjahit</option>';
@@ -494,6 +551,7 @@ async function loadPenjahitList(){
  }
 
  penjahitList=(data||[]).filter(p=>String(p.role||"").trim().toLowerCase()==="penjahit");
+
  renderPenjahitDropdown();
 
  if(!penjahitList.length)
@@ -511,14 +569,21 @@ function getPenjahitName(p){
 function renderPenjahitDropdown(){
  const add=document.getElementById("addPenjahitSelect");
  const edit=document.getElementById("editPenjahitSelect");
+
  if(!add||!edit)return;
+
  if(!penjahitList.length){
   add.innerHTML='<option value="">Belum ada penjahit</option>';
   edit.innerHTML='<option value="">Belum ada penjahit</option>';
   return;
  }
+
  let options='<option value="">Pilih Penjahit</option>';
- penjahitList.forEach(p=>options+=`<option value="${esc(p.id)}">${esc(getPenjahitName(p))}</option>`);
+
+ penjahitList.forEach(p=>{
+  options+=`<option value="${esc(p.id)}">${esc(getPenjahitName(p))}</option>`;
+ });
+
  add.innerHTML=options;
  edit.innerHTML=options;
 }
@@ -526,44 +591,77 @@ function renderPenjahitDropdown(){
 /* LOAD */
 async function loadAll(){
  if(!currentProfile)return;
+
  await loadGarapan();
  await loadSetoran();
  await loadPembayaran();
+
  renderAll();
 }
 
 async function loadGarapan(){
  let query=supabaseClient.from("garapan_penjahit").select("*").order("created_at",{ascending:false});
+
  const role=String(currentProfile.role||"").trim().toLowerCase();
- if(role==="penjahit")query=query.eq("penjahit_user_id",currentUser.id);
+
+ if(role==="penjahit")
+  query=query.eq("penjahit_user_id",currentUser.id);
+
  const {data,error}=await query;
- if(error){garapanList=[];showToast("Gagal mengambil garapan: "+error.message,true);return}
+
+ if(error){
+  garapanList=[];
+  showToast("Gagal mengambil garapan: "+error.message,true);
+  return;
+ }
+
  garapanList=data||[];
 }
 
 async function loadSetoran(){
  let query=supabaseClient.from("garapan_setoran").select("*").order("created_at",{ascending:false});
+
  const role=String(currentProfile.role||"").trim().toLowerCase();
- if(role==="penjahit")query=query.eq("user_id",currentUser.id);
+
+ if(role==="penjahit")
+  query=query.eq("user_id",currentUser.id);
+
  const {data,error}=await query;
- if(error){setoranList=[];showToast("Gagal mengambil setoran: "+error.message,true);return}
+
+ if(error){
+  setoranList=[];
+  showToast("Gagal mengambil setoran: "+error.message,true);
+  return;
+ }
+
  setoranList=data||[];
 }
 
 async function loadPembayaran(){
- const {data,error}=await supabaseClient.from("garapan_pembayaran").select("*").order("created_at",{ascending:false});
- if(error){pembayaranList=[];console.error(error);return}
+ const {data,error}=await supabaseClient
+ .from("garapan_pembayaran")
+ .select("*")
+ .order("created_at",{ascending:false});
+
+ if(error){
+  pembayaranList=[];
+  console.error(error);
+  return;
+ }
+
  pembayaranList=data||[];
 }
 
 function renderAll(){
  const role=String(currentProfile.role||"").trim().toLowerCase();
+
  if(role==="admin"){
   renderAdminGarapan();
   renderAdminSetoran();
   renderAdminStats();
   renderMoneyStats();
  }else{
+  renderPenjahitDashboard();
   renderPenjahitGarapan();
   renderPenjahitSetoran();
  }
@@ -571,28 +669,40 @@ function renderAll(){
 
 function renderAdminStats(){
  document.getElementById("statGarapan").textContent=garapanList.length;
- document.getElementById("statOrder").textContent=garapanList.reduce((a,x)=>a+Number(x.jumlah||0),0);
- document.getElementById("statSelesai").textContent=garapanList.reduce((a,x)=>a+Number(x.jumlah_selesai||0),0);
- document.getElementById("statPending").textContent=setoranList.filter(x=>x.status==="Menunggu").length;
+
+ document.getElementById("statOrder").textContent=
+ garapanList.reduce((a,x)=>a+Number(x.jumlah||0),0);
+
+ document.getElementById("statSelesai").textContent=
+ garapanList.reduce((a,x)=>a+Number(x.jumlah_selesai||0),0);
+
+ document.getElementById("statPending").textContent=
+ setoranList.filter(x=>x.status==="Menunggu").length;
 }
 
 /* TOTALAN */
 function getApprovedItemsForPeriod(){
  const period=getWeeklyPeriod();
+
  const items=setoranList.filter(s=>{
   if(s.status!=="Disetujui"||!s.approved_at)return false;
+
   const key=dateKey(new Date(s.approved_at));
+
   return key>=period.startKey&&key<=period.endKey;
  });
+
  return {period,items};
 }
 
 function getPaidForTailor(tailorId,startKey,endKey){
- return pembayaranList.filter(p=>
+ return pembayaranList
+ .filter(p=>
   String(p.penjahit_user_id)===String(tailorId)&&
   String(p.periode_mulai)===String(startKey)&&
   String(p.periode_selesai)===String(endKey)
- ).reduce((t,p)=>t+Number(p.jumlah_dibayar||0),0);
+ )
+ .reduce((t,p)=>t+Number(p.jumlah_dibayar||0),0);
 }
 
 function getWeeklySummary(){
@@ -601,9 +711,11 @@ function getWeeklySummary(){
 
  items.forEach(s=>{
   const g=garapanList.find(x=>String(x.id)===String(s.garapan_id));
+
   if(!g)return;
 
   const tailorId=g.penjahit_user_id||s.user_id;
+
   if(!tailorId)return;
 
   const qty=Number(s.jumlah_diajukan||0);
@@ -614,14 +726,23 @@ function getWeeklySummary(){
    groups[tailorId]={
     tailorId,
     tailorName:g.penjahit||"Penjahit",
-    pcs:0,total:0,details:[]
+    pcs:0,
+    total:0,
+    details:[]
    };
   }
 
   groups[tailorId].pcs+=qty;
   groups[tailorId].total+=upah;
+
   groups[tailorId].details.push({
-   produk:g.produk||"-",sku:g.sku||"-",qty,price,total:upah,approvedAt:s.approved_at
+   garapanId:g.id,
+   produk:g.produk||"-",
+   sku:g.sku||"-",
+   qty,
+   price,
+   total:upah,
+   approvedAt:s.approved_at
   });
  });
 
@@ -633,11 +754,13 @@ function getWeeklySummary(){
  });
 
  summary.sort((a,b)=>a.tailorName.localeCompare(b.tailorName,"id"));
+
  return {period,summary};
 }
 
 function renderMoneyStats(){
  const {period,summary}=getWeeklySummary();
+
  const total=summary.reduce((a,x)=>a+x.total,0);
  const paid=summary.reduce((a,x)=>a+x.paid,0);
  const remain=summary.reduce((a,x)=>a+x.remaining,0);
@@ -650,9 +773,11 @@ function renderMoneyStats(){
 
 async function openTotalanMingguan(){
  await loadPembayaran();
+
  const {period,summary}=getWeeklySummary();
 
  document.getElementById("totalanPeriod").textContent=periodLabel(period);
+
  const el=document.getElementById("totalanContent");
 
  if(!summary.length){
@@ -686,6 +811,7 @@ async function openTotalanMingguan(){
  ${summary.map(row=>{
   const prices=[...new Set(row.details.map(d=>d.price))];
   const hargaText=prices.length===1?rupiah(prices[0]):"Bervariasi";
+
   return `<tr>
    <td><strong>${esc(row.tailorName)}</strong></td>
    <td>${row.pcs} pcs</td>
@@ -707,9 +833,11 @@ async function openTotalanMingguan(){
 
  <div class="card">
  <h3 style="font-size:15px">Rincian Setoran</h3>
+
  ${summary.map(row=>`
  <div style="padding:12px 0;border-bottom:1px solid var(--line)">
  <strong>${esc(row.tailorName)}</strong>
+
  <div class="meta">
  ${row.details.map(d=>`
   ${esc(d.produk)}
@@ -733,7 +861,11 @@ function closeTotalanModal(){
 /* PEMBAYARAN */
 function openPaymentModal(tailorId,tailorName,total,alreadyPaid){
  const {period}=getWeeklySummary();
- const remaining=Math.max(0,Number(total||0)-Number(alreadyPaid||0));
+
+ const remaining=Math.max(
+  0,
+  Number(total||0)-Number(alreadyPaid||0)
+ );
 
  if(remaining<=0){
   showToast("Pembayaran penjahit ini sudah lunas.",true);
@@ -741,6 +873,7 @@ function openPaymentModal(tailorId,tailorName,total,alreadyPaid){
  }
 
  document.getElementById("paymentTailorId").value=tailorId;
+
  document.getElementById("paymentInfo").innerHTML=`
  <strong>${esc(tailorName)}</strong>
  <div class="meta">
@@ -751,9 +884,11 @@ function openPaymentModal(tailorId,tailorName,total,alreadyPaid){
  </div>`;
 
  const input=document.getElementById("paymentAmount");
+
  input.value=remaining;
  input.min=1;
  input.max=remaining;
+
  document.getElementById("paymentNote").value="";
  document.getElementById("paymentModal").classList.remove("hidden");
 }
@@ -767,24 +902,40 @@ async function simpanPembayaran(){
  const amount=Number(document.getElementById("paymentAmount").value);
  const note=document.getElementById("paymentNote").value.trim();
 
- if(!tailorId){showToast("Penjahit tidak ditemukan.",true);return}
+ if(!tailorId){
+  showToast("Penjahit tidak ditemukan.",true);
+  return;
+ }
+
  if(!Number.isFinite(amount)||amount<=0){
-  showToast("Jumlah pembayaran harus lebih dari 0.",true);return;
+  showToast("Jumlah pembayaran harus lebih dari 0.",true);
+  return;
  }
 
  const {period,summary}=getWeeklySummary();
- const row=summary.find(x=>String(x.tailorId)===String(tailorId));
 
- if(!row){showToast("Data totalan penjahit tidak ditemukan.",true);return}
+ const row=summary.find(
+  x=>String(x.tailorId)===String(tailorId)
+ );
+
+ if(!row){
+  showToast("Data totalan penjahit tidak ditemukan.",true);
+  return;
+ }
 
  const remaining=Math.max(0,row.total-row.paid);
 
  if(amount>remaining){
-  showToast("Pembayaran melebihi sisa. Maksimal "+rupiah(remaining)+".",true);
+  showToast(
+   "Pembayaran melebihi sisa. Maksimal "+rupiah(remaining)+".",
+   true
+  );
   return;
  }
 
- const {error}=await supabaseClient.from("garapan_pembayaran").insert({
+ const {error}=await supabaseClient
+ .from("garapan_pembayaran")
+ .insert({
   penjahit_user_id:tailorId,
   periode_mulai:period.startKey,
   periode_selesai:period.endKey,
@@ -799,7 +950,9 @@ async function simpanPembayaran(){
  }
 
  closePaymentModal();
+
  showToast("Pembayaran "+rupiah(amount)+" berhasil disimpan.");
+
  await loadAll();
 
  if(!document.getElementById("totalanModal").classList.contains("hidden"))
@@ -823,9 +976,11 @@ function renderAdminGarapan(){
   const percent=jumlah>0?Math.min(100,(selesai/jumlah)*100):0;
 
   return `<div class="card">
+
   <div class="card-top">
   <div>
    <div class="product">${esc(x.produk||"Tanpa Nama")}</div>
+
    <div class="meta">
     SKU: ${esc(x.sku||"-")}<br>
     Penjahit: <strong>${esc(x.penjahit||"-")}</strong><br>
@@ -834,12 +989,19 @@ function renderAdminGarapan(){
     Target: ${dateID(x.target_selesai)}
    </div>
   </div>
+
   <div>${statusBadge(x.status)}</div>
   </div>
 
   <div class="progress-wrap">
-   <div class="progress-info"><span>Progress</span><strong>${selesai} / ${jumlah} pcs</strong></div>
-   <div class="progress"><div class="progress-bar" style="width:${percent}%"></div></div>
+   <div class="progress-info">
+    <span>Progress</span>
+    <strong>${selesai} / ${jumlah} pcs</strong>
+   </div>
+
+   <div class="progress">
+    <div class="progress-bar" style="width:${percent}%"></div>
+   </div>
   </div>
 
   <div class="meta" style="margin-top:10px">
@@ -852,9 +1014,15 @@ function renderAdminGarapan(){
 
   <div class="actions">
    <button class="btn secondary small" onclick="openEdit('${x.id}')">Edit</button>
-   ${selesai<jumlah?`<button class="btn blue small" onclick="adminSetStatus('${x.id}')">Update Status</button>`:""}
+
+   ${selesai<jumlah
+    ?`<button class="btn blue small" onclick="adminSetStatus('${x.id}')">Update Status</button>`
+    :""
+   }
+
    <button class="btn danger small" onclick="hapusGarapan('${x.id}')">Hapus</button>
   </div>
+
   </div>`;
  }).join("");
 }
@@ -862,7 +1030,10 @@ function renderAdminGarapan(){
 /* ADMIN SETORAN */
 function renderAdminSetoran(){
  const el=document.getElementById("adminSetoran");
- const pending=setoranList.filter(x=>x.status==="Menunggu");
+
+ const pending=setoranList.filter(
+  x=>x.status==="Menunggu"
+ );
 
  if(!pending.length){
   el.innerHTML='<div class="empty">Tidak ada setoran yang menunggu approval.</div>';
@@ -870,15 +1041,20 @@ function renderAdminSetoran(){
  }
 
  el.innerHTML=pending.map(s=>{
-  const g=garapanList.find(x=>String(x.id)===String(s.garapan_id));
+  const g=garapanList.find(
+   x=>String(x.id)===String(s.garapan_id)
+  );
+
   const qty=Number(s.jumlah_diajukan||0);
   const order=Number(g?.jumlah||0);
   const selesai=Number(g?.jumlah_selesai||0);
 
   return `<div class="card">
+
   <div class="card-top">
   <div>
    <div class="product">${esc(g?.produk||"Garapan")}</div>
+
    <div class="meta">
     Penjahit: <strong>${esc(g?.penjahit||"-")}</strong><br>
     Order awal: ${order} pcs<br>
@@ -887,18 +1063,138 @@ function renderAdminSetoran(){
     Sisa setelah approval: ${Math.max(0,order-selesai-qty)} pcs
    </div>
   </div>
+
   <div>${statusBadge(s.status)}</div>
   </div>
+
   <div class="actions">
-   <button class="btn success" onclick="approveSetoran('${s.id}')">Approve ${qty} pcs</button>
-   <button class="btn danger small" onclick="rejectSetoran('${s.id}')">Tolak</button>
+   <button class="btn success" onclick="approveSetoran('${s.id}')">
+    Approve ${qty} pcs
+   </button>
+
+   <button class="btn danger small" onclick="rejectSetoran('${s.id}')">
+    Tolak
+   </button>
   </div>
+
   </div>`;
  }).join("");
 }
 
-/* PENJAHIT */
+/* =========================================================
+   PENJAHIT - DASHBOARD PENGHASILAN
+   ========================================================= */
+
+function getPenjahitWeeklyData(){
+
+ const period=getWeeklyPeriod();
+
+ const myGarapanIds=new Set(
+  garapanList.map(g=>String(g.id))
+ );
+
+ /*
+  Semua setoran milik penjahit yang terkait dengan garapan miliknya.
+ */
+ const mySetoran=setoranList.filter(s=>
+  myGarapanIds.has(String(s.garapan_id))
+ );
+
+ /*
+  Sudah setor:
+  Menunggu + Disetujui.
+  Ditolak tidak dihitung sebagai setoran aktif.
+ */
+ const sudahSetor=mySetoran
+ .filter(s=>s.status==="Menunggu"||s.status==="Disetujui")
+ .reduce((total,s)=>
+  total+Number(s.jumlah_diajukan||0),0
+ );
+
+ /*
+  Hanya approval pada periode Kamis-Rabu yang menjadi
+  penghasilan periode tersebut.
+ */
+ const approved=mySetoran.filter(s=>{
+
+  if(s.status!=="Disetujui"||!s.approved_at)
+   return false;
+
+  const key=dateKey(new Date(s.approved_at));
+
+  return key>=period.startKey&&key<=period.endKey;
+ });
+
+ const totalPenghasilan=approved.reduce((total,s)=>{
+
+  const g=garapanList.find(
+   x=>String(x.id)===String(s.garapan_id)
+  );
+
+  if(!g)return total;
+
+  return total+
+   Number(s.jumlah_diajukan||0)*
+   Number(g.harga_per_pcs||0);
+
+ },0);
+
+ /*
+  Pembayaran milik penjahit pada periode yang sama.
+ */
+ const sudahCair=pembayaranList
+ .filter(p=>
+  String(p.penjahit_user_id)===String(currentUser.id)&&
+  String(p.periode_mulai)===String(period.startKey)&&
+  String(p.periode_selesai)===String(period.endKey)
+ )
+ .reduce((total,p)=>
+  total+Number(p.jumlah_dibayar||0),0
+ );
+
+ /*
+  Belum cair tidak boleh negatif.
+  Pembayaran lama tidak ditambahkan lagi ke total penghasilan.
+ */
+ const belumCair=Math.max(
+  0,
+  totalPenghasilan-sudahCair
+ );
+
+ return {
+  period,
+  mySetoran,
+  approved,
+  sudahSetor,
+  totalPenghasilan,
+  sudahCair,
+  belumCair
+ };
+}
+
+function renderPenjahitDashboard(){
+
+ const data=getPenjahitWeeklyData();
+
+ document.getElementById("penjahitPeriod").textContent=
+  periodLabel(data.period);
+
+ document.getElementById("penjahitSudahSetor").textContent=
+  data.sudahSetor+" pcs";
+
+ document.getElementById("penjahitSudahCair").textContent=
+  rupiah(data.sudahCair);
+
+ document.getElementById("penjahitBelumCair").textContent=
+  rupiah(data.belumCair);
+
+ document.getElementById("penjahitTotalPenghasilan").textContent=
+  rupiah(data.totalPenghasilan);
+}
+
+/* PENJAHIT GARAPAN */
 function renderPenjahitGarapan(){
+
  const el=document.getElementById("penjahitGarapan");
 
  if(!garapanList.length){
@@ -906,49 +1202,112 @@ function renderPenjahitGarapan(){
   return;
  }
 
+ const weekly=getPenjahitWeeklyData();
+
  el.innerHTML=garapanList.map(x=>{
+
   const jumlah=Number(x.jumlah||0);
   const selesai=Number(x.jumlah_selesai||0);
   const pending=getPendingQty(x.id);
   const available=Math.max(0,jumlah-selesai-pending);
   const percent=jumlah>0?Math.min(100,(selesai/jumlah)*100):0;
 
+  /*
+   * Total upah untuk garapan ini pada periode berjalan.
+   * Hanya setoran Disetujui.
+   */
+  const approvedForGarapan=weekly.approved.filter(
+   s=>String(s.garapan_id)===String(x.id)
+  );
+
+  const approvedQty=approvedForGarapan.reduce(
+   (total,s)=>total+Number(s.jumlah_diajukan||0),0
+  );
+
+  const upahGarapan=
+   approvedQty*Number(x.harga_per_pcs||0);
+
   return `<div class="card">
+
   <div class="card-top">
   <div>
    <div class="product">${esc(x.produk||"Tanpa Nama")}</div>
+
    <div class="meta">
     SKU: ${esc(x.sku||"-")}<br>
-    Harga: ${rupiah(x.harga_per_pcs)} / pcs<br>
+    Harga: <strong>${rupiah(x.harga_per_pcs)}</strong> / pcs<br>
     Target: ${dateID(x.target_selesai)}
    </div>
   </div>
+
   <div>${statusBadge(x.status)}</div>
   </div>
 
   <div class="progress-wrap">
-   <div class="progress-info"><span>Progress</span><strong>${selesai} / ${jumlah} pcs</strong></div>
-   <div class="progress"><div class="progress-bar" style="width:${percent}%"></div></div>
+   <div class="progress-info">
+    <span>Progress</span>
+    <strong>${selesai} / ${jumlah} pcs</strong>
+   </div>
+
+   <div class="progress">
+    <div class="progress-bar" style="width:${percent}%"></div>
+   </div>
   </div>
 
-  <div class="meta">
-   Sudah disetujui: <strong>${selesai} pcs</strong><br>
-   Sedang menunggu approval: <strong>${pending} pcs</strong><br>
-   Masih bisa disetor: <strong>${available} pcs</strong>
+  <div class="earnings-detail">
+
+   <div class="cash-row">
+    <span>Sudah disetujui</span>
+    <strong>${selesai} pcs</strong>
+   </div>
+
+   <div class="cash-row">
+    <span>Menunggu approval</span>
+    <strong>${pending} pcs</strong>
+   </div>
+
+   <div class="cash-row">
+    <span>Masih bisa disetor</span>
+    <strong>${available} pcs</strong>
+   </div>
+
+   <div class="cash-row">
+    <span>Upah disetujui periode ini</span>
+    <strong class="money-positive">${rupiah(upahGarapan)}</strong>
+   </div>
+
   </div>
+
+  ${x.catatan
+   ?`<div class="notice" style="margin-top:12px">${esc(x.catatan)}</div>`
+   :""
+  }
 
   <div class="actions">
+
   ${available>0
-   ?`<button class="btn success" onclick="openSetorModal('${x.id}')">Setor / Ajukan Approval</button>`
+   ?`<button class="btn success" onclick="openSetorModal('${x.id}')">
+      Setor / Ajukan Approval
+     </button>`
    :pending>0
-    ?`<button class="btn secondary" disabled>Menunggu Approval ${pending} pcs</button>`
-    :`<button class="btn secondary" disabled>Sudah Selesai</button>`}
+    ?`<button class="btn secondary" disabled>
+       Menunggu Approval ${pending} pcs
+      </button>`
+    :`<button class="btn secondary" disabled>
+       Sudah Selesai
+      </button>`
+  }
+
   </div>
+
   </div>`;
+
  }).join("");
 }
 
+/* RIWAYAT SETORAN PENJAHIT */
 function renderPenjahitSetoran(){
+
  const el=document.getElementById("penjahitSetoran");
 
  if(!setoranList.length){
@@ -956,177 +1315,491 @@ function renderPenjahitSetoran(){
   return;
  }
 
- el.innerHTML=`<div class="card"><div class="table-wrap"><table>
- <thead><tr><th>Produk</th><th>Jumlah</th><th>Status</th><th>Tanggal</th></tr></thead>
+ el.innerHTML=`
+ <div class="card">
+
+ <div class="table-wrap">
+
+ <table>
+
+ <thead>
+ <tr>
+  <th>Produk</th>
+  <th>Jumlah</th>
+  <th>Harga / pcs</th>
+  <th>Nominal</th>
+  <th>Status</th>
+  <th>Tanggal</th>
+ </tr>
+ </thead>
+
  <tbody>
+
  ${setoranList.map(s=>{
-  const g=garapanList.find(x=>String(x.id)===String(s.garapan_id));
+
+  const g=garapanList.find(
+   x=>String(x.id)===String(s.garapan_id)
+  );
+
+  const qty=Number(s.jumlah_diajukan||0);
+  const price=Number(g?.harga_per_pcs||0);
+
+  /*
+   * Nominal hanya muncul sebagai penghasilan
+   * apabila setoran sudah disetujui.
+   */
+  const nominal=
+   s.status==="Disetujui"
+   ?qty*price
+   :0;
+
   return `<tr>
+
    <td>${esc(g?.produk||"-")}</td>
-   <td>${Number(s.jumlah_diajukan||0)} pcs</td>
+
+   <td>${qty} pcs</td>
+
+   <td>${rupiah(price)}</td>
+
+   <td>
+    ${s.status==="Disetujui"
+     ?`<strong>${rupiah(nominal)}</strong>`
+     :`<span style="color:var(--muted)">Belum dihitung</span>`
+    }
+   </td>
+
    <td>${statusBadge(s.status)}</td>
+
    <td>${dateID(s.created_at)}</td>
+
   </tr>`;
+
  }).join("")}
- </tbody></table></div></div>`;
+
+ </tbody>
+
+ </table>
+
+ </div>
+
+ </div>`;
 }
 
 function getPendingQty(garapanId){
- return setoranList.filter(s=>String(s.garapan_id)===String(garapanId)&&s.status==="Menunggu")
- .reduce((total,s)=>total+Number(s.jumlah_diajukan||0),0);
+
+ return setoranList
+ .filter(s=>
+  String(s.garapan_id)===String(garapanId)&&
+  s.status==="Menunggu"
+ )
+ .reduce(
+  (total,s)=>total+Number(s.jumlah_diajukan||0),
+  0
+ );
 }
 
 /* SETOR */
 function openSetorModal(id){
- const g=garapanList.find(x=>String(x.id)===String(id));
- if(!g){showToast("Garapan tidak ditemukan.",true);return}
+
+ const g=garapanList.find(
+  x=>String(x.id)===String(id)
+ );
+
+ if(!g){
+  showToast("Garapan tidak ditemukan.",true);
+  return;
+ }
 
  const jumlah=Number(g.jumlah||0);
  const selesai=Number(g.jumlah_selesai||0);
  const pending=getPendingQty(g.id);
- const available=Math.max(0,jumlah-selesai-pending);
 
- if(available<=0){showToast("Tidak ada jumlah yang bisa disetor.",true);return}
+ const available=Math.max(
+  0,
+  jumlah-selesai-pending
+ );
+
+ if(available<=0){
+  showToast("Tidak ada jumlah yang bisa disetor.",true);
+  return;
+ }
 
  selectedSetorGarapan=g;
 
  document.getElementById("setorInfo").innerHTML=`
  <div><strong>${esc(g.produk||"-")}</strong></div>
+
  <div class="meta">
  Order awal: <strong>${jumlah} pcs</strong><br>
+ Harga: <strong>${rupiah(g.harga_per_pcs)}</strong> / pcs<br>
  Sudah disetujui: <strong>${selesai} pcs</strong><br>
  Menunggu approval: <strong>${pending} pcs</strong><br>
  Sisa yang bisa diajukan: <strong>${available} pcs</strong>
  </div>`;
 
- document.getElementById("setorAvailable").textContent=available;
+ document.getElementById("setorAvailable").textContent=
+  available;
+
  const input=document.getElementById("setorJumlah");
- input.value=available;input.min=1;input.max=available;
+
+ input.value=available;
+ input.min=1;
+ input.max=available;
+
  document.getElementById("setorModal").classList.remove("hidden");
 }
 
 function closeSetorModal(){
+
  document.getElementById("setorModal").classList.add("hidden");
+
  selectedSetorGarapan=null;
 }
 
 async function submitSetoran(){
+
  if(!selectedSetorGarapan)return;
+
  const g=selectedSetorGarapan;
- const qty=Number(document.getElementById("setorJumlah").value);
 
- const {data:fresh,error:freshError}=await supabaseClient.from("garapan_penjahit").select("*").eq("id",g.id).single();
- if(freshError){showToast("Gagal mengecek garapan terbaru: "+freshError.message,true);return}
+ const qty=Number(
+  document.getElementById("setorJumlah").value
+ );
 
- const {data:pendingData,error:pendingError}=await supabaseClient.from("garapan_setoran").select("jumlah_diajukan").eq("garapan_id",g.id).eq("status","Menunggu");
- if(pendingError){showToast("Gagal mengecek setoran: "+pendingError.message,true);return}
+ const {data:fresh,error:freshError}=
+ await supabaseClient
+ .from("garapan_penjahit")
+ .select("*")
+ .eq("id",g.id)
+ .single();
 
- const pending=(pendingData||[]).reduce((a,x)=>a+Number(x.jumlah_diajukan||0),0);
+ if(freshError){
+  showToast(
+   "Gagal mengecek garapan terbaru: "+
+   freshError.message,
+   true
+  );
+  return;
+ }
+
+ const {data:pendingData,error:pendingError}=
+ await supabaseClient
+ .from("garapan_setoran")
+ .select("jumlah_diajukan")
+ .eq("garapan_id",g.id)
+ .eq("status","Menunggu");
+
+ if(pendingError){
+  showToast(
+   "Gagal mengecek setoran: "+
+   pendingError.message,
+   true
+  );
+  return;
+ }
+
+ const pending=(pendingData||[])
+ .reduce(
+  (a,x)=>a+Number(x.jumlah_diajukan||0),
+  0
+ );
+
  const selesai=Number(fresh.jumlah_selesai||0);
  const jumlah=Number(fresh.jumlah||0);
- const available=Math.max(0,jumlah-selesai-pending);
 
- if(!Number.isInteger(qty)||qty<1){showToast("Jumlah setor minimal 1 pcs.",true);return}
- if(qty>available){showToast("Jumlah terlalu banyak. Maksimal "+available+" pcs.",true);return}
+ const available=Math.max(
+  0,
+  jumlah-selesai-pending
+ );
 
- const {error}=await supabaseClient.from("garapan_setoran").insert({
-  garapan_id:g.id,user_id:currentUser.id,jumlah_diajukan:qty,status:"Menunggu"
+ if(!Number.isInteger(qty)||qty<1){
+  showToast("Jumlah setor minimal 1 pcs.",true);
+  return;
+ }
+
+ if(qty>available){
+  showToast(
+   "Jumlah terlalu banyak. Maksimal "+
+   available+" pcs.",
+   true
+  );
+  return;
+ }
+
+ const {error}=await supabaseClient
+ .from("garapan_setoran")
+ .insert({
+  garapan_id:g.id,
+  user_id:currentUser.id,
+  jumlah_diajukan:qty,
+  status:"Menunggu"
  });
 
- if(error){showToast("Gagal mengajukan: "+error.message,true);return}
+ if(error){
+  showToast(
+   "Gagal mengajukan: "+
+   error.message,
+   true
+  );
+  return;
+ }
 
  closeSetorModal();
- showToast("Setoran "+qty+" pcs berhasil diajukan.");
+
+ showToast(
+  "Setoran "+qty+
+  " pcs berhasil diajukan."
+ );
+
  await loadAll();
 }
 
 /* APPROVE */
 async function approveSetoran(id){
- const {data:s,error:sError}=await supabaseClient.from("garapan_setoran").select("*").eq("id",id).single();
- if(sError){showToast("Setoran tidak ditemukan.",true);return}
- if(s.status!=="Menunggu"){showToast("Setoran sudah diproses.",true);return}
 
- const {data:g,error:gError}=await supabaseClient.from("garapan_penjahit").select("*").eq("id",s.garapan_id).single();
- if(gError){showToast("Garapan tidak ditemukan.",true);return}
+ const {data:s,error:sError}=
+ await supabaseClient
+ .from("garapan_setoran")
+ .select("*")
+ .eq("id",id)
+ .single();
+
+ if(sError){
+  showToast("Setoran tidak ditemukan.",true);
+  return;
+ }
+
+ if(s.status!=="Menunggu"){
+  showToast("Setoran sudah diproses.",true);
+  return;
+ }
+
+ const {data:g,error:gError}=
+ await supabaseClient
+ .from("garapan_penjahit")
+ .select("*")
+ .eq("id",s.garapan_id)
+ .single();
+
+ if(gError){
+  showToast("Garapan tidak ditemukan.",true);
+  return;
+ }
 
  const qty=Number(s.jumlah_diajukan||0);
  const current=Number(g.jumlah_selesai||0);
  const order=Number(g.jumlah||0);
 
  if(qty<=0||current+qty>order){
-  showToast("Approval melebihi jumlah order.",true);return;
+  showToast("Approval melebihi jumlah order.",true);
+  return;
  }
 
  const total=current+qty;
- const newStatus=total>=order?"Selesai":"Diproses";
+ const newStatus=
+  total>=order
+  ?"Selesai"
+  :"Diproses";
 
- const {error:updateError}=await supabaseClient.from("garapan_penjahit").update({
-  jumlah_selesai:total,status:newStatus,updated_at:new Date().toISOString()
- }).eq("id",g.id);
+ const {error:updateError}=
+ await supabaseClient
+ .from("garapan_penjahit")
+ .update({
+  jumlah_selesai:total,
+  status:newStatus,
+  updated_at:new Date().toISOString()
+ })
+ .eq("id",g.id);
 
- if(updateError){showToast("Gagal update progress: "+updateError.message,true);return}
-
- const {error:progressError}=await supabaseClient.from("garapan_progress").insert({
-  garapan_id:g.id,tambahan_selesai:qty
- });
- if(progressError)console.error(progressError);
-
- const {error:approvalError}=await supabaseClient.from("garapan_setoran").update({
-  status:"Disetujui",approved_by:currentUser.id,approved_at:new Date().toISOString()
- }).eq("id",id).eq("status","Menunggu");
-
- if(approvalError){
-  showToast("Progress berhasil tetapi approval gagal: "+approvalError.message,true);
-  await loadAll();return;
+ if(updateError){
+  showToast(
+   "Gagal update progress: "+
+   updateError.message,
+   true
+  );
+  return;
  }
 
- showToast("Approval "+qty+" pcs berhasil.");
+ const {error:progressError}=
+ await supabaseClient
+ .from("garapan_progress")
+ .insert({
+  garapan_id:g.id,
+  tambahan_selesai:qty
+ });
+
+ if(progressError)
+  console.error(progressError);
+
+ const {error:approvalError}=
+ await supabaseClient
+ .from("garapan_setoran")
+ .update({
+  status:"Disetujui",
+  approved_by:currentUser.id,
+  approved_at:new Date().toISOString()
+ })
+ .eq("id",id)
+ .eq("status","Menunggu");
+
+ if(approvalError){
+  showToast(
+   "Progress berhasil tetapi approval gagal: "+
+   approvalError.message,
+   true
+  );
+
+  await loadAll();
+  return;
+ }
+
+ showToast(
+  "Approval "+qty+
+  " pcs berhasil."
+ );
+
  await loadAll();
 }
 
 async function rejectSetoran(id){
- const {error}=await supabaseClient.from("garapan_setoran").update({status:"Ditolak"}).eq("id",id).eq("status","Menunggu");
- if(error){showToast("Gagal menolak: "+error.message,true);return}
+
+ const {error}=await supabaseClient
+ .from("garapan_setoran")
+ .update({
+  status:"Ditolak"
+ })
+ .eq("id",id)
+ .eq("status","Menunggu");
+
+ if(error){
+  showToast(
+   "Gagal menolak: "+
+   error.message,
+   true
+  );
+  return;
+ }
+
  showToast("Setoran ditolak.");
+
  await loadAll();
 }
 
 /* TAMBAH */
 async function tambahGarapan(){
- const produk=document.getElementById("addProduk").value.trim();
- const sku=document.getElementById("addSku").value.trim();
- const jumlah=Number(document.getElementById("addJumlah").value);
- const harga=Number(document.getElementById("addHarga").value);
- const select=document.getElementById("addPenjahitSelect");
+
+ const produk=
+  document.getElementById("addProduk").value.trim();
+
+ const sku=
+  document.getElementById("addSku").value.trim();
+
+ const jumlah=
+  Number(document.getElementById("addJumlah").value);
+
+ const harga=
+  Number(document.getElementById("addHarga").value);
+
+ const select=
+  document.getElementById("addPenjahitSelect");
+
  const penjahitUserId=select.value;
- const selected=penjahitList.find(p=>String(p.id)===String(penjahitUserId));
- const penjahit=selected?getPenjahitName(selected):"";
- const tanggal=document.getElementById("addTanggal").value||null;
- const target=document.getElementById("addTarget").value||null;
- const catatan=document.getElementById("addCatatan").value.trim();
 
- if(!produk){showToast("Produk wajib diisi.",true);return}
- if(!Number.isInteger(jumlah)||jumlah<1){showToast("Jumlah harus minimal 1.",true);return}
- if(!penjahitUserId){showToast("Silakan pilih penjahit.",true);return}
- if(!selected){showToast("Data penjahit tidak ditemukan. Silakan refresh.",true);return}
+ const selected=
+  penjahitList.find(
+   p=>String(p.id)===String(penjahitUserId)
+  );
 
- const {error}=await supabaseClient.from("garapan_penjahit").insert({
-  produk,sku:sku||null,jumlah,harga_per_pcs:harga||0,penjahit,
-  penjahit_user_id:penjahitUserId,tanggal_kirim:tanggal,target_selesai:target,
-  status:"Dikirim",catatan:catatan||null,jumlah_selesai:0
+ const penjahit=
+  selected
+  ?getPenjahitName(selected)
+  :"";
+
+ const tanggal=
+  document.getElementById("addTanggal").value||null;
+
+ const target=
+  document.getElementById("addTarget").value||null;
+
+ const catatan=
+  document.getElementById("addCatatan").value.trim();
+
+ if(!produk){
+  showToast("Produk wajib diisi.",true);
+  return;
+ }
+
+ if(!Number.isInteger(jumlah)||jumlah<1){
+  showToast("Jumlah harus minimal 1.",true);
+  return;
+ }
+
+ if(!penjahitUserId){
+  showToast("Silakan pilih penjahit.",true);
+  return;
+ }
+
+ if(!selected){
+  showToast(
+   "Data penjahit tidak ditemukan. Silakan refresh.",
+   true
+  );
+  return;
+ }
+
+ const {error}=await supabaseClient
+ .from("garapan_penjahit")
+ .insert({
+  produk,
+  sku:sku||null,
+  jumlah,
+  harga_per_pcs:harga||0,
+  penjahit,
+  penjahit_user_id:penjahitUserId,
+  tanggal_kirim:tanggal,
+  target_selesai:target,
+  status:"Dikirim",
+  catatan:catatan||null,
+  jumlah_selesai:0
  });
 
- if(error){showToast("Gagal menambah garapan: "+error.message,true);return}
+ if(error){
+  showToast(
+   "Gagal menambah garapan: "+
+   error.message,
+   true
+  );
+  return;
+ }
 
- ["addProduk","addSku","addJumlah","addHarga","addTanggal","addTarget","addCatatan"].forEach(id=>document.getElementById(id).value="");
- document.getElementById("addPenjahitSelect").value="";
+ [
+  "addProduk",
+  "addSku",
+  "addJumlah",
+  "addHarga",
+  "addTanggal",
+  "addTarget",
+  "addCatatan"
+ ].forEach(id=>
+  document.getElementById(id).value=""
+ );
+
+ document.getElementById(
+  "addPenjahitSelect"
+ ).value="";
+
  showToast("Garapan berhasil ditambahkan.");
+
  await loadAll();
 }
 
 /* EDIT */
 function openEdit(id){
- const x=garapanList.find(g=>String(g.id)===String(id));
+
+ const x=garapanList.find(
+  g=>String(g.id)===String(id)
+ );
+
  if(!x)return;
 
  document.getElementById("editId").value=x.id;
@@ -1134,136 +1807,350 @@ function openEdit(id){
  document.getElementById("editSku").value=x.sku||"";
  document.getElementById("editJumlah").value=x.jumlah||"";
  document.getElementById("editHarga").value=x.harga_per_pcs||"";
- document.getElementById("editPenjahitSelect").value=x.penjahit_user_id||"";
- document.getElementById("editTanggal").value=x.tanggal_kirim||"";
- document.getElementById("editTarget").value=x.target_selesai||"";
- document.getElementById("editCatatan").value=x.catatan||"";
- document.getElementById("editModal").classList.remove("hidden");
+
+ document.getElementById(
+  "editPenjahitSelect"
+ ).value=x.penjahit_user_id||"";
+
+ document.getElementById(
+  "editTanggal"
+ ).value=x.tanggal_kirim||"";
+
+ document.getElementById(
+  "editTarget"
+ ).value=x.target_selesai||"";
+
+ document.getElementById(
+  "editCatatan"
+ ).value=x.catatan||"";
+
+ document.getElementById(
+  "editModal"
+ ).classList.remove("hidden");
 }
 
 function closeEditModal(){
- document.getElementById("editModal").classList.add("hidden");
+ document.getElementById(
+  "editModal"
+ ).classList.add("hidden");
 }
 
 async function simpanEdit(){
+
  const id=document.getElementById("editId").value;
- const produk=document.getElementById("editProduk").value.trim();
- const sku=document.getElementById("editSku").value.trim();
- const jumlah=Number(document.getElementById("editJumlah").value);
- const harga=Number(document.getElementById("editHarga").value);
- const penjahitUserId=document.getElementById("editPenjahitSelect").value;
- const selected=penjahitList.find(p=>String(p.id)===String(penjahitUserId));
- const penjahit=selected?getPenjahitName(selected):"";
- const tanggal=document.getElementById("editTanggal").value||null;
- const target=document.getElementById("editTarget").value||null;
- const catatan=document.getElementById("editCatatan").value.trim();
- const existing=garapanList.find(x=>String(x.id)===String(id));
- const selesai=Number(existing?.jumlah_selesai||0);
 
- if(!produk){showToast("Produk wajib diisi.",true);return}
- if(!Number.isInteger(jumlah)||jumlah<1){showToast("Jumlah order minimal 1.",true);return}
- if(jumlah<selesai){showToast("Jumlah order tidak boleh lebih kecil dari jumlah yang sudah selesai.",true);return}
- if(!penjahitUserId){showToast("Silakan pilih penjahit.",true);return}
- if(!selected){showToast("Data penjahit tidak ditemukan. Silakan refresh.",true);return}
+ const produk=
+  document.getElementById("editProduk").value.trim();
 
- const {error}=await supabaseClient.from("garapan_penjahit").update({
-  produk,sku:sku||null,jumlah,harga_per_pcs:harga||0,penjahit,
-  penjahit_user_id:penjahitUserId,tanggal_kirim:tanggal,target_selesai:target,
-  catatan:catatan||null,updated_at:new Date().toISOString()
- }).eq("id",id);
+ const sku=
+  document.getElementById("editSku").value.trim();
 
- if(error){showToast("Gagal menyimpan: "+error.message,true);return}
+ const jumlah=
+  Number(document.getElementById("editJumlah").value);
+
+ const harga=
+  Number(document.getElementById("editHarga").value);
+
+ const penjahitUserId=
+  document.getElementById("editPenjahitSelect").value;
+
+ const selected=
+  penjahitList.find(
+   p=>String(p.id)===String(penjahitUserId)
+  );
+
+ const penjahit=
+  selected
+  ?getPenjahitName(selected)
+  :"";
+
+ const tanggal=
+  document.getElementById("editTanggal").value||null;
+
+ const target=
+  document.getElementById("editTarget").value||null;
+
+ const catatan=
+  document.getElementById("editCatatan").value.trim();
+
+ const existing=
+  garapanList.find(
+   x=>String(x.id)===String(id)
+  );
+
+ const selesai=
+  Number(existing?.jumlah_selesai||0);
+
+ if(!produk){
+  showToast("Produk wajib diisi.",true);
+  return;
+ }
+
+ if(!Number.isInteger(jumlah)||jumlah<1){
+  showToast(
+   "Jumlah order minimal 1.",
+   true
+  );
+  return;
+ }
+
+ if(jumlah<selesai){
+  showToast(
+   "Jumlah order tidak boleh lebih kecil dari jumlah yang sudah selesai.",
+   true
+  );
+  return;
+ }
+
+ if(!penjahitUserId){
+  showToast(
+   "Silakan pilih penjahit.",
+   true
+  );
+  return;
+ }
+
+ if(!selected){
+  showToast(
+   "Data penjahit tidak ditemukan. Silakan refresh.",
+   true
+  );
+  return;
+ }
+
+ const {error}=await supabaseClient
+ .from("garapan_penjahit")
+ .update({
+  produk,
+  sku:sku||null,
+  jumlah,
+  harga_per_pcs:harga||0,
+  penjahit,
+  penjahit_user_id:penjahitUserId,
+  tanggal_kirim:tanggal,
+  target_selesai:target,
+  catatan:catatan||null,
+  updated_at:new Date().toISOString()
+ })
+ .eq("id",id);
+
+ if(error){
+  showToast(
+   "Gagal menyimpan: "+
+   error.message,
+   true
+  );
+  return;
+ }
 
  closeEditModal();
- showToast("Garapan berhasil diperbarui.");
+
+ showToast(
+  "Garapan berhasil diperbarui."
+ );
+
  await loadAll();
 }
 
 /* STATUS */
 async function adminSetStatus(id){
- const x=garapanList.find(g=>String(g.id)===String(id));
+
+ const x=garapanList.find(
+  g=>String(g.id)===String(id)
+ );
+
  if(!x)return;
 
- const status=prompt("Masukkan status:\n\nDikirim\nDiproses\nSelesai",x.status||"Diproses");
+ const status=prompt(
+  "Masukkan status:\n\nDikirim\nDiproses\nSelesai",
+  x.status||"Diproses"
+ );
+
  if(!status)return;
 
  if(status==="Selesai"){
-  const yakin=confirm("Set status Selesai berarti jumlah selesai menjadi "+x.jumlah+" pcs. Lanjut?");
+
+  const yakin=confirm(
+   "Set status Selesai berarti jumlah selesai menjadi "+
+   x.jumlah+
+   " pcs. Lanjut?"
+  );
+
   if(!yakin)return;
-  await updateProgressDb(id,Number(x.jumlah));
+
+  await updateProgressDb(
+   id,
+   Number(x.jumlah)
+  );
+
   return;
  }
 
- const {error}=await supabaseClient.from("garapan_penjahit").update({
-  status,updated_at:new Date().toISOString()
- }).eq("id",id);
+ const {error}=await supabaseClient
+ .from("garapan_penjahit")
+ .update({
+  status,
+  updated_at:new Date().toISOString()
+ })
+ .eq("id",id);
 
- if(error){showToast("Gagal update status: "+error.message,true);return}
- showToast("Status berhasil diperbarui.");
+ if(error){
+  showToast(
+   "Gagal update status: "+
+   error.message,
+   true
+  );
+  return;
+ }
+
+ showToast(
+  "Status berhasil diperbarui."
+ );
+
  await loadAll();
 }
 
 /* PROGRESS */
 async function updateProgressDb(id,value){
- const x=garapanList.find(g=>String(g.id)===String(id));
+
+ const x=garapanList.find(
+  g=>String(g.id)===String(id)
+ );
+
  if(!x)return;
 
  const jumlah=Number(x.jumlah||0);
  const old=Number(x.jumlah_selesai||0);
- let v=Math.max(0,Math.min(Number(value),jumlah));
+
+ let v=Math.max(
+  0,
+  Math.min(Number(value),jumlah)
+ );
 
  let status="Diproses";
- if(v===0)status="Dikirim";
- if(v>=jumlah)status="Selesai";
 
- const {error}=await supabaseClient.from("garapan_penjahit").update({
-  jumlah_selesai:v,status,updated_at:new Date().toISOString()
- }).eq("id",id);
+ if(v===0)
+  status="Dikirim";
 
- if(error){showToast("Gagal update progress: "+error.message,true);return}
+ if(v>=jumlah)
+  status="Selesai";
 
- if(v>old){
-  const {error:progressError}=await supabaseClient.from("garapan_progress").insert({
-   garapan_id:id,tambahan_selesai:v-old
-  });
-  if(progressError)console.error(progressError);
+ const {error}=await supabaseClient
+ .from("garapan_penjahit")
+ .update({
+  jumlah_selesai:v,
+  status,
+  updated_at:new Date().toISOString()
+ })
+ .eq("id",id);
+
+ if(error){
+  showToast(
+   "Gagal update progress: "+
+   error.message,
+   true
+  );
+  return;
  }
 
- showToast("Progress berhasil diperbarui.");
+ if(v>old){
+
+  const {error:progressError}=
+   await supabaseClient
+   .from("garapan_progress")
+   .insert({
+    garapan_id:id,
+    tambahan_selesai:v-old
+   });
+
+  if(progressError)
+   console.error(progressError);
+ }
+
+ showToast(
+  "Progress berhasil diperbarui."
+ );
+
  await loadAll();
 }
 
 /* HAPUS */
 async function hapusGarapan(id){
- if(!confirm("Yakin ingin menghapus garapan ini?"))return;
 
- await supabaseClient.from("garapan_progress").delete().eq("garapan_id",id);
- await supabaseClient.from("garapan_setoran").delete().eq("garapan_id",id);
+ if(!confirm(
+  "Yakin ingin menghapus garapan ini?"
+ ))
+  return;
 
- const {error}=await supabaseClient.from("garapan_penjahit").delete().eq("id",id);
+ await supabaseClient
+ .from("garapan_progress")
+ .delete()
+ .eq("garapan_id",id);
 
- if(error){showToast("Gagal menghapus: "+error.message,true);return}
+ await supabaseClient
+ .from("garapan_setoran")
+ .delete()
+ .eq("garapan_id",id);
 
- showToast("Garapan berhasil dihapus.");
+ const {error}=await supabaseClient
+ .from("garapan_penjahit")
+ .delete()
+ .eq("id",id);
+
+ if(error){
+  showToast(
+   "Gagal menghapus: "+
+   error.message,
+   true
+  );
+  return;
+ }
+
+ showToast(
+  "Garapan berhasil dihapus."
+ );
+
  await loadAll();
 }
 
 /* AUTH */
-supabaseClient.auth.onAuthStateChange(async(event,session)=>{
- if(session?.user){
-  currentUser=session.user;
-  if(event==="INITIAL_SESSION")await loadProfile();
- }else{
-  currentUser=null;currentProfile=null;
-  document.getElementById("appPage").classList.add("hidden");
-  document.getElementById("header").classList.add("hidden");
-  document.getElementById("loginPage").classList.remove("hidden");
- }
-});
+supabaseClient.auth.onAuthStateChange(
+ async(event,session)=>{
 
-document.getElementById("loginPassword").addEventListener("keydown",e=>{
- if(e.key==="Enter")login();
-});
+  if(session?.user){
+
+   currentUser=session.user;
+
+   if(event==="INITIAL_SESSION")
+    await loadProfile();
+
+  }else{
+
+   currentUser=null;
+   currentProfile=null;
+
+   document.getElementById(
+    "appPage"
+   ).classList.add("hidden");
+
+   document.getElementById(
+    "header"
+   ).classList.add("hidden");
+
+   document.getElementById(
+    "loginPage"
+   ).classList.remove("hidden");
+  }
+ });
+
+document.getElementById(
+ "loginPassword"
+).addEventListener(
+ "keydown",
+ e=>{
+  if(e.key==="Enter")
+   login();
+ });
 </script>
 
 </body>
