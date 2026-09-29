@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Garapan Penjahit Kimonik V41</title>
+<title>Garapan Penjahit Kimonik V42</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
@@ -14,82 +14,397 @@
  --primary:#292621;--success:#2f7d4a;--warning:#b7791f;
  --danger:#b33a3a;--blue:#4267a8
 }
+
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+
+body{
+ margin:0;
+ font-family:Arial,Helvetica,sans-serif;
+ background:var(--bg);
+ color:var(--text)
+}
+
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
-header{background:var(--primary);color:#fff;padding:18px 16px;position:sticky;top:0;z-index:20}
-.header-inner{max-width:1100px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:15px}
+
+header{
+ background:var(--primary);
+ color:#fff;
+ padding:18px 16px;
+ position:sticky;
+ top:0;
+ z-index:20
+}
+
+.header-inner{
+ max-width:1100px;
+ margin:auto;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:15px
+}
+
 .brand{font-size:20px;font-weight:700}
-.header-user{font-size:13px;opacity:.8;text-align:right}
-.container{max-width:1100px;margin:auto;padding:20px 14px 60px}
-.login-box{max-width:420px;margin:60px auto;background:#fff;padding:25px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.06)}
+
+.header-user{
+ font-size:13px;
+ opacity:.8;
+ text-align:right
+}
+
+.container{
+ max-width:1100px;
+ margin:auto;
+ padding:20px 14px 60px
+}
+
+.login-box{
+ max-width:420px;
+ margin:60px auto;
+ background:#fff;
+ padding:25px;
+ border-radius:16px;
+ box-shadow:0 4px 20px rgba(0,0,0,.06)
+}
+
 h1,h2,h3{margin-top:0}
-input,select,textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 12px;background:#fff;color:var(--text);outline:none}
-input:focus,select:focus,textarea:focus{border-color:#999}
-label{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
+
+input,select,textarea{
+ width:100%;
+ border:1px solid var(--line);
+ border-radius:10px;
+ padding:11px 12px;
+ background:#fff;
+ color:var(--text);
+ outline:none
+}
+
+input:focus,select:focus,textarea:focus{
+ border-color:#999
+}
+
+label{
+ display:block;
+ font-size:13px;
+ font-weight:600;
+ margin-bottom:6px
+}
+
 .field{margin-bottom:14px}
-.btn{border:0;border-radius:10px;padding:10px 15px;background:var(--primary);color:#fff;font-weight:600}
+
+.btn{
+ border:0;
+ border-radius:10px;
+ padding:10px 15px;
+ background:var(--primary);
+ color:#fff;
+ font-weight:600
+}
+
 .btn:hover{opacity:.9}
-.btn.secondary{background:var(--surface2);color:var(--text)}
+
+.btn.secondary{
+ background:var(--surface2);
+ color:var(--text)
+}
+
 .btn.success{background:var(--success)}
 .btn.warning{background:var(--warning)}
 .btn.danger{background:var(--danger)}
 .btn.blue{background:var(--blue)}
-.btn.small{padding:7px 10px;font-size:12px}
-.btn:disabled{opacity:.45;cursor:not-allowed}
-.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
-.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px}
-.stat-label{color:var(--muted);font-size:12px}
-.stat-value{font-size:23px;font-weight:700;margin-top:5px}
+
+.btn.small{
+ padding:7px 10px;
+ font-size:12px
+}
+
+.btn:disabled{
+ opacity:.45;
+ cursor:not-allowed
+}
+
+.toolbar{
+ display:flex;
+ flex-wrap:wrap;
+ gap:8px;
+ margin-bottom:18px
+}
+
+.stats{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:10px;
+ margin-bottom:20px
+}
+
+.stat{
+ background:#fff;
+ border:1px solid var(--line);
+ border-radius:14px;
+ padding:15px
+}
+
+.stat-label{
+ color:var(--muted);
+ font-size:12px
+}
+
+.stat-value{
+ font-size:23px;
+ font-weight:700;
+ margin-top:5px
+}
+
 .money-stats{margin-top:-8px}
+
 .money-stat .stat-value{font-size:19px}
-.period-box{background:#f4eee3;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:13px}
-.money-positive{color:var(--success);font-weight:700}
-.money-warning{color:var(--warning);font-weight:700}
-.card{background:#fff;border:1px solid var(--line);border-radius:15px;padding:16px;margin-bottom:12px}
-.card-top{display:flex;justify-content:space-between;gap:15px;align-items:flex-start}
-.product{font-size:17px;font-weight:700}
-.meta{color:var(--muted);font-size:13px;line-height:1.7;margin-top:7px}
-.badge{display:inline-block;padding:5px 9px;border-radius:20px;font-size:11px;font-weight:700;background:var(--surface2)}
-.badge.success{background:#e4f2e8;color:var(--success)}
-.badge.warning{background:#fff1d7;color:#96610d}
-.badge.danger{background:#fae3e3;color:var(--danger)}
-.badge.blue{background:#e6edf9;color:var(--blue)}
+
+.period-box{
+ background:#f4eee3;
+ border:1px solid var(--line);
+ border-radius:12px;
+ padding:12px 14px;
+ margin-bottom:14px;
+ font-size:13px
+}
+
+.money-positive{
+ color:var(--success);
+ font-weight:700
+}
+
+.money-warning{
+ color:var(--warning);
+ font-weight:700
+}
+
+.card{
+ background:#fff;
+ border:1px solid var(--line);
+ border-radius:15px;
+ padding:16px;
+ margin-bottom:12px
+}
+
+.card-top{
+ display:flex;
+ justify-content:space-between;
+ gap:15px;
+ align-items:flex-start
+}
+
+.product{
+ font-size:17px;
+ font-weight:700
+}
+
+.meta{
+ color:var(--muted);
+ font-size:13px;
+ line-height:1.7;
+ margin-top:7px
+}
+
+.badge{
+ display:inline-block;
+ padding:5px 9px;
+ border-radius:20px;
+ font-size:11px;
+ font-weight:700;
+ background:var(--surface2)
+}
+
+.badge.success{
+ background:#e4f2e8;
+ color:var(--success)
+}
+
+.badge.warning{
+ background:#fff1d7;
+ color:#96610d
+}
+
+.badge.danger{
+ background:#fae3e3;
+ color:var(--danger)
+}
+
+.badge.blue{
+ background:#e6edf9;
+ color:var(--blue)
+}
+
 .progress-wrap{margin-top:13px}
-.progress-info{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px;color:var(--muted)}
-.progress{height:9px;border-radius:20px;background:#e8e4de;overflow:hidden}
-.progress-bar{height:100%;background:var(--primary);border-radius:20px}
-.actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
-.empty{text-align:center;color:var(--muted);padding:40px 20px;background:#fff;border:1px dashed var(--line);border-radius:14px}
-.section-title{margin:25px 0 12px;font-size:18px}
+
+.progress-info{
+ display:flex;
+ justify-content:space-between;
+ font-size:12px;
+ margin-bottom:6px;
+ color:var(--muted)
+}
+
+.progress{
+ height:9px;
+ border-radius:20px;
+ background:#e8e4de;
+ overflow:hidden
+}
+
+.progress-bar{
+ height:100%;
+ background:var(--primary);
+ border-radius:20px
+}
+
+.actions{
+ display:flex;
+ flex-wrap:wrap;
+ gap:7px;
+ margin-top:14px
+}
+
+.empty{
+ text-align:center;
+ color:var(--muted);
+ padding:40px 20px;
+ background:#fff;
+ border:1px dashed var(--line);
+ border-radius:14px
+}
+
+.section-title{
+ margin:25px 0 12px;
+ font-size:18px
+}
+
 .hidden{display:none!important}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;display:flex;align-items:center;justify-content:center;padding:15px}
-.modal-box{width:min(500px,100%);background:#fff;border-radius:16px;padding:20px;max-height:90vh;overflow:auto}
-.totalan-modal-box{width:min(1000px,100%)}
-.modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px}
-.close{border:0;background:transparent;font-size:25px;cursor:pointer}
-.setor-box{background:#f6f3ee;border-radius:12px;padding:14px;margin-top:12px}
-.big-progress{font-size:22px;font-weight:700;margin:4px 0}
+
+.modal{
+ position:fixed;
+ inset:0;
+ background:rgba(0,0,0,.45);
+ z-index:100;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ padding:15px
+}
+
+.modal-box{
+ width:min(500px,100%);
+ background:#fff;
+ border-radius:16px;
+ padding:20px;
+ max-height:90vh;
+ overflow:auto
+}
+
+.totalan-modal-box{
+ width:min(1000px,100%)
+}
+
+.modal-head{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+ margin-bottom:15px
+}
+
+.close{
+ border:0;
+ background:transparent;
+ font-size:25px;
+ cursor:pointer
+}
+
+.setor-box{
+ background:#f6f3ee;
+ border-radius:12px;
+ padding:14px;
+ margin-top:12px
+}
+
+.big-progress{
+ font-size:22px;
+ font-weight:700;
+ margin:4px 0
+}
+
 .table-wrap{overflow:auto}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th,td{border-bottom:1px solid var(--line);padding:10px 7px;text-align:left;white-space:nowrap}
-th{color:var(--muted);font-size:11px;text-transform:uppercase}
-.notice{padding:12px 14px;border-radius:10px;background:#f4eee3;font-size:13px;margin-bottom:15px}
-.payment-info{background:#f6f3ee;border-radius:12px;padding:14px;margin-bottom:15px}
-.toast{position:fixed;right:15px;bottom:15px;background:#292621;color:#fff;padding:12px 16px;border-radius:10px;z-index:200;max-width:330px;box-shadow:0 5px 20px rgba(0,0,0,.2)}
+
+table{
+ width:100%;
+ border-collapse:collapse;
+ font-size:13px
+}
+
+th,td{
+ border-bottom:1px solid var(--line);
+ padding:10px 7px;
+ text-align:left;
+ white-space:nowrap
+}
+
+th{
+ color:var(--muted);
+ font-size:11px;
+ text-transform:uppercase
+}
+
+.notice{
+ padding:12px 14px;
+ border-radius:10px;
+ background:#f4eee3;
+ font-size:13px;
+ margin-bottom:15px
+}
+
+.payment-info{
+ background:#f6f3ee;
+ border-radius:12px;
+ padding:14px;
+ margin-bottom:15px
+}
+
+.toast{
+ position:fixed;
+ right:15px;
+ bottom:15px;
+ background:#292621;
+ color:#fff;
+ padding:12px 16px;
+ border-radius:10px;
+ z-index:200;
+ max-width:330px;
+ box-shadow:0 5px 20px rgba(0,0,0,.2)
+}
+
 .toast.error{background:var(--danger)}
-.total-btn{width:100%;font-size:15px;padding:14px 18px;border-radius:12px;box-shadow:0 3px 8px rgba(0,0,0,.08)}
+
+.total-btn{
+ width:100%;
+ font-size:15px;
+ padding:14px 18px;
+ border-radius:12px;
+ box-shadow:0 3px 8px rgba(0,0,0,.08)
+}
+
 .earnings-card{margin-bottom:20px}
+
 .earnings-card .stat-value{font-size:19px}
+
 .earnings-detail{
  background:#f6f3ee;
  border-radius:12px;
  padding:12px 14px;
  margin-top:12px
 }
+
 .earnings-detail strong{font-size:15px}
+
 .cash-row{
  display:flex;
  justify-content:space-between;
@@ -98,6 +413,7 @@ th{color:var(--muted);font-size:11px;text-transform:uppercase}
  padding:9px 0;
  border-bottom:1px solid var(--line)
 }
+
 .cash-row:last-child{border-bottom:0}
 
 .payment-history-card{
@@ -107,43 +423,52 @@ th{color:var(--muted);font-size:11px;text-transform:uppercase}
  padding:16px;
  margin-bottom:12px
 }
+
 .payment-history-total{
  background:#f4eee3;
  border-radius:12px;
  padding:14px;
  margin-bottom:14px
 }
+
 .payment-history-total .label{
  color:var(--muted);
  font-size:12px
 }
+
 .payment-history-total .amount{
  font-size:23px;
  font-weight:700;
  margin-top:4px
 }
+
 .payment-history-item{
  padding:12px 0;
  border-bottom:1px solid var(--line)
 }
+
 .payment-history-item:last-child{
  border-bottom:0
 }
+
 .payment-history-head{
  display:flex;
  justify-content:space-between;
  align-items:flex-start;
  gap:12px
 }
+
 .payment-history-amount{
  font-size:16px;
  font-weight:700;
  color:var(--success)
 }
+
 .payment-history-date{
  color:var(--muted);
  font-size:12px
 }
+
 .payment-history-note{
  margin-top:7px;
  font-size:13px;
@@ -151,445 +476,1216 @@ th{color:var(--muted);font-size:11px;text-transform:uppercase}
  line-height:1.5
 }
 
-@media(max-width:750px){
- .stats{grid-template-columns:repeat(2,1fr)}
- .card-top{flex-direction:column}
- .header-inner{align-items:flex-start}
- .header-user{font-size:11px}
- .payment-history-head{flex-direction:column}
+/* =====================================================
+   SEARCH + FILTER
+===================================================== */
+
+.list-tools{
+ background:#fff;
+ border:1px solid var(--line);
+ border-radius:14px;
+ padding:12px;
+ margin-bottom:12px;
+ display:grid;
+ grid-template-columns:1fr 190px;
+ gap:8px
 }
+
+.list-tools input,
+.list-tools select{
+ margin:0
+}
+
+.pagination{
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ gap:10px;
+ margin:14px 0 20px;
+ flex-wrap:wrap
+}
+
+.pagination span{
+ font-size:12px;
+ color:var(--muted);
+ min-width:110px;
+ text-align:center
+}
+
+.pagination .btn{
+ min-width:110px
+}
+
+.result-info{
+ font-size:12px;
+ color:var(--muted);
+ margin:-3px 0 12px
+}
+
+@media(max-width:750px){
+
+ .stats{
+  grid-template-columns:repeat(2,1fr)
+ }
+
+ .card-top{
+  flex-direction:column
+ }
+
+ .header-inner{
+  align-items:flex-start
+ }
+
+ .header-user{
+  font-size:11px
+ }
+
+ .payment-history-head{
+  flex-direction:column
+ }
+
+ .list-tools{
+  grid-template-columns:1fr
+ }
+
+ .pagination{
+  gap:6px
+ }
+
+ .pagination .btn{
+  min-width:auto
+ }
+
+}
+
 </style>
 </head>
 
 <body>
 
 <header id="header" class="hidden">
+
 <div class="header-inner">
+
 <div>
-<div class="brand">Garapan Penjahit Kimonik</div>
-<div style="font-size:11px;opacity:.65;margin-top:3px">V41</div>
+
+<div class="brand">
+Garapan Penjahit Kimonik
 </div>
+
+<div style="font-size:11px;opacity:.65;margin-top:3px">
+V42
+</div>
+
+</div>
+
 <div class="header-user">
+
 <div id="userName">-</div>
 <div id="userRole">-</div>
+
 </div>
+
 </div>
+
 </header>
+
 
 <main class="container">
 
+
 <section id="loginPage">
+
 <div class="login-box">
+
 <h2>Garapan Penjahit Kimonik</h2>
-<p style="color:var(--muted);font-size:13px">Silakan masuk untuk mengakses garapan.</p>
+
+<p style="color:var(--muted);font-size:13px">
+Silakan masuk untuk mengakses garapan.
+</p>
 
 <div class="field">
+
 <label>Email</label>
-<input id="loginEmail" type="email" autocomplete="username">
+
+<input
+ id="loginEmail"
+ type="email"
+ autocomplete="username">
+
 </div>
+
 
 <div class="field">
+
 <label>Password</label>
-<input id="loginPassword" type="password" autocomplete="current-password">
+
+<input
+ id="loginPassword"
+ type="password"
+ autocomplete="current-password">
+
 </div>
 
-<button class="btn" style="width:100%" onclick="login()">Masuk</button>
-<div id="loginError" style="color:var(--danger);font-size:13px;margin-top:12px"></div>
+
+<button
+ class="btn"
+ style="width:100%"
+ onclick="login()">
+
+Masuk
+
+</button>
+
+<div
+ id="loginError"
+ style="color:var(--danger);font-size:13px;margin-top:12px">
 </div>
+
+</div>
+
 </section>
+
+
 
 <section id="appPage" class="hidden">
 
+
 <div class="toolbar">
-<button class="btn small" onclick="loadAll()">Refresh</button>
-<button class="btn secondary small" onclick="logout()">Keluar</button>
+
+<button
+ class="btn small"
+ onclick="loadAll()">
+
+Refresh
+
+</button>
+
+<button
+ class="btn secondary small"
+ onclick="logout()">
+
+Keluar
+
+</button>
+
 </div>
+
+
 
 <!-- =====================================================
      ADMIN
 ===================================================== -->
+
 <section id="adminPage" class="hidden">
+
 
 <h2>Approval</h2>
 
 <div class="notice">
+
 Setoran dari penjahit yang sudah selesai akan muncul di sini
 untuk diperiksa dan disetujui Admin.
+
 </div>
 
-<h3 class="section-title" style="margin-top:12px">
+
+<h3
+ class="section-title"
+ style="margin-top:12px">
+
 Setoran Menunggu Approval
+
 </h3>
+
+
+<div class="list-tools">
+
+<input
+ id="adminSetoranSearch"
+ placeholder="Cari produk, SKU, penjahit..."
+ oninput="adminSetoranPage=1;renderAdminSetoran()">
+
+<select
+ id="adminSetoranFilter"
+ onchange="adminSetoranPage=1;renderAdminSetoran()">
+
+<option value="Menunggu">
+Menunggu Approval
+</option>
+
+<option value="all">
+Semua Status
+</option>
+
+<option value="Disetujui">
+Disetujui
+</option>
+
+<option value="Ditolak">
+Ditolak
+</option>
+
+</select>
+
+</div>
+
 
 <div id="adminSetoran"></div>
 
-<h2 class="section-title">Dashboard Admin</h2>
+
+
+<h2 class="section-title">
+Dashboard Admin
+</h2>
+
 
 <div class="stats">
 
-<div class="stat">
-<div class="stat-label">Total Garapan</div>
-<div class="stat-value" id="statGarapan">0</div>
-</div>
 
 <div class="stat">
-<div class="stat-label">Total Order</div>
-<div class="stat-value" id="statOrder">0</div>
+
+<div class="stat-label">
+Total Garapan
 </div>
 
-<div class="stat">
-<div class="stat-label">Sudah Selesai</div>
-<div class="stat-value" id="statSelesai">0</div>
-</div>
-
-<div class="stat">
-<div class="stat-label">Menunggu Approval</div>
-<div class="stat-value" id="statPending">0</div>
+<div
+ class="stat-value"
+ id="statGarapan">
+0
 </div>
 
 </div>
+
+
+<div class="stat">
+
+<div class="stat-label">
+Total Order
+</div>
+
+<div
+ class="stat-value"
+ id="statOrder">
+0
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-label">
+Sudah Selesai
+</div>
+
+<div
+ class="stat-value"
+ id="statSelesai">
+0
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-label">
+Menunggu Approval
+</div>
+
+<div
+ class="stat-value"
+ id="statPending">
+0
+</div>
+
+</div>
+
+
+</div>
+
+
 
 <div class="stats money-stats">
 
-<div class="stat money-stat">
-<div class="stat-label">Total Upah Periode Ini</div>
-<div class="stat-value" id="statUpah">Rp0</div>
-</div>
 
 <div class="stat money-stat">
-<div class="stat-label">Sudah Dibayar</div>
-<div class="stat-value money-positive" id="statDibayar">Rp0</div>
+
+<div class="stat-label">
+Total Upah Periode Ini
 </div>
 
-<div class="stat money-stat">
-<div class="stat-label">Sisa Pembayaran</div>
-<div class="stat-value money-warning" id="statSisa">Rp0</div>
-</div>
-
-<div class="stat money-stat">
-<div class="stat-label">Periode</div>
-<div class="stat-value" id="statPeriode" style="font-size:15px">-</div>
+<div
+ class="stat-value"
+ id="statUpah">
+Rp0
 </div>
 
 </div>
+
+
+<div class="stat money-stat">
+
+<div class="stat-label">
+Sudah Dibayar
+</div>
+
+<div
+ class="stat-value money-positive"
+ id="statDibayar">
+Rp0
+</div>
+
+</div>
+
+
+<div class="stat money-stat">
+
+<div class="stat-label">
+Sisa Pembayaran
+</div>
+
+<div
+ class="stat-value money-warning"
+ id="statSisa">
+Rp0
+</div>
+
+</div>
+
+
+<div class="stat money-stat">
+
+<div class="stat-label">
+Periode
+</div>
+
+<div
+ class="stat-value"
+ id="statPeriode"
+ style="font-size:15px">
+-
+</div>
+
+</div>
+
+
+</div>
+
+
 
 <div style="margin-bottom:20px">
-<button class="btn blue total-btn" onclick="openTotalanMingguan()">
+
+<button
+ class="btn blue total-btn"
+ onclick="openTotalanMingguan()">
+
 TOTALAN MINGGUAN
+
 </button>
+
 </div>
+
+
 
 <div class="card">
-<h3>Tambah Garapan</h3>
+
+<h3>
+Tambah Garapan
+</h3>
+
 
 <div class="field">
+
 <label>Produk</label>
-<input id="addProduk" placeholder="Contoh: Kemeja Tenun">
+
+<input
+ id="addProduk"
+ placeholder="Contoh: Kemeja Tenun">
+
 </div>
 
+
 <div class="field">
+
 <label>SKU</label>
-<input id="addSku" placeholder="SKU">
+
+<input
+ id="addSku"
+ placeholder="SKU">
+
 </div>
 
+
 <div class="field">
+
 <label>Jumlah</label>
-<input id="addJumlah" type="number" min="1" placeholder="Contoh: 10">
+
+<input
+ id="addJumlah"
+ type="number"
+ min="1"
+ placeholder="Contoh: 10">
+
 </div>
 
+
 <div class="field">
+
 <label>Harga / pcs</label>
-<input id="addHarga" type="number" min="0" placeholder="Contoh: 25000">
+
+<input
+ id="addHarga"
+ type="number"
+ min="0"
+ placeholder="Contoh: 25000">
+
 </div>
 
+
 <div class="field">
+
 <label>Pilih Penjahit</label>
+
 <select id="addPenjahitSelect">
-<option value="">Memuat daftar penjahit...</option>
+
+<option value="">
+Memuat daftar penjahit...
+</option>
+
 </select>
 
-<div style="color:var(--muted);font-size:11px;margin-top:5px">
+<div
+ style="color:var(--muted);font-size:11px;margin-top:5px">
+
 Nama penjahit diambil otomatis dari akun dengan role penjahit.
-</div>
+
 </div>
 
+</div>
+
+
 <div class="field">
+
 <label>Tanggal Kirim</label>
-<input id="addTanggal" type="date">
+
+<input
+ id="addTanggal"
+ type="date">
+
 </div>
 
+
 <div class="field">
+
 <label>Target Selesai</label>
-<input id="addTarget" type="date">
+
+<input
+ id="addTarget"
+ type="date">
+
 </div>
+
 
 <div class="field">
+
 <label>Catatan</label>
-<textarea id="addCatatan" rows="3" placeholder="Catatan untuk penjahit..."></textarea>
+
+<textarea
+ id="addCatatan"
+ rows="3"
+ placeholder="Catatan untuk penjahit..."></textarea>
+
 </div>
 
-<button class="btn" onclick="tambahGarapan()">
+
+<button
+ class="btn"
+ onclick="tambahGarapan()">
+
 Tambah Garapan
+
 </button>
 
 </div>
 
-<h3 class="section-title">Daftar Garapan</h3>
+
+
+<h3 class="section-title">
+Daftar Garapan
+</h3>
+
+
+<div class="list-tools">
+
+<input
+ id="adminGarapanSearch"
+ placeholder="Cari produk, SKU, penjahit..."
+ oninput="adminGarapanPage=1;renderAdminGarapan()">
+
+
+<select
+ id="adminGarapanFilter"
+ onchange="adminGarapanPage=1;renderAdminGarapan()">
+
+<option value="all">
+Semua Status
+</option>
+
+<option value="Dikirim">
+Dikirim
+</option>
+
+<option value="Diproses">
+Diproses
+</option>
+
+<option value="Selesai">
+Selesai
+</option>
+
+<option value="Menunggu">
+Menunggu Approval
+</option>
+
+</select>
+
+</div>
+
+
 <div id="adminGarapan"></div>
 
+
 </section>
+
+
 
 
 <!-- =====================================================
      PENJAHIT
 ===================================================== -->
+
 <section id="penjahitPage" class="hidden">
 
-<!-- 1. DASHBOARD PENGHASILAN -->
-<h2>Dashboard Penghasilan</h2>
 
-<div class="period-box">
-<strong>Periode:</strong>
-<span id="penjahitPeriod">-</span><br>
+<!-- 1. RIWAYAT SETORAN -->
 
-<span style="color:var(--muted)">
-Penghasilan dihitung dari setoran yang sudah disetujui Admin.
-</span>
+<h2>
+Riwayat Setoran
+</h2>
+
+
+<div id="penjahitApprovalNotice"></div>
+
+
+<div class="list-tools">
+
+<input
+ id="penjahitSetoranSearch"
+ placeholder="Cari produk atau SKU..."
+ oninput="penjahitSetoranPage=1;renderPenjahitSetoran()">
+
+
+<select
+ id="penjahitSetoranFilter"
+ onchange="penjahitSetoranPage=1;renderPenjahitSetoran()">
+
+<option value="all">
+Semua Status
+</option>
+
+<option value="Menunggu">
+Menunggu Approval
+</option>
+
+<option value="Disetujui">
+Disetujui
+</option>
+
+<option value="Ditolak">
+Ditolak
+</option>
+
+</select>
+
 </div>
 
-<div class="stats money-stats">
 
-<div class="stat money-stat">
-<div class="stat-label">Sudah Setor</div>
-<div class="stat-value" id="penjahitSudahSetor">0 pcs</div>
-</div>
+<div id="penjahitSetoran"></div>
 
-<div class="stat money-stat">
-<div class="stat-label">Sudah Cair</div>
-<div class="stat-value money-positive" id="penjahitSudahCair">Rp0</div>
-</div>
-
-<div class="stat money-stat">
-<div class="stat-label">Belum Cair</div>
-<div class="stat-value money-warning" id="penjahitBelumCair">Rp0</div>
-</div>
-
-<div class="stat money-stat">
-<div class="stat-label">Total Penghasilan</div>
-<div class="stat-value" id="penjahitTotalPenghasilan">Rp0</div>
-</div>
-
-</div>
-
-<div class="notice">
-Penjahit bisa setor sebagian. Contoh:
-<strong>order 10 pcs</strong>,
-bisa setor <strong>5 pcs</strong> terlebih dahulu.
-Setelah disetujui Admin, sisa 5 pcs bisa disetor lagi.
-</div>
 
 
 <!-- 2. RIWAYAT PEMBAYARAN -->
-<h3 class="section-title">Riwayat Pembayaran</h3>
+
+<h3 class="section-title">
+Riwayat Pembayaran
+</h3>
+
+
+<div class="list-tools">
+
+<input
+ id="penjahitPembayaranSearch"
+ placeholder="Cari periode atau catatan..."
+ oninput="penjahitPembayaranPage=1;renderPenjahitPembayaran()">
+
+
+<select
+ id="penjahitPembayaranFilter"
+ onchange="penjahitPembayaranPage=1;renderPenjahitPembayaran()">
+
+<option value="all">
+Semua
+</option>
+
+</select>
+
+</div>
+
 
 <div id="penjahitPembayaran"></div>
 
 
-<!-- 3. GARAPAN SAYA -->
-<h3 class="section-title">Garapan Saya</h3>
+
+<!-- 3. DASHBOARD PENGHASILAN -->
+
+<h3 class="section-title">
+Dashboard Penghasilan
+</h3>
+
+
+<div class="period-box">
+
+<strong>Periode:</strong>
+
+<span id="penjahitPeriod">
+-
+</span>
+
+<br>
+
+<span style="color:var(--muted)">
+
+Penghasilan dihitung dari setoran yang sudah disetujui Admin.
+
+</span>
+
+</div>
+
+
+<div class="stats money-stats">
+
+
+<div class="stat money-stat">
+
+<div class="stat-label">
+Sudah Setor
+</div>
+
+<div
+ class="stat-value"
+ id="penjahitSudahSetor">
+0 pcs
+</div>
+
+</div>
+
+
+<div class="stat money-stat">
+
+<div class="stat-label">
+Sudah Cair
+</div>
+
+<div
+ class="stat-value money-positive"
+ id="penjahitSudahCair">
+Rp0
+</div>
+
+</div>
+
+
+<div class="stat money-stat">
+
+<div class="stat-label">
+Belum Cair
+</div>
+
+<div
+ class="stat-value money-warning"
+ id="penjahitBelumCair">
+Rp0
+</div>
+
+</div>
+
+
+<div class="stat money-stat">
+
+<div class="stat-label">
+Total Penghasilan
+</div>
+
+<div
+ class="stat-value"
+ id="penjahitTotalPenghasilan">
+Rp0
+</div>
+
+</div>
+
+
+</div>
+
+
+<div class="notice">
+
+Penjahit bisa setor sebagian. Contoh:
+<strong>order 10 pcs</strong>,
+bisa setor <strong>5 pcs</strong> terlebih dahulu.
+
+Setelah disetujui Admin, sisa 5 pcs bisa disetor lagi.
+
+</div>
+
+
+
+<!-- 4. GARAPAN SAYA -->
+
+<h3 class="section-title">
+Garapan Saya
+</h3>
+
+
+<div class="list-tools">
+
+<input
+ id="penjahitGarapanSearch"
+ placeholder="Cari produk atau SKU..."
+ oninput="penjahitGarapanPage=1;renderPenjahitGarapan()">
+
+
+<select
+ id="penjahitGarapanFilter"
+ onchange="penjahitGarapanPage=1;renderPenjahitGarapan()">
+
+<option value="all">
+Semua Status
+</option>
+
+<option value="Dikirim">
+Dikirim
+</option>
+
+<option value="Diproses">
+Diproses
+</option>
+
+<option value="Selesai">
+Selesai
+</option>
+
+<option value="Menunggu">
+Menunggu Approval
+</option>
+
+</select>
+
+</div>
+
 
 <div id="penjahitGarapan"></div>
 
 
-<!-- 4. RIWAYAT SETORAN -->
-<h3 class="section-title">Riwayat Setoran</h3>
+</section>
 
-<div id="penjahitApprovalNotice"></div>
-
-<div id="penjahitSetoran"></div>
 
 </section>
 
-</section>
 </main>
+
 
 
 <!-- =====================================================
      MODAL SETOR
 ===================================================== -->
-<div id="setorModal" class="modal hidden">
+
+<div
+ id="setorModal"
+ class="modal hidden">
 
 <div class="modal-box">
 
+
 <div class="modal-head">
-<h3 style="margin:0">Setor Garapan</h3>
-<button class="close" onclick="closeSetorModal()">×</button>
+
+<h3 style="margin:0">
+Setor Garapan
+</h3>
+
+<button
+ class="close"
+ onclick="closeSetorModal()">
+×
+</button>
+
 </div>
+
 
 <div id="setorInfo"></div>
 
+
 <div class="setor-box">
+
 <div style="font-size:13px;color:var(--muted)">
 Jumlah yang bisa disetor
 </div>
 
 <div class="big-progress">
-<span id="setorAvailable">0</span> pcs
+
+<span id="setorAvailable">
+0
+</span>
+
+pcs
+
 </div>
 
 <div style="font-size:12px;color:var(--muted)">
+
 Tidak termasuk setoran yang masih menunggu approval.
-</div>
+
 </div>
 
-<div class="field" style="margin-top:15px">
-<label>Jumlah yang disetor</label>
-<input id="setorJumlah" type="number" min="1" value="1">
 </div>
 
-<button class="btn success" style="width:100%" onclick="submitSetoran()">
+
+<div
+ class="field"
+ style="margin-top:15px">
+
+<label>
+Jumlah yang disetor
+</label>
+
+<input
+ id="setorJumlah"
+ type="number"
+ min="1"
+ value="1">
+
+</div>
+
+
+<button
+ class="btn success"
+ style="width:100%"
+ onclick="submitSetoran()">
+
 Ajukan Approval
+
 </button>
 
+
 </div>
+
 </div>
+
 
 
 <!-- =====================================================
      MODAL EDIT
 ===================================================== -->
-<div id="editModal" class="modal hidden">
+
+<div
+ id="editModal"
+ class="modal hidden">
 
 <div class="modal-box">
 
+
 <div class="modal-head">
-<h3 style="margin:0">Edit Garapan</h3>
-<button class="close" onclick="closeEditModal()">×</button>
-</div>
 
-<input type="hidden" id="editId">
+<h3 style="margin:0">
+Edit Garapan
+</h3>
 
-<div class="field">
-<label>Produk</label>
-<input id="editProduk">
-</div>
-
-<div class="field">
-<label>SKU</label>
-<input id="editSku">
-</div>
-
-<div class="field">
-<label>Jumlah Order</label>
-<input id="editJumlah" type="number" min="1">
-</div>
-
-<div class="field">
-<label>Harga / pcs</label>
-<input id="editHarga" type="number" min="0">
-</div>
-
-<div class="field">
-<label>Penjahit</label>
-<select id="editPenjahitSelect">
-<option value="">Memuat daftar penjahit...</option>
-</select>
-</div>
-
-<div class="field">
-<label>Tanggal Kirim</label>
-<input id="editTanggal" type="date">
-</div>
-
-<div class="field">
-<label>Target Selesai</label>
-<input id="editTarget" type="date">
-</div>
-
-<div class="field">
-<label>Catatan</label>
-<textarea id="editCatatan" rows="3"></textarea>
-</div>
-
-<button class="btn" style="width:100%" onclick="simpanEdit()">
-Simpan Perubahan
+<button
+ class="close"
+ onclick="closeEditModal()">
+×
 </button>
 
 </div>
+
+
+<input
+ type="hidden"
+ id="editId">
+
+
+<div class="field">
+
+<label>Produk</label>
+
+<input id="editProduk">
+
 </div>
+
+
+<div class="field">
+
+<label>SKU</label>
+
+<input id="editSku">
+
+</div>
+
+
+<div class="field">
+
+<label>Jumlah Order</label>
+
+<input
+ id="editJumlah"
+ type="number"
+ min="1">
+
+</div>
+
+
+<div class="field">
+
+<label>Harga / pcs</label>
+
+<input
+ id="editHarga"
+ type="number"
+ min="0">
+
+</div>
+
+
+<div class="field">
+
+<label>Penjahit</label>
+
+<select id="editPenjahitSelect">
+
+<option value="">
+Memuat daftar penjahit...
+</option>
+
+</select>
+
+</div>
+
+
+<div class="field">
+
+<label>Tanggal Kirim</label>
+
+<input
+ id="editTanggal"
+ type="date">
+
+</div>
+
+
+<div class="field">
+
+<label>Target Selesai</label>
+
+<input
+ id="editTarget"
+ type="date">
+
+</div>
+
+
+<div class="field">
+
+<label>Catatan</label>
+
+<textarea
+ id="editCatatan"
+ rows="3"></textarea>
+
+</div>
+
+
+<button
+ class="btn"
+ style="width:100%"
+ onclick="simpanEdit()">
+
+Simpan Perubahan
+
+</button>
+
+
+</div>
+
+</div>
+
 
 
 <!-- =====================================================
      MODAL TOTALAN
 ===================================================== -->
-<div id="totalanModal" class="modal hidden">
 
-<div class="modal-box totalan-modal-box">
+<div
+ id="totalanModal"
+ class="modal hidden">
+
+<div
+ class="modal-box totalan-modal-box">
+
 
 <div class="modal-head">
-<h3 style="margin:0">Totalan Mingguan</h3>
-<button class="close" onclick="closeTotalanModal()">×</button>
+
+<h3 style="margin:0">
+Totalan Mingguan
+</h3>
+
+<button
+ class="close"
+ onclick="closeTotalanModal()">
+×
+</button>
+
 </div>
+
 
 <div class="period-box">
 
 <strong>Periode:</strong>
-<span id="totalanPeriod">-</span><br>
+
+<span id="totalanPeriod">
+-
+</span>
+
+<br>
 
 <span style="color:var(--muted)">
+
 Yang dihitung adalah setoran yang sudah
 <strong>Disetujui</strong>.
+
 Periode berdasarkan tanggal approval.
+
 </span>
 
 </div>
 
+
 <div id="totalanContent"></div>
 
+
 </div>
+
 </div>
+
 
 
 <!-- =====================================================
      MODAL PEMBAYARAN
 ===================================================== -->
-<div id="paymentModal" class="modal hidden">
+
+<div
+ id="paymentModal"
+ class="modal hidden">
 
 <div class="modal-box">
 
+
 <div class="modal-head">
-<h3 style="margin:0">Bayar Upah</h3>
-<button class="close" onclick="closePaymentModal()">×</button>
-</div>
 
-<div id="paymentInfo" class="payment-info"></div>
+<h3 style="margin:0">
+Bayar Upah
+</h3>
 
-<input type="hidden" id="paymentTailorId">
-
-<div class="field">
-<label>Jumlah Dibayar</label>
-<input id="paymentAmount" type="number" min="1" placeholder="Contoh: 500000">
-</div>
-
-<div class="field">
-<label>Catatan</label>
-<textarea id="paymentNote" rows="3" placeholder="Contoh: pembayaran minggu ini"></textarea>
-</div>
-
-<button class="btn success" style="width:100%" onclick="simpanPembayaran()">
-Simpan Pembayaran
+<button
+ class="close"
+ onclick="closePaymentModal()">
+×
 </button>
 
 </div>
+
+
+<div
+ id="paymentInfo"
+ class="payment-info">
 </div>
 
-<div id="toast" class="toast hidden"></div>
+
+<input
+ type="hidden"
+ id="paymentTailorId">
+
+
+<div class="field">
+
+<label>
+Jumlah Dibayar
+</label>
+
+<input
+ id="paymentAmount"
+ type="number"
+ min="1"
+ placeholder="Contoh: 500000">
+
+</div>
+
+
+<div class="field">
+
+<label>
+Catatan
+</label>
+
+<textarea
+ id="paymentNote"
+ rows="3"
+ placeholder="Contoh: pembayaran minggu ini"></textarea>
+
+</div>
+
+
+<button
+ class="btn success"
+ style="width:100%"
+ onclick="simpanPembayaran()">
+
+Simpan Pembayaran
+
+</button>
+
+
+</div>
+
+</div>
+
+
+<div
+ id="toast"
+ class="toast hidden">
+</div>
+
 
 
 <script>
 
-const SUPABASE_URL="https://ilxahxzrtzpzhnlskfns.supabase.co";
-const SUPABASE_KEY="sb_publishable_eetxbGhYGFLhJdXhiU2W0A_qG63dTyU";
+const SUPABASE_URL=
+"https://ilxahxzrtzpzhnlskfns.supabase.co";
+
+const SUPABASE_KEY=
+"sb_publishable_eetxbGhYGFLhJdXhiU2W0A_qG63dTyU";
+
 
 const supabaseClient=
 supabase.createClient(
@@ -597,20 +1693,247 @@ supabase.createClient(
  SUPABASE_KEY
 );
 
+
 let currentUser=null,
     currentProfile=null;
+
 
 let garapanList=[],
     setoranList=[],
     penjahitList=[],
     pembayaranList=[];
 
+
 let selectedSetorGarapan=null;
 
 
+/* =====================================================
+   PAGINATION
+===================================================== */
+
+const PAGE_SIZE=10;
+
+let adminGarapanPage=1;
+let adminSetoranPage=1;
+let penjahitGarapanPage=1;
+let penjahitSetoranPage=1;
+let penjahitPembayaranPage=1;
+
+
+function totalPages(total){
+
+ return Math.max(
+  1,
+  Math.ceil(
+   Number(total||0)/PAGE_SIZE
+  )
+ );
+
+}
+
+
+function clampPage(page,total){
+
+ const pages=
+  totalPages(total);
+
+ return Math.min(
+  Math.max(1,page),
+  pages
+ );
+
+}
+
+
+function paginationHtml(
+ page,
+ total,
+ changeFunction
+){
+
+ const pages=
+  totalPages(total);
+
+ return `
+
+ <div class="pagination">
+
+  <button
+   class="btn secondary small"
+   onclick="${changeFunction}(-1)"
+   ${page<=1?"disabled":""}>
+
+   ← Sebelumnya
+
+  </button>
+
+
+  <span>
+
+   Halaman
+   <strong>${page}</strong>
+   dari
+   <strong>${pages}</strong>
+
+  </span>
+
+
+  <button
+   class="btn secondary small"
+   onclick="${changeFunction}(1)"
+   ${page>=pages?"disabled":""}>
+
+   Berikutnya →
+
+  </button>
+
+ </div>
+
+ `;
+
+}
+
+
+function resultInfoHtml(
+ shown,
+ total
+){
+
+ if(!total)
+  return "";
+
+ return `
+
+ <div class="result-info">
+
+ Menampilkan
+ <strong>${shown}</strong>
+ dari
+ <strong>${total}</strong>
+ data
+
+ </div>
+
+ `;
+
+}
+
+
+function changeAdminGarapanPage(delta){
+
+ adminGarapanPage=
+  Math.max(
+   1,
+   adminGarapanPage+delta
+  );
+
+ renderAdminGarapan();
+
+}
+
+
+function changeAdminSetoranPage(delta){
+
+ adminSetoranPage=
+  Math.max(
+   1,
+   adminSetoranPage+delta
+  );
+
+ renderAdminSetoran();
+
+}
+
+
+function changePenjahitGarapanPage(delta){
+
+ penjahitGarapanPage=
+  Math.max(
+   1,
+   penjahitGarapanPage+delta
+  );
+
+ renderPenjahitGarapan();
+
+}
+
+
+function changePenjahitSetoranPage(delta){
+
+ penjahitSetoranPage=
+  Math.max(
+   1,
+   penjahitSetoranPage+delta
+  );
+
+ renderPenjahitSetoran();
+
+}
+
+
+function changePenjahitPembayaranPage(delta){
+
+ penjahitPembayaranPage=
+  Math.max(
+   1,
+   penjahitPembayaranPage+delta
+  );
+
+ renderPenjahitPembayaran();
+
+}
+
+
+/* =====================================================
+   SEARCH HELPER
+===================================================== */
+
+function textMatch(
+ values,
+ search
+){
+
+ if(!search)
+  return true;
+
+ const haystack=
+  values
+  .map(v=>String(v??""))
+  .join(" ")
+  .toLowerCase();
+
+ return haystack.includes(
+  search.toLowerCase()
+ );
+
+}
+
+
+function getGarapanFilterStatus(
+ garapan
+){
+
+ const pending=
+  getPendingQty(
+   garapan.id
+  );
+
+ if(pending>0)
+  return "Menunggu";
+
+ return garapan.status||"";
+
+}
+
+
+/* =====================================================
+   BASIC
+===================================================== */
+
 function esc(value){
 
- if(value===null||value===undefined)
+ if(value===null||
+    value===undefined)
   return "";
 
  return String(value)
@@ -619,6 +1942,7 @@ function esc(value){
  .replaceAll(">","&gt;")
  .replaceAll('"',"&quot;")
  .replaceAll("'","&#039;");
+
 }
 
 
@@ -631,7 +1955,9 @@ function rupiah(value){
    currency:"IDR",
    maximumFractionDigits:0
   }
- ).format(Number(value||0));
+ ).format(
+  Number(value||0)
+ );
 
 }
 
@@ -649,7 +1975,12 @@ function parseLocalDate(value){
   const [y,m,d]=
    value.split("-").map(Number);
 
-  return new Date(y,m-1,d);
+  return new Date(
+   y,
+   m-1,
+   d
+  );
+
  }
 
  return new Date(value);
@@ -687,8 +2018,12 @@ function dateKey(d){
 
  return [
   d.getFullYear(),
-  String(d.getMonth()+1).padStart(2,"0"),
-  String(d.getDate()).padStart(2,"0")
+  String(
+   d.getMonth()+1
+  ).padStart(2,"0"),
+  String(
+   d.getDate()
+  ).padStart(2,"0")
  ].join("-");
 
 }
@@ -699,19 +2034,24 @@ function dateKeyID(value){
  if(!value)
   return "-";
 
- const p=String(value).split("-");
+ const p=
+  String(value).split("-");
 
  if(p.length!==3)
   return "-";
 
- const y=Number(p[0]),
-       m=Number(p[1]),
-       d=Number(p[2]);
+ const y=Number(p[0]);
+ const m=Number(p[1]);
+ const d=Number(p[2]);
 
  if(!y||!m||!d)
   return "-";
 
- return new Date(y,m-1,d)
+ return new Date(
+  y,
+  m-1,
+  d
+ )
  .toLocaleDateString(
   "id-ID",
   {
@@ -724,24 +2064,33 @@ function dateKeyID(value){
 }
 
 
-function getWeeklyPeriod(dateValue){
+function getWeeklyPeriod(
+ dateValue
+){
 
- const local=parseLocalDate(dateValue);
+ const local=
+  parseLocalDate(dateValue);
 
- local.setHours(0,0,0,0);
+ local.setHours(
+  0,0,0,0
+ );
 
- const day=local.getDay();
+ const day=
+  local.getDay();
 
  const diffFromThursday=
   (day-4+7)%7;
 
- const start=new Date(local);
+ const start=
+  new Date(local);
 
  start.setDate(
-  local.getDate()-diffFromThursday
+  local.getDate()-
+  diffFromThursday
  );
 
- const end=new Date(start);
+ const end=
+  new Date(start);
 
  end.setDate(
   start.getDate()+6
@@ -757,24 +2106,41 @@ function getWeeklyPeriod(dateValue){
 }
 
 
-function periodLabel(period){
+function periodLabel(
+ period
+){
 
- return dateKeyID(period.startKey)
+ return dateKeyID(
+  period.startKey
+ )
  +" – "+
- dateKeyID(period.endKey);
+ dateKeyID(
+  period.endKey
+ );
 
 }
 
 
-function showToast(message,error=false){
+function showToast(
+ message,
+ error=false
+){
 
- const el=document.getElementById("toast");
+ const el=
+  document.getElementById(
+   "toast"
+  );
 
  el.textContent=message;
 
- el.classList.remove("hidden");
+ el.classList.remove(
+  "hidden"
+ );
 
- el.classList.toggle("error",error);
+ el.classList.toggle(
+  "error",
+  error
+ );
 
  setTimeout(
   ()=>el.classList.add("hidden"),
@@ -784,7 +2150,9 @@ function showToast(message,error=false){
 }
 
 
-function statusBadge(status){
+function statusBadge(
+ status
+){
 
  let cls="";
 
@@ -801,9 +2169,13 @@ function statusBadge(status){
   cls="danger";
 
  return `
+
  <span class="badge ${cls}">
+
  ${esc(status||"-")}
+
  </span>
+
  `;
 
 }
@@ -816,11 +2188,13 @@ function statusBadge(status){
 async function login(){
 
  const email=
-  document.getElementById("loginEmail")
+  document
+  .getElementById("loginEmail")
   .value.trim();
 
  const password=
-  document.getElementById("loginPassword")
+  document
+  .getElementById("loginPassword")
   .value;
 
  document.getElementById(
@@ -848,7 +2222,8 @@ async function login(){
 
   document.getElementById(
    "loginError"
-  ).textContent=error.message;
+  ).textContent=
+   error.message;
 
   return;
  }
@@ -895,7 +2270,10 @@ async function loadProfile(){
  await supabaseClient
  .from("profiles")
  .select("*")
- .eq("id",currentUser.id)
+ .eq(
+  "id",
+  currentUser.id
+ )
  .single();
 
  if(error){
@@ -1090,9 +2468,15 @@ function renderPenjahitDropdown(){
  penjahitList.forEach(p=>{
 
   options+=`
+
    <option value="${esc(p.id)}">
-    ${esc(getPenjahitName(p))}
+
+    ${esc(
+     getPenjahitName(p)
+    )}
+
    </option>
+
   `;
 
  });
@@ -1127,7 +2511,10 @@ async function loadGarapan(){
   supabaseClient
   .from("garapan_penjahit")
   .select("*")
-  .order("created_at",{ascending:false});
+  .order(
+   "created_at",
+   {ascending:false}
+  );
 
  const role=
   String(currentProfile.role||"")
@@ -1141,7 +2528,8 @@ async function loadGarapan(){
     currentUser.id
    );
 
- const {data,error}=await query;
+ const {data,error}=
+ await query;
 
  if(error){
 
@@ -1167,7 +2555,10 @@ async function loadSetoran(){
   supabaseClient
   .from("garapan_setoran")
   .select("*")
-  .order("created_at",{ascending:false});
+  .order(
+   "created_at",
+   {ascending:false}
+  );
 
  const role=
   String(currentProfile.role||"")
@@ -1181,7 +2572,8 @@ async function loadSetoran(){
     currentUser.id
    );
 
- const {data,error}=await query;
+ const {data,error}=
+ await query;
 
  if(error){
 
@@ -1207,7 +2599,10 @@ async function loadPembayaran(){
  await supabaseClient
  .from("garapan_pembayaran")
  .select("*")
- .order("created_at",{ascending:false});
+ .order(
+  "created_at",
+  {ascending:false}
+ );
 
  if(error){
 
@@ -1270,7 +2665,8 @@ function renderAdminStats(){
  ).textContent=
   garapanList.reduce(
    (a,x)=>
-    a+Number(x.jumlah||0),
+    a+
+    Number(x.jumlah||0),
    0
   );
 
@@ -1279,7 +2675,8 @@ function renderAdminStats(){
  ).textContent=
   garapanList.reduce(
    (a,x)=>
-    a+Number(x.jumlah_selesai||0),
+    a+
+    Number(x.jumlah_selesai||0),
    0
   );
 
@@ -1321,7 +2718,7 @@ function getApprovedItemsForPeriod(){
     key<=period.endKey
    );
 
-  });
+ });
 
  return {
   period,
@@ -1348,7 +2745,10 @@ function getPaidForTailor(
  )
  .reduce(
   (t,p)=>
-   t+Number(p.jumlah_dibayar||0),
+   t+
+   Number(
+    p.jumlah_dibayar||0
+   ),
   0
  );
 
@@ -1385,10 +2785,14 @@ function getWeeklySummary(){
    return;
 
   const qty=
-   Number(s.jumlah_diajukan||0);
+   Number(
+    s.jumlah_diajukan||0
+   );
 
   const price=
-   Number(g.harga_per_pcs||0);
+   Number(
+    g.harga_per_pcs||0
+   );
 
   const upah=
    qty*price;
@@ -1571,10 +2975,13 @@ async function openTotalanMingguan(){
   </div>
 
   <div style="font-size:23px;font-weight:700;margin-top:4px">
+
    ${rupiah(total)}
+
   </div>
 
   <div class="meta">
+
    Sudah dibayar:
    <strong>${rupiah(paid)}</strong>
 
@@ -1582,9 +2989,11 @@ async function openTotalanMingguan(){
 
    Sisa:
    <strong>${rupiah(remain)}</strong>
+
   </div>
 
  </div>
+
 
  <div class="card">
 
@@ -1593,7 +3002,9 @@ async function openTotalanMingguan(){
  <table>
 
  <thead>
+
  <tr>
+
   <th>Penjahit</th>
   <th>Pcs</th>
   <th>Harga / pcs</th>
@@ -1601,7 +3012,9 @@ async function openTotalanMingguan(){
   <th>Dibayar</th>
   <th>Sisa</th>
   <th>Aksi</th>
+
  </tr>
+
  </thead>
 
  <tbody>
@@ -1622,6 +3035,7 @@ async function openTotalanMingguan(){
    :"Bervariasi";
 
   return `
+
   <tr>
 
    <td>
@@ -1662,6 +3076,7 @@ async function openTotalanMingguan(){
     row.remaining>0
 
     ?`
+
      <button
       class="btn success small"
       onclick="openPaymentModal(
@@ -1670,20 +3085,26 @@ async function openTotalanMingguan(){
        ${row.total},
        ${row.paid}
       )">
+
       Bayar
+
      </button>
+
     `
 
     :`
+
      <span class="badge success">
       Lunas
      </span>
+
     `
    }
 
    </td>
 
   </tr>
+
   `;
 
  }).join("")}
@@ -1696,6 +3117,7 @@ async function openTotalanMingguan(){
 
  </div>
 
+
  <div class="card">
 
  <h3 style="font-size:15px">
@@ -1704,7 +3126,8 @@ async function openTotalanMingguan(){
 
  ${summary.map(row=>`
 
- <div style="padding:12px 0;border-bottom:1px solid var(--line)">
+ <div
+  style="padding:12px 0;border-bottom:1px solid var(--line)">
 
   <strong>
    ${esc(row.tailorName)}
@@ -1958,7 +3381,8 @@ async function simpanPembayaran(){
  .from("garapan_pembayaran")
  .insert({
 
-  penjahit_user_id:tailorId,
+  penjahit_user_id:
+   tailorId,
 
   periode_mulai:
    period.startKey,
@@ -2000,7 +3424,9 @@ async function simpanPembayaran(){
 
  if(
   !document
-   .getElementById("totalanModal")
+   .getElementById(
+    "totalanModal"
+   )
    .classList
    .contains("hidden")
  ){
@@ -2031,8 +3457,81 @@ function renderAdminGarapan(){
   return;
  }
 
+ const search=
+  (
+   document.getElementById(
+    "adminGarapanSearch"
+   )?.value||""
+  ).trim().toLowerCase();
+
+ const filter=
+  document.getElementById(
+   "adminGarapanFilter"
+  )?.value||"all";
+
+
+ const filtered=
+  garapanList.filter(x=>{
+
+   const matchSearch=
+    textMatch(
+     [
+      x.produk,
+      x.sku,
+      x.penjahit
+     ],
+     search
+    );
+
+   if(!matchSearch)
+    return false;
+
+   if(filter==="all")
+    return true;
+
+   return(
+    getGarapanFilterStatus(x)===
+    filter
+   );
+
+  });
+
+
+ adminGarapanPage=
+  clampPage(
+   adminGarapanPage,
+   filtered.length
+  );
+
+
+ const start=
+  (adminGarapanPage-1)*
+  PAGE_SIZE;
+
+ const pageItems=
+  filtered.slice(
+   start,
+   start+PAGE_SIZE
+  );
+
+
+ if(!pageItems.length){
+
+  el.innerHTML=
+   '<div class="empty">Data tidak ditemukan.</div>';
+
+  return;
+ }
+
+
  el.innerHTML=
- garapanList.map(x=>{
+
+ resultInfoHtml(
+  pageItems.length,
+  filtered.length
+ )+
+
+ pageItems.map(x=>{
 
   const jumlah=
    Number(x.jumlah||0);
@@ -2103,6 +3602,7 @@ function renderAdminGarapan(){
 
   </div>
 
+
   <div class="progress-wrap">
 
    <div class="progress-info">
@@ -2127,6 +3627,7 @@ function renderAdminGarapan(){
    </div>
 
   </div>
+
 
   <div
    class="meta"
@@ -2153,45 +3654,65 @@ function renderAdminGarapan(){
 
   </div>
 
+
   ${
    x.catatan
+
    ?`
+
     <div
      class="notice"
      style="margin-top:12px">
+
      ${esc(x.catatan)}
+
     </div>
+
    `
+
    :""
   }
 
+
   <div class="actions">
+
 
    <button
     class="btn secondary small"
     onclick="openEdit('${x.id}')">
+
     Edit
+
    </button>
+
 
    ${
     selesai<jumlah
 
     ?`
+
      <button
       class="btn blue small"
       onclick="adminSetStatus('${x.id}')">
+
       Update Status
+
      </button>
+
     `
 
     :""
    }
 
+
    <button
     class="btn danger small"
     onclick="hapusGarapan('${x.id}')">
+
     Hapus
+
    </button>
+
 
   </div>
 
@@ -2199,7 +3720,13 @@ function renderAdminGarapan(){
 
   `;
 
- }).join("");
+ }).join("")+
+
+ paginationHtml(
+  adminGarapanPage,
+  filtered.length,
+  "changeAdminGarapanPage"
+ );
 
 }
 
@@ -2215,21 +3742,92 @@ function renderAdminSetoran(){
    "adminSetoran"
   );
 
+ const search=
+  (
+   document.getElementById(
+    "adminSetoranSearch"
+   )?.value||""
+  ).trim().toLowerCase();
+
+ const filter=
+  document.getElementById(
+   "adminSetoranFilter"
+  )?.value||"Menunggu";
+
+
  const pending=
-  setoranList.filter(
-   x=>x.status==="Menunggu"
+  setoranList.filter(s=>{
+
+   const g=
+    garapanList.find(
+     x=>
+      String(x.id)===
+      String(s.garapan_id)
+    );
+
+   const matchSearch=
+    textMatch(
+     [
+      g?.produk,
+      g?.sku,
+      g?.penjahit
+     ],
+     search
+    );
+
+   if(!matchSearch)
+    return false;
+
+   if(filter==="all")
+    return true;
+
+   return s.status===filter;
+
+  });
+
+
+ adminSetoranPage=
+  clampPage(
+   adminSetoranPage,
+   pending.length
   );
+
 
  if(!pending.length){
 
+  const text=
+   filter==="Menunggu"
+   ?"Tidak ada setoran yang menunggu approval."
+   :"Data setoran tidak ditemukan.";
+
   el.innerHTML=
-   '<div class="empty">Tidak ada setoran yang menunggu approval.</div>';
+   '<div class="empty">'+
+   text+
+   '</div>';
 
   return;
  }
 
+
+ const start=
+  (adminSetoranPage-1)*
+  PAGE_SIZE;
+
+ const pageItems=
+  pending.slice(
+   start,
+   start+PAGE_SIZE
+  );
+
+
  el.innerHTML=
- pending.map(s=>{
+
+ resultInfoHtml(
+  pageItems.length,
+  pending.length
+ )+
+
+ pageItems.map(s=>{
 
   const g=
    garapanList.find(
@@ -2260,7 +3858,12 @@ function renderAdminSetoran(){
   <div>
 
    <div class="product">
-    ${esc(g?.produk||"Garapan")}
+
+    ${esc(
+     g?.produk||
+     "Garapan"
+    )}
+
    </div>
 
    <div class="meta">
@@ -2269,20 +3872,24 @@ function renderAdminSetoran(){
     <strong>
      ${esc(g?.penjahit||"-")}
     </strong>
+
     <br>
 
     Order awal:
     ${order} pcs
+
     <br>
 
     Sudah disetujui:
     ${selesai} pcs
+
     <br>
 
     Diajukan sekarang:
     <strong>
      ${qty} pcs
     </strong>
+
     <br>
 
     Sisa setelah approval:
@@ -2295,29 +3902,63 @@ function renderAdminSetoran(){
 
   </div>
 
+
   <div>
    ${statusBadge(s.status)}
   </div>
 
+
   </div>
+
 
   <div class="actions">
 
-   <button
-    class="btn success"
-    onclick="approveSetoran('${s.id}')">
+  ${
+   s.status==="Menunggu"
 
-    Approve ${qty} pcs
+   ?`
 
-   </button>
+    <button
+     class="btn success"
+     onclick="approveSetoran('${s.id}')">
 
-   <button
-    class="btn danger small"
-    onclick="rejectSetoran('${s.id}')">
+     Approve ${qty} pcs
 
-    Tolak
+    </button>
 
-   </button>
+    <button
+     class="btn danger small"
+     onclick="rejectSetoran('${s.id}')">
+
+     Tolak
+
+    </button>
+
+   `
+
+   :""
+
+  }
+
+
+  ${
+   s.status!=="Menunggu"
+
+   ?`
+
+    <span
+     class="meta"
+     style="align-self:center">
+
+     Setoran sudah diproses.
+
+    </span>
+
+   `
+
+   :""
+
+  }
 
   </div>
 
@@ -2325,7 +3966,13 @@ function renderAdminSetoran(){
 
   `;
 
- }).join("");
+ }).join("")+
+
+ paginationHtml(
+  adminSetoranPage,
+  pending.length,
+  "changeAdminSetoranPage"
+ );
 
 }
 
@@ -2391,6 +4038,7 @@ function getPenjahitWeeklyData(){
 
   });
 
+
  const totalPenghasilan=
   approved.reduce(
    (total,s)=>{
@@ -2417,6 +4065,7 @@ function getPenjahitWeeklyData(){
    0
   );
 
+
  const sudahCair=
   pembayaranList
   .filter(p=>
@@ -2440,12 +4089,14 @@ function getPenjahitWeeklyData(){
    0
   );
 
+
  const belumCair=
   Math.max(
    0,
    totalPenghasilan-
    sudahCair
   );
+
 
  return {
 
@@ -2524,8 +4175,79 @@ function renderPenjahitGarapan(){
  const weekly=
   getPenjahitWeeklyData();
 
+ const search=
+  (
+   document.getElementById(
+    "penjahitGarapanSearch"
+   )?.value||""
+  ).trim().toLowerCase();
+
+ const filter=
+  document.getElementById(
+   "penjahitGarapanFilter"
+  )?.value||"all";
+
+
+ const filtered=
+  garapanList.filter(x=>{
+
+   if(
+    !textMatch(
+     [
+      x.produk,
+      x.sku
+     ],
+     search
+    )
+   )
+    return false;
+
+   if(filter==="all")
+    return true;
+
+   return(
+    getGarapanFilterStatus(x)===
+    filter
+   );
+
+  });
+
+
+ penjahitGarapanPage=
+  clampPage(
+   penjahitGarapanPage,
+   filtered.length
+  );
+
+
+ if(!filtered.length){
+
+  el.innerHTML=
+   '<div class="empty">Data garapan tidak ditemukan.</div>';
+
+  return;
+ }
+
+
+ const start=
+  (penjahitGarapanPage-1)*
+  PAGE_SIZE;
+
+ const pageItems=
+  filtered.slice(
+   start,
+   start+PAGE_SIZE
+  );
+
+
  el.innerHTML=
- garapanList.map(x=>{
+
+ resultInfoHtml(
+  pageItems.length,
+  filtered.length
+ )+
+
+ pageItems.map(x=>{
 
   const jumlah=
    Number(x.jumlah||0);
@@ -2573,6 +4295,7 @@ function renderPenjahitGarapan(){
     x.harga_per_pcs||0
    );
 
+
   return `
 
   <div class="card">
@@ -2589,6 +4312,7 @@ function renderPenjahitGarapan(){
 
     SKU:
     ${esc(x.sku||"-")}
+
     <br>
 
     Harga:
@@ -2596,6 +4320,7 @@ function renderPenjahitGarapan(){
      ${rupiah(x.harga_per_pcs)}
     </strong>
     / pcs
+
     <br>
 
     Target:
@@ -2605,11 +4330,13 @@ function renderPenjahitGarapan(){
 
   </div>
 
+
   <div>
    ${statusBadge(x.status)}
   </div>
 
   </div>
+
 
   <div class="progress-wrap">
 
@@ -2625,6 +4352,7 @@ function renderPenjahitGarapan(){
 
    </div>
 
+
    <div class="progress">
 
     <div
@@ -2636,7 +4364,9 @@ function renderPenjahitGarapan(){
 
   </div>
 
+
   <div class="earnings-detail">
+
 
    <div class="cash-row">
 
@@ -2650,6 +4380,7 @@ function renderPenjahitGarapan(){
 
    </div>
 
+
    <div class="cash-row">
 
     <span>
@@ -2661,6 +4392,7 @@ function renderPenjahitGarapan(){
     </strong>
 
    </div>
+
 
    <div class="cash-row">
 
@@ -2674,6 +4406,7 @@ function renderPenjahitGarapan(){
 
    </div>
 
+
    <div class="cash-row">
 
     <span>
@@ -2686,19 +4419,28 @@ function renderPenjahitGarapan(){
 
    </div>
 
+
   </div>
+
 
   ${
    x.catatan
+
    ?`
+
     <div
      class="notice"
      style="margin-top:12px">
+
      ${esc(x.catatan)}
+
     </div>
+
    `
+
    :""
   }
+
 
   <div class="actions">
 
@@ -2706,29 +4448,42 @@ function renderPenjahitGarapan(){
    available>0
 
    ?`
+
     <button
      class="btn success"
      onclick="openSetorModal('${x.id}')">
+
      Setor / Ajukan Approval
+
     </button>
+
    `
 
    :pending>0
 
    ?`
+
     <button
      class="btn secondary"
      disabled>
-     Menunggu Approval ${pending} pcs
+
+     Menunggu Approval
+     ${pending} pcs
+
     </button>
+
    `
 
    :`
+
     <button
      class="btn secondary"
      disabled>
+
      Sudah Selesai
+
     </button>
+
    `
   }
 
@@ -2738,7 +4493,13 @@ function renderPenjahitGarapan(){
 
   `;
 
- }).join("");
+ }).join("")+
+
+ paginationHtml(
+  penjahitGarapanPage,
+  filtered.length,
+  "changePenjahitGarapanPage"
+ );
 
 }
 
@@ -2762,7 +4523,84 @@ function renderPenjahitSetoran(){
   return;
  }
 
- el.innerHTML=`
+
+ const search=
+  (
+   document.getElementById(
+    "penjahitSetoranSearch"
+   )?.value||""
+  ).trim().toLowerCase();
+
+ const filter=
+  document.getElementById(
+   "penjahitSetoranFilter"
+  )?.value||"all";
+
+
+ const filtered=
+  setoranList.filter(s=>{
+
+   const g=
+    garapanList.find(
+     x=>
+      String(x.id)===
+      String(s.garapan_id)
+    );
+
+   if(
+    !textMatch(
+     [
+      g?.produk,
+      g?.sku
+     ],
+     search
+    )
+   )
+    return false;
+
+   if(filter==="all")
+    return true;
+
+   return s.status===filter;
+
+  });
+
+
+ penjahitSetoranPage=
+  clampPage(
+   penjahitSetoranPage,
+   filtered.length
+  );
+
+
+ if(!filtered.length){
+
+  el.innerHTML=
+   '<div class="empty">Data setoran tidak ditemukan.</div>';
+
+  return;
+ }
+
+
+ const start=
+  (penjahitSetoranPage-1)*
+  PAGE_SIZE;
+
+ const pageItems=
+  filtered.slice(
+   start,
+   start+PAGE_SIZE
+  );
+
+
+ el.innerHTML=
+
+ resultInfoHtml(
+  pageItems.length,
+  filtered.length
+ )+
+
+ `
 
  <div class="card">
 
@@ -2785,9 +4623,10 @@ function renderPenjahitSetoran(){
 
  </thead>
 
+
  <tbody>
 
- ${setoranList.map(s=>{
+ ${pageItems.map(s=>{
 
   const g=
    garapanList.find(
@@ -2811,6 +4650,7 @@ function renderPenjahitSetoran(){
    ?qty*price
    :0;
 
+
   return `
 
   <tr>
@@ -2833,27 +4673,34 @@ function renderPenjahitSetoran(){
      s.status==="Disetujui"
 
      ?`
+
       <strong>
        ${rupiah(nominal)}
       </strong>
+
      `
 
      :`
+
       <span style="color:var(--muted)">
        Belum dihitung
       </span>
+
      `
     }
 
    </td>
 
+
    <td>
     ${statusBadge(s.status)}
    </td>
 
+
    <td>
     ${dateID(s.created_at)}
    </td>
+
 
   </tr>
 
@@ -2869,7 +4716,13 @@ function renderPenjahitSetoran(){
 
  </div>
 
- `;
+ `+
+
+ paginationHtml(
+  penjahitSetoranPage,
+  filtered.length,
+  "changePenjahitSetoranPage"
+ );
 
 }
 
@@ -2921,9 +4774,12 @@ function renderPenjahitApprovalNotice(){
   ">
 
   <strong>
+
    ${pending.length}
    setoran menunggu approval Admin
+
   </strong>
+
 
   <div
    style="
@@ -2958,6 +4814,7 @@ function renderPenjahitPembayaran(){
  if(!el)
   return;
 
+
  const myPayments=
   pembayaranList
   .filter(
@@ -2971,6 +4828,7 @@ function renderPenjahitPembayaran(){
     new Date(a.created_at||0)
   );
 
+
  if(!myPayments.length){
 
   el.innerHTML=`
@@ -2978,7 +4836,9 @@ function renderPenjahitPembayaran(){
    <div class="payment-history-card">
 
     <div class="empty">
+
      Belum ada pembayaran yang tercatat.
+
     </div>
 
    </div>
@@ -2987,6 +4847,55 @@ function renderPenjahitPembayaran(){
 
   return;
  }
+
+
+ const search=
+  (
+   document.getElementById(
+    "penjahitPembayaranSearch"
+   )?.value||""
+  ).trim().toLowerCase();
+
+
+ const filtered=
+  myPayments.filter(p=>{
+
+   const periode=
+    String(
+     p.periode_mulai||""
+    )+
+    " "+
+    String(
+     p.periode_selesai||""
+    );
+
+   return textMatch(
+    [
+     periode,
+     p.catatan,
+     p.jumlah_dibayar
+    ],
+    search
+   );
+
+  });
+
+
+ penjahitPembayaranPage=
+  clampPage(
+   penjahitPembayaranPage,
+   filtered.length
+  );
+
+
+ if(!filtered.length){
+
+  el.innerHTML=
+   '<div class="empty">Data pembayaran tidak ditemukan.</div>';
+
+  return;
+ }
+
 
  const totalCair=
   myPayments.reduce(
@@ -2998,25 +4907,50 @@ function renderPenjahitPembayaran(){
    0
   );
 
- el.innerHTML=`
+
+ const start=
+  (penjahitPembayaranPage-1)*
+  PAGE_SIZE;
+
+ const pageItems=
+  filtered.slice(
+   start,
+   start+PAGE_SIZE
+  );
+
+
+ el.innerHTML=
+
+ resultInfoHtml(
+  pageItems.length,
+  filtered.length
+ )+
+
+ `
 
  <div class="payment-history-card">
 
   <div class="payment-history-total">
 
    <div class="label">
-    Total seluruh pembayaran yang sudah cair
+
+    Total seluruh pembayaran
+    yang sudah cair
+
    </div>
 
    <div class="amount">
+
     ${rupiah(totalCair)}
+
    </div>
 
   </div>
 
+
   <div>
 
-   ${myPayments.map(p=>{
+   ${pageItems.map(p=>{
 
     const jumlah=
      Number(
@@ -3037,11 +4971,16 @@ function renderPenjahitPembayaran(){
     ){
 
      periode=
-      dateKeyID(periodeMulai)+
+      dateKeyID(
+       periodeMulai
+      )+
       " – "+
-      dateKeyID(periodeSelesai);
+      dateKeyID(
+       periodeSelesai
+      );
 
     }
+
 
     return `
 
@@ -3052,42 +4991,57 @@ function renderPenjahitPembayaran(){
       <div>
 
        <div style="font-weight:700">
+
         Pembayaran Upah
+
        </div>
 
        <div class="payment-history-date">
+
         ${dateID(p.created_at)}
+
        </div>
 
       </div>
 
+
       <div class="payment-history-amount">
+
        ${rupiah(jumlah)}
+
       </div>
 
      </div>
 
+
      <div class="meta">
 
       Periode totalan:
+
       <strong>
        ${esc(periode)}
       </strong>
 
      </div>
 
+
      ${
       p.catatan
 
       ?`
+
        <div class="payment-history-note">
+
         Catatan:
         ${esc(p.catatan)}
+
        </div>
+
       `
 
       :""
      }
+
 
     </div>
 
@@ -3099,12 +5053,20 @@ function renderPenjahitPembayaran(){
 
  </div>
 
- `;
+ `+
+
+ paginationHtml(
+  penjahitPembayaranPage,
+  filtered.length,
+  "changePenjahitPembayaranPage"
+ );
 
 }
 
 
-function getPendingQty(garapanId){
+function getPendingQty(
+ garapanId
+){
 
  return setoranList
  .filter(
@@ -3227,10 +5189,12 @@ function openSetorModal(id){
 
  `;
 
+
  document.getElementById(
   "setorAvailable"
  ).textContent=
   available;
+
 
  const input=
   document.getElementById(
@@ -3241,9 +5205,12 @@ function openSetorModal(id){
  input.min=1;
  input.max=available;
 
+
  document.getElementById(
   "setorModal"
- ).classList.remove("hidden");
+ ).classList.remove(
+  "hidden"
+ );
 
 }
 
@@ -3252,7 +5219,9 @@ function closeSetorModal(){
 
  document.getElementById(
   "setorModal"
- ).classList.add("hidden");
+ ).classList.add(
+  "hidden"
+ );
 
  selectedSetorGarapan=null;
 
@@ -3274,6 +5243,7 @@ async function submitSetoran(){
    ).value
   );
 
+
  const {
   data:fresh,
   error:freshError
@@ -3281,8 +5251,12 @@ async function submitSetoran(){
  await supabaseClient
  .from("garapan_penjahit")
  .select("*")
- .eq("id",g.id)
+ .eq(
+  "id",
+  g.id
+ )
  .single();
+
 
  if(freshError){
 
@@ -3295,6 +5269,7 @@ async function submitSetoran(){
   return;
  }
 
+
  const {
   data:pendingData,
   error:pendingError
@@ -3302,8 +5277,15 @@ async function submitSetoran(){
  await supabaseClient
  .from("garapan_setoran")
  .select("jumlah_diajukan")
- .eq("garapan_id",g.id)
- .eq("status","Menunggu");
+ .eq(
+  "garapan_id",
+  g.id
+ )
+ .eq(
+  "status",
+  "Menunggu"
+ );
+
 
  if(pendingError){
 
@@ -3316,6 +5298,7 @@ async function submitSetoran(){
   return;
  }
 
+
  const pending=
   (pendingData||[])
   .reduce(
@@ -3326,6 +5309,7 @@ async function submitSetoran(){
     ),
    0
   );
+
 
  const selesai=
   Number(
@@ -3343,6 +5327,7 @@ async function submitSetoran(){
    jumlah-selesai-pending
   );
 
+
  if(
   !Number.isInteger(qty)||
   qty<1
@@ -3356,6 +5341,7 @@ async function submitSetoran(){
   return;
  }
 
+
  if(qty>available){
 
   showToast(
@@ -3368,12 +5354,14 @@ async function submitSetoran(){
   return;
  }
 
+
  const {error}=
  await supabaseClient
  .from("garapan_setoran")
  .insert({
 
-  garapan_id:g.id,
+  garapan_id:
+   g.id,
 
   user_id:
    currentUser.id,
@@ -3386,6 +5374,7 @@ async function submitSetoran(){
 
  });
 
+
  if(error){
 
   showToast(
@@ -3396,6 +5385,7 @@ async function submitSetoran(){
 
   return;
  }
+
 
  closeSetorModal();
 
@@ -3423,8 +5413,12 @@ async function approveSetoran(id){
  await supabaseClient
  .from("garapan_setoran")
  .select("*")
- .eq("id",id)
+ .eq(
+  "id",
+  id
+ )
  .single();
+
 
  if(sError){
 
@@ -3436,6 +5430,7 @@ async function approveSetoran(id){
   return;
  }
 
+
  if(s.status!=="Menunggu"){
 
   showToast(
@@ -3446,6 +5441,7 @@ async function approveSetoran(id){
   return;
  }
 
+
  const {
   data:g,
   error:gError
@@ -3453,8 +5449,12 @@ async function approveSetoran(id){
  await supabaseClient
  .from("garapan_penjahit")
  .select("*")
- .eq("id",s.garapan_id)
+ .eq(
+  "id",
+  s.garapan_id
+ )
  .single();
+
 
  if(gError){
 
@@ -3465,6 +5465,7 @@ async function approveSetoran(id){
 
   return;
  }
+
 
  const qty=
   Number(
@@ -3481,6 +5482,7 @@ async function approveSetoran(id){
    g.jumlah||0
   );
 
+
  if(
   qty<=0||
   current+qty>order
@@ -3494,6 +5496,7 @@ async function approveSetoran(id){
   return;
  }
 
+
  const total=
   current+qty;
 
@@ -3501,6 +5504,7 @@ async function approveSetoran(id){
   total>=order
   ?"Selesai"
   :"Diproses";
+
 
  const {
   error:updateError
@@ -3519,7 +5523,11 @@ async function approveSetoran(id){
    new Date().toISOString()
 
  })
- .eq("id",g.id);
+ .eq(
+  "id",
+  g.id
+ );
+
 
  if(updateError){
 
@@ -3531,6 +5539,7 @@ async function approveSetoran(id){
 
   return;
  }
+
 
  const {
   error:progressError
@@ -3547,8 +5556,10 @@ async function approveSetoran(id){
 
  });
 
+
  if(progressError)
   console.error(progressError);
+
 
  const {
   error:approvalError
@@ -3567,8 +5578,15 @@ async function approveSetoran(id){
    new Date().toISOString()
 
  })
- .eq("id",id)
- .eq("status","Menunggu");
+ .eq(
+  "id",
+  id
+ )
+ .eq(
+  "status",
+  "Menunggu"
+ );
+
 
  if(approvalError){
 
@@ -3582,6 +5600,7 @@ async function approveSetoran(id){
 
   return;
  }
+
 
  showToast(
   "Approval "+
@@ -3605,8 +5624,15 @@ async function rejectSetoran(id){
    "Ditolak"
 
  })
- .eq("id",id)
- .eq("status","Menunggu");
+ .eq(
+  "id",
+  id
+ )
+ .eq(
+  "status",
+  "Menunggu"
+ );
+
 
  if(error){
 
@@ -3618,6 +5644,7 @@ async function rejectSetoran(id){
 
   return;
  }
+
 
  showToast(
   "Setoran ditolak."
@@ -3678,6 +5705,7 @@ async function tambahGarapan(){
   ?getPenjahitName(selected)
   :"";
 
+
  const tanggal=
   document.getElementById(
    "addTanggal"
@@ -3693,6 +5721,7 @@ async function tambahGarapan(){
    "addCatatan"
   ).value.trim();
 
+
  if(!produk){
 
   showToast(
@@ -3702,6 +5731,7 @@ async function tambahGarapan(){
 
   return;
  }
+
 
  if(
   !Number.isInteger(jumlah)||
@@ -3716,6 +5746,7 @@ async function tambahGarapan(){
   return;
  }
 
+
  if(!penjahitUserId){
 
   showToast(
@@ -3726,6 +5757,7 @@ async function tambahGarapan(){
   return;
  }
 
+
  if(!selected){
 
   showToast(
@@ -3735,6 +5767,7 @@ async function tambahGarapan(){
 
   return;
  }
+
 
  const {error}=
  await supabaseClient
@@ -3773,6 +5806,7 @@ async function tambahGarapan(){
 
  });
 
+
  if(error){
 
   showToast(
@@ -3783,6 +5817,7 @@ async function tambahGarapan(){
 
   return;
  }
+
 
  [
   "addProduk",
@@ -3800,13 +5835,16 @@ async function tambahGarapan(){
    ).value=""
  );
 
+
  document.getElementById(
   "addPenjahitSelect"
  ).value="";
 
+
  showToast(
   "Garapan berhasil ditambahkan."
  );
+
 
  await loadAll();
 
@@ -3828,6 +5866,7 @@ function openEdit(id){
 
  if(!x)
   return;
+
 
  document.getElementById(
   "editId"
@@ -3873,9 +5912,12 @@ function openEdit(id){
  ).value=
   x.catatan||"";
 
+
  document.getElementById(
   "editModal"
- ).classList.remove("hidden");
+ ).classList.remove(
+  "hidden"
+ );
 
 }
 
@@ -3884,7 +5926,9 @@ function closeEditModal(){
 
  document.getElementById(
   "editModal"
- ).classList.add("hidden");
+ ).classList.add(
+  "hidden"
+ );
 
 }
 
@@ -3937,6 +5981,7 @@ async function simpanEdit(){
   ?getPenjahitName(selected)
   :"";
 
+
  const tanggal=
   document.getElementById(
    "editTanggal"
@@ -3952,6 +5997,7 @@ async function simpanEdit(){
    "editCatatan"
   ).value.trim();
 
+
  const existing=
   garapanList.find(
    x=>
@@ -3964,6 +6010,7 @@ async function simpanEdit(){
    existing?.jumlah_selesai||0
   );
 
+
  if(!produk){
 
   showToast(
@@ -3973,6 +6020,7 @@ async function simpanEdit(){
 
   return;
  }
+
 
  if(
   !Number.isInteger(jumlah)||
@@ -3987,6 +6035,7 @@ async function simpanEdit(){
   return;
  }
 
+
  if(jumlah<selesai){
 
   showToast(
@@ -3996,6 +6045,7 @@ async function simpanEdit(){
 
   return;
  }
+
 
  if(!penjahitUserId){
 
@@ -4007,6 +6057,7 @@ async function simpanEdit(){
   return;
  }
 
+
  if(!selected){
 
   showToast(
@@ -4016,6 +6067,7 @@ async function simpanEdit(){
 
   return;
  }
+
 
  const {error}=
  await supabaseClient
@@ -4050,7 +6102,11 @@ async function simpanEdit(){
    new Date().toISOString()
 
  })
- .eq("id",id);
+ .eq(
+  "id",
+  id
+ );
+
 
  if(error){
 
@@ -4062,6 +6118,7 @@ async function simpanEdit(){
 
   return;
  }
+
 
  closeEditModal();
 
@@ -4090,14 +6147,17 @@ async function adminSetStatus(id){
  if(!x)
   return;
 
+
  const status=
   prompt(
    "Masukkan status:\n\nDikirim\nDiproses\nSelesai",
    x.status||"Diproses"
   );
 
+
  if(!status)
   return;
+
 
  if(status==="Selesai"){
 
@@ -4108,8 +6168,10 @@ async function adminSetStatus(id){
     " pcs. Lanjut?"
    );
 
+
   if(!yakin)
    return;
+
 
   await updateProgressDb(
    id,
@@ -4117,7 +6179,9 @@ async function adminSetStatus(id){
   );
 
   return;
+
  }
+
 
  const {error}=
  await supabaseClient
@@ -4130,7 +6194,11 @@ async function adminSetStatus(id){
    new Date().toISOString()
 
  })
- .eq("id",id);
+ .eq(
+  "id",
+  id
+ );
+
 
  if(error){
 
@@ -4142,6 +6210,7 @@ async function adminSetStatus(id){
 
   return;
  }
+
 
  showToast(
   "Status berhasil diperbarui."
@@ -4171,11 +6240,17 @@ async function updateProgressDb(
  if(!x)
   return;
 
+
  const jumlah=
-  Number(x.jumlah||0);
+  Number(
+   x.jumlah||0
+  );
 
  const old=
-  Number(x.jumlah_selesai||0);
+  Number(
+   x.jumlah_selesai||0
+  );
+
 
  let v=
   Math.max(
@@ -4186,14 +6261,18 @@ async function updateProgressDb(
    )
   );
 
+
  let status=
   "Diproses";
+
 
  if(v===0)
   status="Dikirim";
 
+
  if(v>=jumlah)
   status="Selesai";
+
 
  const {error}=
  await supabaseClient
@@ -4209,7 +6288,11 @@ async function updateProgressDb(
    new Date().toISOString()
 
  })
- .eq("id",id);
+ .eq(
+  "id",
+  id
+ );
+
 
  if(error){
 
@@ -4221,6 +6304,7 @@ async function updateProgressDb(
 
   return;
  }
+
 
  if(v>old){
 
@@ -4239,10 +6323,12 @@ async function updateProgressDb(
 
   });
 
+
   if(progressError)
    console.error(progressError);
 
  }
+
 
  showToast(
   "Progress berhasil diperbarui."
@@ -4266,6 +6352,7 @@ async function hapusGarapan(id){
  )
   return;
 
+
  await supabaseClient
  .from("garapan_progress")
  .delete()
@@ -4273,6 +6360,7 @@ async function hapusGarapan(id){
   "garapan_id",
   id
  );
+
 
  await supabaseClient
  .from("garapan_setoran")
@@ -4282,6 +6370,7 @@ async function hapusGarapan(id){
   id
  );
 
+
  const {error}=
  await supabaseClient
  .from("garapan_penjahit")
@@ -4290,6 +6379,7 @@ async function hapusGarapan(id){
   "id",
   id
  );
+
 
  if(error){
 
@@ -4302,9 +6392,11 @@ async function hapusGarapan(id){
   return;
  }
 
+
  showToast(
   "Garapan berhasil dihapus."
  );
+
 
  await loadAll();
 
