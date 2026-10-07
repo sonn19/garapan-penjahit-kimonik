@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Cek Pesanan Kimonik</title>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
@@ -112,10 +113,6 @@ input:focus{
 .btn:disabled{
   opacity:.5;
   cursor:not-allowed;
-}
-
-.hidden{
-  display:none!important;
 }
 
 .meta{
@@ -250,6 +247,20 @@ input:focus{
   margin-top:14px;
 }
 
+.payment-box{
+  background:#fff8e9;
+  border:1px solid #eadbb8;
+  border-radius:12px;
+  padding:14px;
+}
+
+.success-box{
+  background:#eaf6ed;
+  border:1px solid #cce5d2;
+  border-radius:12px;
+  padding:14px;
+}
+
 .error{
   background:#fae3e3;
   border:1px solid #edcaca;
@@ -267,6 +278,7 @@ footer{
 }
 
 @media(max-width:600px){
+
   .progress-track{
     grid-template-columns:1fr;
     text-align:left;
@@ -283,6 +295,7 @@ footer{
     margin:0;
     flex:0 0 auto;
   }
+
 }
 </style>
 </head>
@@ -404,18 +417,35 @@ function badge(status){
 
   let cls = "";
 
-  if(status === "LUNAS" || status === "SELESAI")
+  if(
+    status === "LUNAS" ||
+    status === "SELESAI"
+  ){
     cls = "success";
+  }
 
-  else if(status === "BARU" || status === "BELUM_BAYAR")
+  else if(
+    status === "BARU" ||
+    status === "BELUM_BAYAR" ||
+    status === "MENUNGGU_VERIFIKASI" ||
+    status === "MENUNGGU_PEMBAYARAN"
+  ){
     cls = "warning";
+  }
 
-  else if(status === "DIPROSES" || status === "DIKIRIM")
+  else if(
+    status === "DIPROSES" ||
+    status === "DIKIRIM"
+  ){
     cls = "blue";
+  }
 
-  else if(status === "DIBATALKAN" || status === "GAGAL")
+  else if(
+    status === "DIBATALKAN" ||
+    status === "GAGAL"
+  ){
     cls = "danger";
-
+  }
 
   return `
     <span class="badge ${cls}">
@@ -455,7 +485,6 @@ function progressHtml(status){
   const idx =
     progressIndex(status);
 
-
   return `
 
     <div class="progress">
@@ -473,7 +502,6 @@ function progressHtml(status){
 
               else if(i === idx)
                 cls = "active";
-
 
               return `
 
@@ -543,11 +571,8 @@ async function cekOrder(){
     await supabaseClient.rpc(
       "cek_order_kimonik",
       {
-        p_kode_order:
-          kode,
-
-        p_whatsapp:
-          wa
+        p_kode_order: kode,
+        p_whatsapp: wa
       }
     );
 
@@ -619,9 +644,13 @@ async function cekOrder(){
 
       ${
         data.status !== "DIBATALKAN"
+
         ? progressHtml(data.status)
+
         : `
-          <div class="error" style="margin-top:16px">
+          <div
+            class="error"
+            style="margin-top:16px">
             Pesanan ini dibatalkan.
           </div>
         `
@@ -649,17 +678,14 @@ async function cekOrder(){
                   </div>
 
                   <div class="item-meta">
-
                     ${
                       i.nama_variasi
                       ? esc(i.nama_variasi)
                       : ""
                     }
-
                   </div>
 
                 </div>
-
 
                 <div style="text-align:right">
 
@@ -701,8 +727,15 @@ async function cekOrder(){
 
         ? `
           <div style="margin-top:8px">
-            <div class="meta">Ongkir</div>
-            <div>${rupiah(data.ongkir)}</div>
+
+            <div class="meta">
+              Ongkir
+            </div>
+
+            <div>
+              ${rupiah(data.ongkir)}
+            </div>
+
           </div>
         `
 
@@ -715,8 +748,15 @@ async function cekOrder(){
 
         ? `
           <div style="margin-top:8px">
-            <div class="meta">Diskon</div>
-            <div>- ${rupiah(data.diskon)}</div>
+
+            <div class="meta">
+              Diskon
+            </div>
+
+            <div>
+              - ${rupiah(data.diskon)}
+            </div>
+
           </div>
         `
 
@@ -729,6 +769,107 @@ async function cekOrder(){
       </div>
 
     </div>
+
+
+    ${
+      data.status_pembayaran === "BELUM_BAYAR"
+
+      ? `
+
+        <div class="card">
+
+          <h3>Konfirmasi Pembayaran</h3>
+
+          <div class="payment-box">
+
+            <p
+              class="meta"
+              style="margin-top:0">
+
+              Jika Anda sudah melakukan pembayaran,
+              klik tombol di bawah agar admin Kimonik
+              dapat melakukan verifikasi.
+
+            </p>
+
+            <button
+              id="bayarBtn"
+              class="btn"
+              style="width:100%;margin-top:8px"
+              onclick="konfirmasiSudahBayar()">
+
+              Saya Sudah Bayar
+
+            </button>
+
+          </div>
+
+        </div>
+
+      `
+
+      : data.status_pembayaran ===
+        "MENUNGGU_VERIFIKASI"
+
+      ? `
+
+        <div class="card">
+
+          <h3>Pembayaran</h3>
+
+          <div class="payment-box">
+
+            <strong>
+              Pembayaran sedang diverifikasi
+            </strong>
+
+            <p
+              class="meta"
+              style="margin-bottom:0">
+
+              Konfirmasi pembayaran sudah diterima.
+              Admin Kimonik sedang memeriksa
+              pembayaran Anda.
+
+            </p>
+
+          </div>
+
+        </div>
+
+      `
+
+      : data.status_pembayaran === "LUNAS"
+
+      ? `
+
+        <div class="card">
+
+          <h3>Pembayaran</h3>
+
+          <div class="success-box">
+
+            <strong>
+              ✓ Pembayaran Lunas
+            </strong>
+
+            <p
+              class="meta"
+              style="margin-bottom:0">
+
+              Pembayaran Anda sudah diverifikasi
+              oleh admin Kimonik.
+
+            </p>
+
+          </div>
+
+        </div>
+
+      `
+
+      : ""
+    }
 
 
     ${
@@ -753,7 +894,9 @@ async function cekOrder(){
             <div
               class="meta"
               style="margin-top:10px">
+
               Nomor Resi
+
             </div>
 
             <div
@@ -762,7 +905,9 @@ async function cekOrder(){
                 font-weight:800;
                 margin-top:3px
               ">
+
               ${esc(data.nomor_resi)}
+
             </div>
 
           </div>
@@ -775,6 +920,119 @@ async function cekOrder(){
     }
 
   `;
+
+}
+
+
+async function konfirmasiSudahBayar(){
+
+  const kode =
+    document
+      .getElementById("kodeOrder")
+      .value
+      .trim();
+
+  const wa =
+    document
+      .getElementById("whatsapp")
+      .value
+      .trim();
+
+
+  if(!kode || !wa){
+
+    alert(
+      "Kode order dan nomor WhatsApp tidak ditemukan."
+    );
+
+    return;
+
+  }
+
+
+  const yakin =
+    confirm(
+      "Konfirmasi bahwa Anda sudah melakukan pembayaran?"
+    );
+
+
+  if(!yakin)
+    return;
+
+
+  const btn =
+    document.getElementById("bayarBtn");
+
+
+  if(btn){
+
+    btn.disabled = true;
+
+    btn.textContent =
+      "Mengirim konfirmasi...";
+
+  }
+
+
+  const {data,error} =
+    await supabaseClient.rpc(
+      "konfirmasi_pembayaran_kimonik",
+      {
+        p_kode_order: kode,
+        p_whatsapp: wa,
+        p_bukti_url: null
+      }
+    );
+
+
+  if(error){
+
+    if(btn){
+
+      btn.disabled = false;
+
+      btn.textContent =
+        "Saya Sudah Bayar";
+
+    }
+
+    alert(
+      "Gagal mengirim konfirmasi: " +
+      error.message
+    );
+
+    return;
+
+  }
+
+
+  if(!data?.success){
+
+    if(btn){
+
+      btn.disabled = false;
+
+      btn.textContent =
+        "Saya Sudah Bayar";
+
+    }
+
+    alert(
+      data?.message ||
+      "Konfirmasi pembayaran gagal."
+    );
+
+    return;
+
+  }
+
+
+  alert(
+    "Konfirmasi pembayaran berhasil dikirim. Admin Kimonik akan melakukan verifikasi."
+  );
+
+
+  await cekOrder();
 
 }
 
