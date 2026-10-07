@@ -3,96 +3,535 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>Order Kimonik</title>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 :root{
   color-scheme:light;
-  --bg:#f6f3ee;--surface:#fff;--surface2:#f1eee8;
-  --text:#292621;--muted:#777168;--line:#ded8cf;
-  --primary:#292621;--success:#2f7d4a;--danger:#b33a3a;--blue:#4267a8;
+  --bg:#f6f3ee;
+  --surface:#fff;
+  --surface2:#f1eee8;
+  --text:#292621;
+  --muted:#777168;
+  --line:#ded8cf;
+  --primary:#292621;
+  --success:#2f7d4a;
+  --danger:#b33a3a;
+  --blue:#4267a8;
 }
+
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
-button,input,select,textarea{font:inherit}
-button{cursor:pointer}
-header{background:var(--primary);color:#fff;position:sticky;top:0;z-index:30;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.header-inner{max-width:1180px;margin:auto;padding:16px;display:flex;align-items:center;justify-content:space-between;gap:16px}
-.brand{font-size:20px;font-weight:800}.sub{font-size:11px;opacity:.7;margin-top:3px}
-.cart-btn{border:0;background:#fff;color:var(--text);border-radius:12px;padding:10px 14px;font-weight:700}
-.container{max-width:1180px;margin:auto;padding:22px 14px 90px}
-.hero{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:16px}
-.hero h1{margin:0 0 8px;font-size:26px}.hero p{margin:0;color:var(--muted);line-height:1.6}
-.tools{display:grid;grid-template-columns:1fr 220px;gap:10px;margin:16px 0}
-input,select,textarea{width:100%;border:1px solid var(--line);border-radius:11px;padding:11px 12px;background:#fff;color:var(--text);outline:none}
-input:focus,select:focus,textarea:focus{border-color:#999}
-.products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.card{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
-.photo{aspect-ratio:4/3;background:var(--surface2);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px;overflow:hidden}
-.photo img{width:100%;height:100%;object-fit:cover}
-.card-body{padding:14px;display:flex;flex-direction:column;gap:10px;height:100%}
-.product-name{font-size:16px;font-weight:800;line-height:1.35}
-.meta{font-size:12px;color:var(--muted);line-height:1.55}
-.price{font-size:18px;font-weight:800}.stock{font-size:12px;color:var(--muted)}
-.row{display:flex;gap:8px;align-items:center}.row>*{min-width:0}
-.qty{width:82px}.btn{border:0;border-radius:10px;padding:10px 13px;background:var(--primary);color:#fff;font-weight:700}.btn:disabled{opacity:.45;cursor:not-allowed}.btn.secondary{background:var(--surface2);color:var(--text)}.btn.success{background:var(--success)}
-.empty{background:#fff;border:1px dashed var(--line);border-radius:15px;padding:32px;text-align:center;color:var(--muted);grid-column:1/-1}
-.drawer-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:80;display:none}
-.drawer{position:fixed;top:0;right:0;width:min(460px,100%);height:100vh;background:#fff;z-index:90;box-shadow:-10px 0 30px rgba(0,0,0,.15);transform:translateX(100%);transition:.2s;overflow:auto}
-.drawer.open{transform:translateX(0)}.drawer-backdrop.open{display:block}
-.drawer-head{position:sticky;top:0;background:#fff;padding:16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;z-index:2}
-.drawer-body{padding:16px}.cart-item{padding:12px 0;border-bottom:1px solid var(--line)}
-.cart-title{font-weight:700}.cart-meta{font-size:12px;color:var(--muted);margin-top:4px}.cart-actions{display:flex;gap:8px;align-items:center;margin-top:9px}
-.summary{background:var(--surface2);border-radius:12px;padding:14px;margin:14px 0}.summary-row{display:flex;justify-content:space-between;gap:15px;padding:5px 0}.summary-total{font-size:18px;font-weight:800;border-top:1px solid var(--line);margin-top:6px;padding-top:10px}
-.section-title{font-size:16px;font-weight:800;margin:22px 0 10px}.field{margin-bottom:12px}label{display:block;font-size:12px;font-weight:700;margin-bottom:5px}.muted{color:var(--muted);font-size:12px;line-height:1.5}
-.notice{padding:12px 14px;background:#f4eee3;border:1px solid var(--line);border-radius:11px;font-size:12px;line-height:1.55;margin-bottom:12px}
-.success-box{background:#e8f5ec;border:1px solid #b9dfc5;border-radius:14px;padding:16px;margin-top:14px}.success-code{font-size:22px;font-weight:800;margin:6px 0}.hidden{display:none!important}
-.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#292621;color:#fff;padding:12px 16px;border-radius:10px;z-index:200;max-width:min(92vw,520px);box-shadow:0 6px 24px rgba(0,0,0,.2)}.toast.error{background:var(--danger)}
-.loading{padding:28px;text-align:center;color:var(--muted);grid-column:1/-1}
-@media(max-width:900px){.products{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:650px){.products{grid-template-columns:1fr}.tools{grid-template-columns:1fr}.hero h1{font-size:22px}.header-inner{padding:13px}.cart-btn{padding:9px 11px}.container{padding-top:14px}}
+
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+button,input,select,textarea{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+header{
+  background:var(--primary);
+  color:#fff;
+  position:sticky;
+  top:0;
+  z-index:30;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.header-inner{
+  max-width:1180px;
+  margin:auto;
+  padding:16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+}
+
+.brand{
+  font-size:20px;
+  font-weight:800;
+}
+
+.sub{
+  font-size:11px;
+  opacity:.7;
+  margin-top:3px;
+}
+
+.cart-btn{
+  border:0;
+  background:#fff;
+  color:var(--text);
+  border-radius:12px;
+  padding:10px 14px;
+  font-weight:700;
+}
+
+.container{
+  max-width:1180px;
+  margin:auto;
+  padding:22px 14px 90px;
+}
+
+.hero{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:20px;
+  margin-bottom:16px;
+}
+
+.hero h1{
+  margin:0 0 8px;
+  font-size:26px;
+}
+
+.hero p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+.tools{
+  display:grid;
+  grid-template-columns:1fr 220px;
+  gap:10px;
+  margin:16px 0;
+}
+
+input,
+select,
+textarea{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:11px;
+  padding:11px 12px;
+  background:#fff;
+  color:var(--text);
+  outline:none;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+  border-color:#999;
+}
+
+.products{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+}
+
+.card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:16px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+}
+
+.photo{
+  aspect-ratio:4/3;
+  background:var(--surface2);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--muted);
+  font-size:12px;
+  overflow:hidden;
+}
+
+.photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.card-body{
+  padding:14px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  height:100%;
+}
+
+.product-name{
+  font-size:16px;
+  font-weight:800;
+  line-height:1.35;
+}
+
+.meta{
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.55;
+}
+
+.price{
+  font-size:18px;
+  font-weight:800;
+}
+
+.stock{
+  font-size:12px;
+  color:var(--muted);
+}
+
+.row{
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+
+.row>*{
+  min-width:0;
+}
+
+.qty{
+  width:82px;
+}
+
+.btn{
+  border:0;
+  border-radius:10px;
+  padding:10px 13px;
+  background:var(--primary);
+  color:#fff;
+  font-weight:700;
+}
+
+.btn:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+.btn.secondary{
+  background:var(--surface2);
+  color:var(--text);
+}
+
+.btn.success{
+  background:var(--success);
+}
+
+.empty{
+  background:#fff;
+  border:1px dashed var(--line);
+  border-radius:15px;
+  padding:32px;
+  text-align:center;
+  color:var(--muted);
+  grid-column:1/-1;
+}
+
+.drawer-backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.35);
+  z-index:80;
+  display:none;
+}
+
+.drawer{
+  position:fixed;
+  top:0;
+  right:0;
+  width:min(460px,100%);
+  height:100vh;
+  background:#fff;
+  z-index:90;
+  box-shadow:-10px 0 30px rgba(0,0,0,.15);
+  transform:translateX(100%);
+  transition:.2s;
+  overflow:auto;
+}
+
+.drawer.open{
+  transform:translateX(0);
+}
+
+.drawer-backdrop.open{
+  display:block;
+}
+
+.drawer-head{
+  position:sticky;
+  top:0;
+  background:#fff;
+  padding:16px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  z-index:2;
+}
+
+.drawer-body{
+  padding:16px;
+}
+
+.cart-item{
+  padding:12px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.cart-title{
+  font-weight:700;
+}
+
+.cart-meta{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+.cart-actions{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  margin-top:9px;
+}
+
+.summary{
+  background:var(--surface2);
+  border-radius:12px;
+  padding:14px;
+  margin:14px 0;
+}
+
+.summary-row{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  padding:5px 0;
+}
+
+.summary-total{
+  font-size:18px;
+  font-weight:800;
+  border-top:1px solid var(--line);
+  margin-top:6px;
+  padding-top:10px;
+}
+
+.section-title{
+  font-size:16px;
+  font-weight:800;
+  margin:22px 0 10px;
+}
+
+.field{
+  margin-bottom:12px;
+}
+
+label{
+  display:block;
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:5px;
+}
+
+.muted{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.5;
+}
+
+.notice{
+  padding:12px 14px;
+  background:#f4eee3;
+  border:1px solid var(--line);
+  border-radius:11px;
+  font-size:12px;
+  line-height:1.55;
+  margin-bottom:12px;
+}
+
+.success-box{
+  background:#e8f5ec;
+  border:1px solid #b9dfc5;
+  border-radius:14px;
+  padding:16px;
+  margin-top:14px;
+}
+
+.success-code{
+  font-size:22px;
+  font-weight:800;
+  margin:6px 0;
+}
+
+.payment-box{
+  margin-top:18px;
+  padding:14px;
+  background:#fff8e9;
+  border:1px solid #eadbb8;
+  border-radius:12px;
+}
+
+.hidden{
+  display:none!important;
+}
+
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:20px;
+  transform:translateX(-50%);
+  background:#292621;
+  color:#fff;
+  padding:12px 16px;
+  border-radius:10px;
+  z-index:200;
+  max-width:min(92vw,520px);
+  box-shadow:0 6px 24px rgba(0,0,0,.2);
+}
+
+.toast.error{
+  background:var(--danger);
+}
+
+.loading{
+  padding:28px;
+  text-align:center;
+  color:var(--muted);
+  grid-column:1/-1;
+}
+
+@media(max-width:900px){
+
+  .products{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+}
+
+@media(max-width:650px){
+
+  .products{
+    grid-template-columns:1fr;
+  }
+
+  .tools{
+    grid-template-columns:1fr;
+  }
+
+  .hero h1{
+    font-size:22px;
+  }
+
+  .header-inner{
+    padding:13px;
+  }
+
+  .cart-btn{
+    padding:9px 11px;
+  }
+
+  .container{
+    padding-top:14px;
+  }
+
+}
 </style>
 </head>
+
 <body>
 
 <header>
+
   <div class="header-inner">
+
     <div>
-      <div class="brand">Kimonik</div>
-      <div class="sub">Order langsung dari Kimonik</div>
+
+      <div class="brand">
+        Kimonik
+      </div>
+
+      <div class="sub">
+        Order langsung dari Kimonik
+      </div>
+
     </div>
-    <button class="cart-btn" onclick="openCart()">
-      Keranjang <span id="cartCount">0</span>
+
+    <button
+      class="cart-btn"
+      onclick="openCart()">
+
+      Keranjang
+      <span id="cartCount">0</span>
+
     </button>
+
   </div>
+
 </header>
+
 
 <main class="container">
 
   <section class="hero">
-    <h1>Pilih produk Kimonik</h1>
+
+    <h1>
+      Pilih produk Kimonik
+    </h1>
+
     <p>
-      Pilih produk dan variasi yang tersedia, masukkan ke keranjang,
-      lalu isi data pemesanan. Harga diambil langsung dari database Kimonik.
+      Pilih produk dan variasi yang tersedia,
+      masukkan ke keranjang, lalu isi data pemesanan.
+      Harga diambil langsung dari database Kimonik.
     </p>
+
   </section>
 
+
   <div class="tools">
+
     <input
       id="searchInput"
       placeholder="Cari produk, SKU, bahan, motif..."
       oninput="renderProducts()">
 
-    <select id="categoryFilter" onchange="renderProducts()">
-      <option value="">Semua kategori</option>
+    <select
+      id="categoryFilter"
+      onchange="renderProducts()">
+
+      <option value="">
+        Semua kategori
+      </option>
+
     </select>
+
   </div>
 
-  <section id="productGrid" class="products">
-    <div class="loading">Memuat katalog...</div>
+
+  <section
+    id="productGrid"
+    class="products">
+
+    <div class="loading">
+      Memuat katalog...
+    </div>
+
   </section>
 
 </main>
+
 
 <div
   id="drawerBackdrop"
@@ -100,209 +539,353 @@ input:focus,select:focus,textarea:focus{border-color:#999}
   onclick="closeCart()">
 </div>
 
-<aside id="cartDrawer" class="drawer">
+
+<aside
+  id="cartDrawer"
+  class="drawer">
 
   <div class="drawer-head">
-    <strong>Keranjang Pesanan</strong>
-    <button class="btn secondary" onclick="closeCart()">Tutup</button>
+
+    <strong>
+      Keranjang Pesanan
+    </strong>
+
+    <button
+      class="btn secondary"
+      onclick="closeCart()">
+      Tutup
+    </button>
+
   </div>
+
 
   <div class="drawer-body">
 
     <div id="cartItems"></div>
+
     <div id="cartSummary"></div>
 
-    <div id="checkoutForm" class="hidden">
 
-      <div class="section-title">Data Pemesan</div>
+    <div
+      id="checkoutForm"
+      class="hidden">
 
-      <div class="field">
-        <label>Nama *</label>
-        <input id="cNama" autocomplete="name">
+      <div class="section-title">
+        Data Pemesan
       </div>
 
+
       <div class="field">
+
+        <label>Nama *</label>
+
+        <input
+          id="cNama"
+          autocomplete="name">
+
+      </div>
+
+
+      <div class="field">
+
         <label>WhatsApp *</label>
+
         <input
           id="cWhatsapp"
           inputmode="tel"
           placeholder="08xxxxxxxxxx">
+
       </div>
 
+
       <div class="field">
+
         <label>Email</label>
-        <input id="cEmail" type="email" autocomplete="email">
+
+        <input
+          id="cEmail"
+          type="email"
+          autocomplete="email">
+
       </div>
 
+
       <div class="field">
+
         <label>Alamat *</label>
+
         <textarea
           id="cAlamat"
           rows="3"
           placeholder="Nama jalan, nomor rumah, RT/RW..."></textarea>
+
       </div>
 
+
       <div class="field">
+
         <label>Kecamatan</label>
+
         <input id="cKecamatan">
+
       </div>
 
+
       <div class="field">
+
         <label>Kabupaten / Kota</label>
+
         <input id="cKabupaten">
+
       </div>
 
+
       <div class="field">
+
         <label>Provinsi</label>
+
         <input id="cProvinsi">
+
       </div>
 
+
       <div class="field">
+
         <label>Kode Pos</label>
-        <input id="cKodePos" inputmode="numeric">
+
+        <input
+          id="cKodePos"
+          inputmode="numeric">
+
       </div>
 
+
       <div class="field">
+
         <label>Catatan Pesanan</label>
+
         <textarea
           id="cCatatan"
           rows="3"
           placeholder="Contoh: warna cadangan, kebutuhan acara, dll."></textarea>
+
       </div>
 
+
       <div class="notice">
+
         Pesanan akan dibuat dengan status
-        <strong>BARU</strong> dan <strong>BELUM_BAYAR</strong>.
-        Tim Kimonik dapat menghubungi Anda melalui WhatsApp
-        untuk langkah berikutnya.
+        <strong>BARU</strong>
+        dan
+        <strong>BELUM_BAYAR</strong>.
+
+        Setelah order dibuat,
+        informasi pembayaran akan muncul otomatis.
+
       </div>
+
 
       <button
         id="submitOrderBtn"
         class="btn success"
         style="width:100%"
         onclick="submitOrder()">
+
         Buat Pesanan
+
       </button>
 
     </div>
 
-    <div id="successBox" class="success-box hidden">
-
-  <div style="font-size:13px;color:var(--muted)">
-    Pesanan berhasil dibuat
-  </div>
-
-  <div
-    id="successCode"
-    class="success-code">
-    -
-  </div>
-
-  <div
-    id="successTotal"
-    style="
-      font-size:22px;
-      font-weight:800;
-      margin-top:10px;
-    ">
-    -
-  </div>
-
-  <div
-    style="
-      margin-top:18px;
-      padding:14px;
-      background:#fff8e9;
-      border:1px solid #eadbb8;
-      border-radius:12px;
-    ">
 
     <div
-      style="
-        font-size:12px;
-        color:var(--muted);
-      ">
-      Transfer pembayaran ke
-    </div>
+      id="successBox"
+      class="success-box hidden">
 
-    <div
-      style="
-        font-size:18px;
-        font-weight:800;
-        margin-top:4px;
-      ">
-      BCA
-    </div>
 
-    <div style="margin-top:7px">
-      No. Rekening:
-      <strong id="rekeningBca">
-        2470144028
-      </strong>
-    </div>
+      <div
+        style="
+          font-size:13px;
+          color:var(--muted)
+        ">
 
-    <div style="margin-top:4px">
-      Atas Nama:
-      <strong>Esti Asrofah</strong>
-    </div>
+        Pesanan berhasil dibuat
 
-    <button
-      class="btn secondary"
-      style="width:100%;margin-top:12px"
-      onclick="copyRekening()">
-      Salin No. Rekening
-    </button>
+      </div>
 
-  </div>
 
-  <button
-    id="successBayarBtn"
-    class="btn success"
-    style="width:100%;margin-top:12px"
-    onclick="konfirmasiBayarDariOrder()">
-    Saya Sudah Bayar
-  </button>
+      <div
+        id="successCode"
+        class="success-code">
 
-  <a
-    id="successCheckLink"
-    href="cek-order.html"
-    class="btn secondary"
-    style="
-      display:block;
-      width:100%;
-      margin-top:8px;
-      text-align:center;
-      text-decoration:none;
-    ">
-    Cek Status Pesanan
-  </a>
+        -
 
-  <button
-    class="btn"
-    style="width:100%;margin-top:8px"
-    onclick="resetAfterSuccess()">
-    Buat Pesanan Baru
-  </button>
+      </div>
 
-</div>
-      <div>Pesanan berhasil dibuat.</div>
-      <div id="successCode" class="success-code">-</div>
-      <div id="successTotal" class="muted"></div>
+
+      <div
+        class="muted">
+
+        Simpan kode order ini untuk mengecek status pesanan Anda.
+
+      </div>
+
+
+      <div
+        id="successTotal"
+        style="
+          font-size:24px;
+          font-weight:800;
+          margin-top:14px;
+        ">
+
+        -
+
+      </div>
+
+
+      <div class="payment-box">
+
+
+        <div class="muted">
+
+          Transfer pembayaran ke
+
+        </div>
+
+
+        <div
+          style="
+            font-size:20px;
+            font-weight:800;
+            margin-top:5px;
+          ">
+
+          BCA
+
+        </div>
+
+
+        <div
+          style="
+            margin-top:10px;
+            font-size:14px;
+          ">
+
+          No. Rekening
+
+        </div>
+
+
+        <div
+          id="rekeningBca"
+          style="
+            font-size:22px;
+            font-weight:800;
+            margin-top:3px;
+          ">
+
+          2470144028
+
+        </div>
+
+
+        <div
+          style="
+            margin-top:7px;
+            font-size:13px;
+          ">
+
+          Atas Nama:
+          <strong>
+            Esti Asrofah
+          </strong>
+
+        </div>
+
+
+        <button
+          class="btn secondary"
+          style="
+            width:100%;
+            margin-top:14px;
+          "
+          onclick="copyRekening()">
+
+          Salin No. Rekening
+
+        </button>
+
+
+        <div
+          class="muted"
+          style="margin-top:12px">
+
+          Pastikan nominal transfer sesuai total pesanan.
+          Setelah pembayaran berhasil,
+          klik tombol
+          <strong>Saya Sudah Bayar</strong>.
+
+        </div>
+
+      </div>
+
+
+      <button
+        id="successBayarBtn"
+        class="btn success"
+        style="
+          width:100%;
+          margin-top:12px;
+        "
+        onclick="konfirmasiBayarDariOrder()">
+
+        Saya Sudah Bayar
+
+      </button>
+
+
+      <a
+        id="successCheckLink"
+        href="cek-order.html"
+        class="btn secondary"
+        style="
+          display:block;
+          width:100%;
+          margin-top:8px;
+          text-align:center;
+          text-decoration:none;
+        ">
+
+        Cek Status Pesanan
+
+      </a>
+
 
       <button
         class="btn"
-        style="width:100%;margin-top:12px"
+        style="
+          width:100%;
+          margin-top:8px;
+        "
         onclick="resetAfterSuccess()">
+
         Buat Pesanan Baru
+
       </button>
+
     </div>
 
   </div>
 
 </aside>
 
-<div id="toast" class="toast hidden"></div>
+
+<div
+  id="toast"
+  class="toast hidden">
+</div>
+
 
 <script>
 
@@ -312,14 +895,20 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
 "sb_publishable_eetxbGhYGFLhJdXhiU2W0A_qG63dTyU";
 
+
 const supabaseClient =
 supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
 
+
 let katalog = [];
+
 let cart = [];
+
+let lastOrder = null;
+
 
 
 function esc(v){
@@ -334,6 +923,7 @@ function esc(v){
 }
 
 
+
 function rupiah(v){
 
   return new Intl.NumberFormat(
@@ -343,26 +933,44 @@ function rupiah(v){
       currency:"IDR",
       maximumFractionDigits:0
     }
-  ).format(Number(v||0));
+  ).format(
+    Number(v || 0)
+  );
 
 }
 
 
-function showToast(message,error=false){
+
+function showToast(
+  message,
+  error=false
+){
 
   const el =
-    document.getElementById("toast");
+    document.getElementById(
+      "toast"
+    );
 
-  el.textContent = message;
 
-  el.classList.remove("hidden");
+  el.textContent =
+    message;
+
+
+  el.classList.remove(
+    "hidden"
+  );
+
 
   el.classList.toggle(
     "error",
     error
   );
 
-  clearTimeout(showToast._t);
+
+  clearTimeout(
+    showToast._t
+  );
+
 
   showToast._t =
     setTimeout(
@@ -373,10 +981,14 @@ function showToast(message,error=false){
 }
 
 
+
 async function loadKatalog(){
 
   const grid =
-    document.getElementById("productGrid");
+    document.getElementById(
+      "productGrid"
+    );
+
 
   grid.innerHTML =
     '<div class="loading">Memuat katalog...</div>';
@@ -419,6 +1031,7 @@ async function loadKatalog(){
 }
 
 
+
 function fillCategories(){
 
   const sel =
@@ -430,17 +1043,21 @@ function fillCategories(){
   const cats = [
     ...new Set(
       katalog
-        .map(
-          p =>
-            String(
-              p.kategori || ""
-            ).trim()
-        )
-        .filter(Boolean)
+      .map(
+        p =>
+          String(
+            p.kategori || ""
+          ).trim()
+      )
+      .filter(Boolean)
     )
-  ].sort(
+  ]
+  .sort(
     (a,b)=>
-      a.localeCompare(b,"id")
+      a.localeCompare(
+        b,
+        "id"
+      )
   );
 
 
@@ -455,9 +1072,11 @@ function fillCategories(){
 }
 
 
+
 function normalizedText(p){
 
   return [
+
     p.nama_produk,
     p.sku,
     p.kategori,
@@ -466,24 +1085,25 @@ function normalizedText(p){
     p.deskripsi,
 
     (p.variasi || [])
-      .map(
-        v =>
-          [
-            v.nama_variasi,
-            v.sku
-          ].join(" ")
-      )
-      .join(" ")
+    .map(
+      v =>
+        [
+          v.nama_variasi,
+          v.sku
+        ].join(" ")
+    )
+    .join(" ")
 
   ]
   .map(
     v =>
       String(v || "")
-        .toLowerCase()
+      .toLowerCase()
   )
   .join(" ");
 
 }
+
 
 
 function effectiveProductStock(p){
@@ -510,6 +1130,7 @@ function effectiveProductStock(p){
   );
 
 }
+
 
 
 function priceRange(p){
@@ -556,20 +1177,25 @@ function priceRange(p){
 }
 
 
+
 function renderProducts(){
 
   const q =
     document
-      .getElementById("searchInput")
-      .value
-      .trim()
-      .toLowerCase();
+    .getElementById(
+      "searchInput"
+    )
+    .value
+    .trim()
+    .toLowerCase();
 
 
   const cat =
     document
-      .getElementById("categoryFilter")
-      .value;
+    .getElementById(
+      "categoryFilter"
+    )
+    .value;
 
 
   const grid =
@@ -584,16 +1210,21 @@ function renderProducts(){
 
         if(
           cat &&
-          String(p.kategori || "") !== cat
-        )
+          String(
+            p.kategori || ""
+          ) !== cat
+        ){
           return false;
+        }
 
 
         if(
           q &&
-          !normalizedText(p).includes(q)
-        )
+          !normalizedText(p)
+          .includes(q)
+        ){
           return false;
+        }
 
 
         return true;
@@ -637,11 +1268,13 @@ function renderProducts(){
         const img =
           p.foto_url
 
-          ? `<img
-               src="${esc(p.foto_url)}"
-               alt="${esc(p.nama_produk)}"
-               loading="lazy"
-               onerror="this.parentElement.innerHTML='Foto belum tersedia'">`
+          ? `
+            <img
+              src="${esc(p.foto_url)}"
+              alt="${esc(p.nama_produk)}"
+              loading="lazy"
+              onerror="this.parentElement.innerHTML='Foto belum tersedia'">
+          `
 
           : "Foto belum tersedia";
 
@@ -653,47 +1286,51 @@ function renderProducts(){
 
           chooser = `
 
-          <select id="${selectId}">
+            <select id="${selectId}">
 
-            <option value="">
-              Pilih variasi
-            </option>
+              <option value="">
+                Pilih variasi
+              </option>
 
-            ${
-              vars.map(
-                v => {
+              ${
+                vars.map(
+                  v => {
 
-                  const s =
-                    Number(v.stok || 0);
+                    const s =
+                      Number(
+                        v.stok || 0
+                      );
 
-                  const h =
-                    Number(v.harga || 0);
+                    const h =
+                      Number(
+                        v.harga || 0
+                      );
 
 
-                  return `
+                    return `
 
-                  <option
-                    value="${v.id}"
-                    ${s <= 0 ? "disabled" : ""}>
+                      <option
+                        value="${v.id}"
+                        ${s <= 0 ? "disabled" : ""}>
 
-                    ${esc(
-                      v.nama_variasi ||
-                      v.sku ||
-                      "Variasi"
-                    )}
+                        ${esc(
+                          v.nama_variasi ||
+                          v.sku ||
+                          "Variasi"
+                        )}
 
-                    · ${rupiah(h)}
-                    · stok ${s}
+                        · ${rupiah(h)}
+                        · stok ${s}
 
-                  </option>
+                      </option>
 
-                  `;
+                    `;
 
-                }
-              ).join("")
-            }
+                  }
+                ).join("")
+              }
 
-          </select>
+            </select>
 
           `;
 
@@ -707,86 +1344,99 @@ function renderProducts(){
 
         return `
 
-        <article class="card">
+          <article class="card">
 
-          <div class="photo">
-            ${img}
-          </div>
-
-          <div class="card-body">
-
-            <div class="product-name">
-              ${esc(
-                p.nama_produk ||
-                "Produk"
-              )}
+            <div class="photo">
+              ${img}
             </div>
 
+            <div class="card-body">
 
-            <div class="meta">
+              <div class="product-name">
 
-              SKU:
-              ${esc(p.sku || "-")}
+                ${esc(
+                  p.nama_produk ||
+                  "Produk"
+                )}
 
-              ${
-                p.kategori
-                ? ` · ${esc(p.kategori)}`
-                : ""
-              }
+              </div>
+
+
+              <div class="meta">
+
+                SKU:
+                ${esc(
+                  p.sku || "-"
+                )}
+
+                ${
+                  p.kategori
+                  ? ` · ${esc(p.kategori)}`
+                  : ""
+                }
+
+              </div>
+
+
+              <div class="price">
+
+                ${priceRange(p)}
+
+              </div>
+
+
+              <div class="stock">
+
+                Total stok:
+                ${stock}
+
+              </div>
+
+
+              ${chooser}
+
+
+              <div
+                class="row"
+                style="margin-top:auto">
+
+                <input
+                  class="qty"
+                  id="${qtyId}"
+                  type="number"
+                  min="1"
+                  value="1">
+
+
+                <button
+                  class="btn"
+                  style="flex:1"
+                  ${stock <= 0 ? "disabled" : ""}
+                  onclick="addToCart(${p.id})">
+
+                  Tambah
+
+                </button>
+
+              </div>
 
             </div>
 
-
-            <div class="price">
-              ${priceRange(p)}
-            </div>
-
-
-            <div class="stock">
-              Total stok: ${stock}
-            </div>
-
-
-            ${chooser}
-
-
-            <div
-              class="row"
-              style="margin-top:auto">
-
-              <input
-                class="qty"
-                id="${qtyId}"
-                type="number"
-                min="1"
-                value="1">
-
-
-              <button
-                class="btn"
-                style="flex:1"
-                ${stock <= 0 ? "disabled" : ""}
-                onclick="addToCart(${p.id})">
-
-                Tambah
-
-              </button>
-
-            </div>
-
-          </div>
-
-        </article>
+          </article>
 
         `;
 
       }
-    ).join("");
+    )
+    .join("");
 
 }
 
 
-function addToCart(produkId){
+
+function addToCart(
+  produkId
+){
 
   const p =
     katalog.find(
@@ -805,10 +1455,10 @@ function addToCart(produkId){
       1,
       parseInt(
         document
-          .getElementById(
-            `qty-${p.id}`
-          )
-          .value || "1",
+        .getElementById(
+          `qty-${p.id}`
+        )
+        .value || "1",
         10
       )
     );
@@ -820,17 +1470,18 @@ function addToCart(produkId){
     : [];
 
 
-  let variasi = null;
+  let variasi =
+    null;
 
 
   if(vars.length){
 
     const vid =
       document
-        .getElementById(
-          `var-${p.id}`
-        )
-        .value;
+      .getElementById(
+        `var-${p.id}`
+      )
+      .value;
 
 
     if(!vid){
@@ -867,7 +1518,9 @@ function addToCart(produkId){
 
     if(
       qty >
-      Number(variasi.stok || 0)
+      Number(
+        variasi.stok || 0
+      )
     ){
 
       showToast(
@@ -883,7 +1536,9 @@ function addToCart(produkId){
 
     if(
       qty >
-      Number(p.stok || 0)
+      Number(
+        p.stok || 0
+      )
     ){
 
       showToast(
@@ -997,6 +1652,7 @@ function addToCart(produkId){
 
   renderCart();
 
+
   showToast(
     "Produk ditambahkan ke keranjang."
   );
@@ -1004,16 +1660,19 @@ function addToCart(produkId){
 }
 
 
+
 function renderCart(){
 
   document
-    .getElementById("cartCount")
-    .textContent =
-      cart.reduce(
-        (a,x)=>
-          a + x.qty,
-        0
-      );
+  .getElementById(
+    "cartCount"
+  )
+  .textContent =
+    cart.reduce(
+      (a,x)=>
+        a + x.qty,
+      0
+    );
 
 
   const items =
@@ -1039,7 +1698,8 @@ function renderCart(){
     items.innerHTML =
       '<div class="empty">Keranjang masih kosong.</div>';
 
-    summary.innerHTML = "";
+    summary.innerHTML =
+      "";
 
     form.classList.add(
       "hidden"
@@ -1054,56 +1714,56 @@ function renderCart(){
     cart.map(
       (x,i) => `
 
-      <div class="cart-item">
+        <div class="cart-item">
 
-        <div class="cart-title">
-          ${esc(x.nama_produk)}
+          <div class="cart-title">
+            ${esc(x.nama_produk)}
+          </div>
+
+
+          <div class="cart-meta">
+
+            ${
+              x.nama_variasi
+              ? esc(x.nama_variasi) + " · "
+              : ""
+            }
+
+            ${esc(x.sku || "-")}
+
+            · ${rupiah(x.harga)}
+
+          </div>
+
+
+          <div class="cart-actions">
+
+            <button
+              class="btn secondary"
+              onclick="changeCartQty(${i},-1)">
+              −
+            </button>
+
+            <strong>
+              ${x.qty}
+            </strong>
+
+            <button
+              class="btn secondary"
+              onclick="changeCartQty(${i},1)">
+              +
+            </button>
+
+            <button
+              class="btn secondary"
+              style="margin-left:auto"
+              onclick="removeCart(${i})">
+              Hapus
+            </button>
+
+          </div>
+
         </div>
-
-
-        <div class="cart-meta">
-
-          ${
-            x.nama_variasi
-            ? esc(x.nama_variasi) + " · "
-            : ""
-          }
-
-          ${esc(x.sku || "-")}
-
-          · ${rupiah(x.harga)}
-
-        </div>
-
-
-        <div class="cart-actions">
-
-          <button
-            class="btn secondary"
-            onclick="changeCartQty(${i},-1)">
-            −
-          </button>
-
-          <strong>
-            ${x.qty}
-          </strong>
-
-          <button
-            class="btn secondary"
-            onclick="changeCartQty(${i},1)">
-            +
-          </button>
-
-          <button
-            class="btn secondary"
-            style="margin-left:auto"
-            onclick="removeCart(${i})">
-            Hapus
-          </button>
-
-        </div>
-
-      </div>
 
       `
     ).join("");
@@ -1123,9 +1783,12 @@ function renderCart(){
 
       <div class="summary-row">
 
-        <span>Jumlah item</span>
+        <span>
+          Jumlah item
+        </span>
 
         <strong>
+
           ${
             cart.reduce(
               (a,x)=>
@@ -1133,6 +1796,7 @@ function renderCart(){
               0
             )
           }
+
         </strong>
 
       </div>
@@ -1141,7 +1805,9 @@ function renderCart(){
       <div
         class="summary-row summary-total">
 
-        <span>Total</span>
+        <span>
+          Total
+        </span>
 
         <span>
           ${rupiah(subtotal)}
@@ -1161,7 +1827,11 @@ function renderCart(){
 }
 
 
-function changeCartQty(i,delta){
+
+function changeCartQty(
+  i,
+  delta
+){
 
   const x =
     cart[i];
@@ -1177,7 +1847,10 @@ function changeCartQty(i,delta){
 
   if(q < 1){
 
-    cart.splice(i,1);
+    cart.splice(
+      i,
+      1
+    );
 
     renderCart();
 
@@ -1198,32 +1871,48 @@ function changeCartQty(i,delta){
   }
 
 
-  x.qty = q;
+  x.qty =
+    q;
+
 
   renderCart();
 
 }
+
 
 
 function removeCart(i){
 
-  cart.splice(i,1);
+  cart.splice(
+    i,
+    1
+  );
+
 
   renderCart();
 
 }
+
 
 
 function openCart(){
 
   document
-    .getElementById("cartDrawer")
-    .classList.add("open");
+  .getElementById(
+    "cartDrawer"
+  )
+  .classList.add(
+    "open"
+  );
 
 
   document
-    .getElementById("drawerBackdrop")
-    .classList.add("open");
+  .getElementById(
+    "drawerBackdrop"
+  )
+  .classList.add(
+    "open"
+  );
 
 
   renderCart();
@@ -1231,18 +1920,28 @@ function openCart(){
 }
 
 
+
 function closeCart(){
 
   document
-    .getElementById("cartDrawer")
-    .classList.remove("open");
+  .getElementById(
+    "cartDrawer"
+  )
+  .classList.remove(
+    "open"
+  );
 
 
   document
-    .getElementById("drawerBackdrop")
-    .classList.remove("open");
+  .getElementById(
+    "drawerBackdrop"
+  )
+  .classList.remove(
+    "open"
+  );
 
 }
+
 
 
 async function submitOrder(){
@@ -1261,23 +1960,29 @@ async function submitOrder(){
 
   const nama =
     document
-      .getElementById("cNama")
-      .value
-      .trim();
+    .getElementById(
+      "cNama"
+    )
+    .value
+    .trim();
 
 
   const whatsapp =
     document
-      .getElementById("cWhatsapp")
-      .value
-      .trim();
+    .getElementById(
+      "cWhatsapp"
+    )
+    .value
+    .trim();
 
 
   const alamat =
     document
-      .getElementById("cAlamat")
-      .value
-      .trim();
+    .getElementById(
+      "cAlamat"
+    )
+    .value
+    .trim();
 
 
   if(
@@ -1302,7 +2007,9 @@ async function submitOrder(){
     );
 
 
-  btn.disabled = true;
+  btn.disabled =
+    true;
+
 
   btn.textContent =
     "Membuat pesanan...";
@@ -1316,35 +2023,45 @@ async function submitOrder(){
 
     email:
       document
-        .getElementById("cEmail")
-        .value
-        .trim() || null,
+      .getElementById(
+        "cEmail"
+      )
+      .value
+      .trim() || null,
 
     alamat,
 
     kecamatan:
       document
-        .getElementById("cKecamatan")
-        .value
-        .trim() || null,
+      .getElementById(
+        "cKecamatan"
+      )
+      .value
+      .trim() || null,
 
     kabupaten:
       document
-        .getElementById("cKabupaten")
-        .value
-        .trim() || null,
+      .getElementById(
+        "cKabupaten"
+      )
+      .value
+      .trim() || null,
 
     provinsi:
       document
-        .getElementById("cProvinsi")
-        .value
-        .trim() || null,
+      .getElementById(
+        "cProvinsi"
+      )
+      .value
+      .trim() || null,
 
     kode_pos:
       document
-        .getElementById("cKodePos")
-        .value
-        .trim() || null
+      .getElementById(
+        "cKodePos"
+      )
+      .value
+      .trim() || null
 
   };
 
@@ -1352,45 +2069,59 @@ async function submitOrder(){
   const p_items =
     cart.map(
       x =>
+
         x.variasi_id
 
         ? {
+
             variasi_id:
               x.variasi_id,
 
             qty:
               x.qty
+
           }
 
         : {
+
             produk_id:
               x.produk_id,
 
             qty:
               x.qty
+
           }
+
     );
 
 
   const p_catatan =
     document
-      .getElementById("cCatatan")
-      .value
-      .trim() || null;
+    .getElementById(
+      "cCatatan"
+    )
+    .value
+    .trim() || null;
 
 
   const {data,error} =
     await supabaseClient.rpc(
       "buat_order_kimonik",
       {
+
         p_customer,
+
         p_items,
+
         p_catatan
+
       }
     );
 
 
-  btn.disabled = false;
+  btn.disabled =
+    false;
+
 
   btn.textContent =
     "Buat Pesanan";
@@ -1411,39 +2142,98 @@ async function submitOrder(){
   }
 
 
-  document
-    .getElementById("checkoutForm")
-    .classList.add("hidden");
+  lastOrder = {
+
+    kode_order:
+      data?.kode_order || "",
+
+    total:
+      Number(
+        data?.total || 0
+      ),
+
+    whatsapp:
+      p_customer.whatsapp
+
+  };
 
 
   document
-    .getElementById("cartItems")
-    .classList.add("hidden");
+  .getElementById(
+    "checkoutForm"
+  )
+  .classList.add(
+    "hidden"
+  );
 
 
   document
-    .getElementById("cartSummary")
-    .classList.add("hidden");
+  .getElementById(
+    "cartItems"
+  )
+  .classList.add(
+    "hidden"
+  );
 
 
   document
-    .getElementById("successCode")
-    .textContent =
-      data?.kode_order ||
-      "Pesanan berhasil";
+  .getElementById(
+    "cartSummary"
+  )
+  .classList.add(
+    "hidden"
+  );
 
 
   document
-    .getElementById("successTotal")
-    .textContent =
-      `Total ${rupiah(data?.total || 0)} · ` +
-      `Status ${data?.status || "BARU"} · ` +
-      `${data?.status_pembayaran || "BELUM_BAYAR"}`;
+  .getElementById(
+    "successCode"
+  )
+  .textContent =
+    lastOrder.kode_order ||
+    "Pesanan berhasil";
 
 
   document
-    .getElementById("successBox")
-    .classList.remove("hidden");
+  .getElementById(
+    "successTotal"
+  )
+  .textContent =
+    "Total " +
+    rupiah(
+      lastOrder.total
+    );
+
+
+  document
+  .getElementById(
+    "successCheckLink"
+  )
+  .href =
+    "cek-order.html";
+
+
+  const bayarBtn =
+    document.getElementById(
+      "successBayarBtn"
+    );
+
+
+  bayarBtn.disabled =
+    false;
+
+
+  bayarBtn.textContent =
+    "Saya Sudah Bayar";
+
+
+  document
+  .getElementById(
+    "successBox"
+  )
+  .classList.remove(
+    "hidden"
+  );
 
 
   showToast(
@@ -1453,24 +2243,194 @@ async function submitOrder(){
 }
 
 
+
+async function copyRekening(){
+
+  const nomor =
+    document
+    .getElementById(
+      "rekeningBca"
+    )
+    .textContent
+    .trim();
+
+
+  try{
+
+    await navigator
+    .clipboard
+    .writeText(
+      nomor
+    );
+
+
+    showToast(
+      "Nomor rekening berhasil disalin."
+    );
+
+
+  }catch(e){
+
+    alert(
+      "Nomor rekening BCA: " +
+      nomor
+    );
+
+  }
+
+}
+
+
+
+async function konfirmasiBayarDariOrder(){
+
+  if(
+    !lastOrder?.kode_order ||
+    !lastOrder?.whatsapp
+  ){
+
+    showToast(
+      "Data order tidak ditemukan.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  const yakin =
+    confirm(
+      "Konfirmasi bahwa Anda sudah melakukan pembayaran?"
+    );
+
+
+  if(!yakin)
+    return;
+
+
+  const btn =
+    document.getElementById(
+      "successBayarBtn"
+    );
+
+
+  btn.disabled =
+    true;
+
+
+  btn.textContent =
+    "Mengirim konfirmasi...";
+
+
+  const {data,error} =
+    await supabaseClient.rpc(
+      "konfirmasi_pembayaran_kimonik",
+      {
+
+        p_kode_order:
+          lastOrder.kode_order,
+
+        p_whatsapp:
+          lastOrder.whatsapp,
+
+        p_bukti_url:
+          null
+
+      }
+    );
+
+
+  if(error){
+
+    btn.disabled =
+      false;
+
+
+    btn.textContent =
+      "Saya Sudah Bayar";
+
+
+    showToast(
+      "Gagal mengirim konfirmasi: " +
+      error.message,
+      true
+    );
+
+    return;
+
+  }
+
+
+  if(!data?.success){
+
+    btn.disabled =
+      false;
+
+
+    btn.textContent =
+      "Saya Sudah Bayar";
+
+
+    showToast(
+      data?.message ||
+      "Konfirmasi pembayaran gagal.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  btn.textContent =
+    "Menunggu Verifikasi";
+
+
+  btn.disabled =
+    true;
+
+
+  showToast(
+    "Konfirmasi pembayaran berhasil dikirim."
+  );
+
+}
+
+
+
 function resetAfterSuccess(){
 
   cart = [];
 
-
-  document
-    .getElementById("successBox")
-    .classList.add("hidden");
+  lastOrder = null;
 
 
   document
-    .getElementById("cartItems")
-    .classList.remove("hidden");
+  .getElementById(
+    "successBox"
+  )
+  .classList.add(
+    "hidden"
+  );
 
 
   document
-    .getElementById("cartSummary")
-    .classList.remove("hidden");
+  .getElementById(
+    "cartItems"
+  )
+  .classList.remove(
+    "hidden"
+  );
+
+
+  document
+  .getElementById(
+    "cartSummary"
+  )
+  .classList.remove(
+    "hidden"
+  );
 
 
   [
@@ -1487,14 +2447,15 @@ function resetAfterSuccess(){
   .forEach(
     id =>
       document
-        .getElementById(id)
-        .value = ""
+      .getElementById(id)
+      .value = ""
   );
 
 
   renderCart();
 
 }
+
 
 
 loadKatalog();
