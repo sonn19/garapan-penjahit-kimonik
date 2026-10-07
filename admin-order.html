@@ -1,0 +1,1573 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin Order Kimonik</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f6f3ee;
+  --surface:#fff;
+  --surface2:#f1eee8;
+  --text:#292621;
+  --muted:#777168;
+  --line:#ded8cf;
+  --primary:#292621;
+  --success:#2f7d4a;
+  --warning:#b7791f;
+  --danger:#b33a3a;
+  --blue:#4267a8;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--text)
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+
+header{
+  background:var(--primary);
+  color:#fff;
+  position:sticky;
+  top:0;
+  z-index:30
+}
+.header-inner{
+  max-width:1180px;
+  margin:auto;
+  padding:15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px
+}
+.brand{font-size:20px;font-weight:800}
+.sub{font-size:11px;opacity:.7;margin-top:3px}
+
+.container{
+  max-width:1180px;
+  margin:auto;
+  padding:20px 14px 80px
+}
+
+.login-box{
+  max-width:420px;
+  margin:60px auto;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:22px
+}
+
+.field{margin-bottom:13px}
+label{
+  display:block;
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:5px
+}
+input,select,textarea{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:10px 11px;
+  background:#fff;
+  outline:none
+}
+
+.btn{
+  border:0;
+  border-radius:10px;
+  padding:10px 13px;
+  background:var(--primary);
+  color:#fff;
+  font-weight:700
+}
+.btn.secondary{background:var(--surface2);color:var(--text)}
+.btn.success{background:var(--success)}
+.btn.warning{background:var(--warning)}
+.btn.danger{background:var(--danger)}
+.btn.blue{background:var(--blue)}
+.btn.small{padding:7px 9px;font-size:12px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+.toolbar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:16px
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin-bottom:18px
+}
+.stat{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:14px
+}
+.stat-label{font-size:12px;color:var(--muted)}
+.stat-value{
+  margin-top:5px;
+  font-size:21px;
+  font-weight:800
+}
+
+.filters{
+  display:grid;
+  grid-template-columns:1fr 190px 190px;
+  gap:8px;
+  margin-bottom:14px
+}
+
+.card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:15px;
+  margin-bottom:12px
+}
+.card-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:15px
+}
+.order-code{
+  font-size:17px;
+  font-weight:800
+}
+.meta{
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.65;
+  margin-top:6px
+}
+.badges{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+  justify-content:flex-end
+}
+.badge{
+  display:inline-block;
+  padding:5px 8px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:800;
+  background:var(--surface2)
+}
+.badge.success{background:#e3f2e8;color:var(--success)}
+.badge.warning{background:#fff1d7;color:#96610d}
+.badge.blue{background:#e6edf9;color:var(--blue)}
+.badge.danger{background:#fae3e3;color:var(--danger)}
+
+.order-total{
+  font-size:20px;
+  font-weight:800;
+  margin-top:10px
+}
+
+.items{
+  margin-top:13px;
+  background:var(--surface2);
+  border-radius:11px;
+  padding:11px
+}
+.item{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  padding:8px 0;
+  border-bottom:1px solid var(--line)
+}
+.item:last-child{border-bottom:0}
+.item-name{font-size:13px;font-weight:700}
+.item-meta{font-size:11px;color:var(--muted);margin-top:3px}
+
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-top:13px
+}
+
+.empty{
+  background:#fff;
+  border:1px dashed var(--line);
+  border-radius:14px;
+  text-align:center;
+  padding:35px;
+  color:var(--muted)
+}
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  z-index:100;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:14px
+}
+.modal-box{
+  background:#fff;
+  width:min(520px,100%);
+  border-radius:16px;
+  padding:18px;
+  max-height:90vh;
+  overflow:auto
+}
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:15px
+}
+.close{
+  border:0;
+  background:transparent;
+  font-size:24px
+}
+
+.toast{
+  position:fixed;
+  right:15px;
+  bottom:15px;
+  background:#292621;
+  color:#fff;
+  padding:12px 15px;
+  border-radius:10px;
+  z-index:200;
+  max-width:340px
+}
+.toast.error{background:var(--danger)}
+
+@media(max-width:760px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .filters{grid-template-columns:1fr}
+  .card-top{flex-direction:column}
+  .badges{justify-content:flex-start}
+}
+</style>
+</head>
+
+<body>
+
+<header id="header" class="hidden">
+  <div class="header-inner">
+    <div>
+      <div class="brand">Admin Order Kimonik</div>
+      <div class="sub">Kimonik Order V1</div>
+    </div>
+    <div style="font-size:12px;text-align:right">
+      <div id="adminName">Admin</div>
+      <div style="opacity:.7">Administrator</div>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+<section id="loginPage">
+
+  <div class="login-box">
+
+    <h2 style="margin-top:0">Admin Order Kimonik</h2>
+
+    <p style="font-size:13px;color:var(--muted)">
+      Masuk menggunakan akun admin Kimonik.
+    </p>
+
+    <div class="field">
+      <label>Email</label>
+      <input id="loginEmail" type="email">
+    </div>
+
+    <div class="field">
+      <label>Password</label>
+      <input id="loginPassword" type="password">
+    </div>
+
+    <button
+      class="btn"
+      style="width:100%"
+      onclick="login()">
+      Masuk
+    </button>
+
+    <div
+      id="loginError"
+      style="font-size:12px;color:var(--danger);margin-top:10px">
+    </div>
+
+  </div>
+
+</section>
+
+<section id="appPage" class="hidden">
+
+  <div class="toolbar">
+
+    <button class="btn small" onclick="loadOrders()">
+      Refresh
+    </button>
+
+    <button class="btn secondary small" onclick="logout()">
+      Keluar
+    </button>
+
+    <a href="order.html" target="_blank">
+      <button class="btn blue small">
+        Buka Form Order
+      </button>
+    </a>
+
+  </div>
+
+  <div class="stats">
+
+    <div class="stat">
+      <div class="stat-label">Total Order</div>
+      <div class="stat-value" id="statTotal">0</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-label">Order Baru</div>
+      <div class="stat-value" id="statBaru">0</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-label">Sudah Lunas</div>
+      <div class="stat-value" id="statLunas">0</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-label">Total Nilai Order</div>
+      <div class="stat-value" id="statOmzet">Rp0</div>
+    </div>
+
+  </div>
+
+  <div class="filters">
+
+    <input
+      id="searchInput"
+      placeholder="Cari kode, nama, WhatsApp, produk..."
+      oninput="renderOrders()">
+
+    <select
+      id="statusFilter"
+      onchange="renderOrders()">
+
+      <option value="">Semua status order</option>
+      <option value="BARU">BARU</option>
+      <option value="MENUNGGU_PEMBAYARAN">MENUNGGU PEMBAYARAN</option>
+      <option value="LUNAS">LUNAS</option>
+      <option value="DIPROSES">DIPROSES</option>
+      <option value="DIKIRIM">DIKIRIM</option>
+      <option value="SELESAI">SELESAI</option>
+      <option value="DIBATALKAN">DIBATALKAN</option>
+
+    </select>
+
+    <select
+      id="paymentFilter"
+      onchange="renderOrders()">
+
+      <option value="">Semua pembayaran</option>
+      <option value="BELUM_BAYAR">BELUM BAYAR</option>
+      <option value="MENUNGGU_VERIFIKASI">MENUNGGU VERIFIKASI</option>
+      <option value="LUNAS">LUNAS</option>
+      <option value="GAGAL">GAGAL</option>
+      <option value="DIKEMBALIKAN">DIKEMBALIKAN</option>
+
+    </select>
+
+  </div>
+
+  <div id="ordersList"></div>
+
+</section>
+
+</main>
+
+<div id="shippingModal" class="modal hidden">
+
+  <div class="modal-box">
+
+    <div class="modal-head">
+      <h3 style="margin:0">Input Pengiriman</h3>
+      <button class="close" onclick="closeShippingModal()">×</button>
+    </div>
+
+    <input id="shippingOrderId" type="hidden">
+
+    <div class="field">
+      <label>Kurir</label>
+      <input id="shippingCourier" value="J&T">
+    </div>
+
+    <div class="field">
+      <label>Nomor Resi</label>
+      <input id="shippingResi">
+    </div>
+
+    <button
+      class="btn success"
+      style="width:100%"
+      onclick="saveShipping()">
+      Simpan & Tandai Dikirim
+    </button>
+
+  </div>
+
+</div>
+
+<div id="noteModal" class="modal hidden">
+
+  <div class="modal-box">
+
+    <div class="modal-head">
+      <h3 style="margin:0">Catatan Admin</h3>
+      <button class="close" onclick="closeNoteModal()">×</button>
+    </div>
+
+    <input id="noteOrderId" type="hidden">
+
+    <div class="field">
+      <textarea
+        id="adminNote"
+        rows="5"
+        placeholder="Catatan internal admin..."></textarea>
+    </div>
+
+    <button
+      class="btn"
+      style="width:100%"
+      onclick="saveAdminNote()">
+      Simpan Catatan
+    </button>
+
+  </div>
+
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script>
+
+const SUPABASE_URL =
+"https://ilxahxzrtzpzhnlskfns.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_eetxbGhYGFLhJdXhiU2W0A_qG63dTyU";
+
+const supabaseClient =
+supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+let currentUser = null;
+let currentProfile = null;
+let orders = [];
+
+
+function esc(v){
+
+  return String(v ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+function rupiah(v){
+
+  return new Intl.NumberFormat(
+    "id-ID",
+    {
+      style:"currency",
+      currency:"IDR",
+      maximumFractionDigits:0
+    }
+  ).format(Number(v || 0));
+
+}
+
+
+function dateID(v){
+
+  if(!v)
+    return "-";
+
+  return new Date(v)
+    .toLocaleString(
+      "id-ID",
+      {
+        day:"2-digit",
+        month:"2-digit",
+        year:"numeric",
+        hour:"2-digit",
+        minute:"2-digit"
+      }
+    );
+
+}
+
+
+function showToast(message,error=false){
+
+  const el =
+    document.getElementById("toast");
+
+  el.textContent = message;
+
+  el.classList.remove("hidden");
+
+  el.classList.toggle(
+    "error",
+    error
+  );
+
+  clearTimeout(showToast._timer);
+
+  showToast._timer =
+    setTimeout(
+      ()=>el.classList.add("hidden"),
+      3500
+    );
+
+}
+
+
+function orderBadge(status){
+
+  let cls = "";
+
+  if(status === "SELESAI")
+    cls = "success";
+
+  else if(status === "DIKIRIM")
+    cls = "blue";
+
+  else if(status === "LUNAS")
+    cls = "success";
+
+  else if(status === "BARU")
+    cls = "warning";
+
+  else if(status === "DIBATALKAN")
+    cls = "danger";
+
+  return `
+    <span class="badge ${cls}">
+      ${esc(status)}
+    </span>
+  `;
+
+}
+
+
+function paymentBadge(status){
+
+  let cls = "";
+
+  if(status === "LUNAS")
+    cls = "success";
+
+  else if(status === "BELUM_BAYAR")
+    cls = "warning";
+
+  else if(status === "GAGAL")
+    cls = "danger";
+
+  return `
+    <span class="badge ${cls}">
+      ${esc(status)}
+    </span>
+  `;
+
+}
+
+
+async function login(){
+
+  const email =
+    document
+      .getElementById("loginEmail")
+      .value
+      .trim();
+
+  const password =
+    document
+      .getElementById("loginPassword")
+      .value;
+
+  document
+    .getElementById("loginError")
+    .textContent = "";
+
+
+  const {data,error} =
+    await supabaseClient.auth
+      .signInWithPassword({
+        email,
+        password
+      });
+
+
+  if(error){
+
+    document
+      .getElementById("loginError")
+      .textContent =
+        error.message;
+
+    return;
+
+  }
+
+
+  currentUser =
+    data.user;
+
+  await loadProfile();
+
+}
+
+
+async function loadProfile(){
+
+  const {data,error} =
+    await supabaseClient
+      .from("profiles")
+      .select("*")
+      .eq(
+        "id",
+        currentUser.id
+      )
+      .single();
+
+
+  if(error){
+
+    showToast(
+      "Profil tidak ditemukan.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  const role =
+    String(data.role || "")
+      .trim()
+      .toLowerCase();
+
+
+  if(role !== "admin"){
+
+    await supabaseClient.auth.signOut();
+
+    showToast(
+      "Akun ini bukan admin.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  currentProfile = data;
+
+  document
+    .getElementById("adminName")
+    .textContent =
+      data.nama ||
+      currentUser.email;
+
+
+  document
+    .getElementById("loginPage")
+    .classList.add("hidden");
+
+
+  document
+    .getElementById("appPage")
+    .classList.remove("hidden");
+
+
+  document
+    .getElementById("header")
+    .classList.remove("hidden");
+
+
+  await loadOrders();
+
+}
+
+
+async function logout(){
+
+  await supabaseClient.auth.signOut();
+
+  location.reload();
+
+}
+
+
+async function loadOrders(){
+
+  const {data,error} =
+    await supabaseClient.rpc(
+      "admin_get_orders"
+    );
+
+
+  if(error){
+
+    console.error(error);
+
+    showToast(
+      "Gagal membaca order: " +
+      error.message,
+      true
+    );
+
+    return;
+
+  }
+
+
+  orders =
+    Array.isArray(data)
+    ? data
+    : [];
+
+
+  renderStats();
+
+  renderOrders();
+
+}
+
+
+function renderStats(){
+
+  document
+    .getElementById("statTotal")
+    .textContent =
+      orders.length;
+
+
+  document
+    .getElementById("statBaru")
+    .textContent =
+      orders.filter(
+        x =>
+          x.status === "BARU"
+      ).length;
+
+
+  document
+    .getElementById("statLunas")
+    .textContent =
+      orders.filter(
+        x =>
+          x.status_pembayaran === "LUNAS"
+      ).length;
+
+
+  const omzet =
+    orders.reduce(
+      (a,x)=>
+        a + Number(x.total || 0),
+      0
+    );
+
+
+  document
+    .getElementById("statOmzet")
+    .textContent =
+      rupiah(omzet);
+
+}
+
+
+function renderOrders(){
+
+  const el =
+    document.getElementById(
+      "ordersList"
+    );
+
+
+  const search =
+    document
+      .getElementById("searchInput")
+      .value
+      .trim()
+      .toLowerCase();
+
+
+  const status =
+    document
+      .getElementById("statusFilter")
+      .value;
+
+
+  const payment =
+    document
+      .getElementById("paymentFilter")
+      .value;
+
+
+  const filtered =
+    orders.filter(
+      o => {
+
+        if(
+          status &&
+          o.status !== status
+        )
+          return false;
+
+
+        if(
+          payment &&
+          o.status_pembayaran !== payment
+        )
+          return false;
+
+
+        if(search){
+
+          const text = [
+            o.kode_order,
+            o.customer?.nama,
+            o.customer?.whatsapp,
+            o.customer?.alamat,
+            ...(o.items || [])
+              .map(
+                i =>
+                  [
+                    i.nama_produk,
+                    i.nama_variasi,
+                    i.sku
+                  ].join(" ")
+              )
+          ]
+          .join(" ")
+          .toLowerCase();
+
+
+          if(!text.includes(search))
+            return false;
+
+        }
+
+
+        return true;
+
+      }
+    );
+
+
+  if(!filtered.length){
+
+    el.innerHTML =
+      '<div class="empty">Tidak ada order ditemukan.</div>';
+
+    return;
+
+  }
+
+
+  el.innerHTML =
+    filtered.map(
+      o => {
+
+        const customer =
+          o.customer || {};
+
+
+        const items =
+          Array.isArray(o.items)
+          ? o.items
+          : [];
+
+
+        return `
+
+        <div class="card">
+
+          <div class="card-top">
+
+            <div>
+
+              <div class="order-code">
+                ${esc(o.kode_order)}
+              </div>
+
+              <div class="meta">
+
+                ${dateID(o.created_at)}
+                <br>
+
+                Customer:
+                <strong>
+                  ${esc(customer.nama || "-")}
+                </strong>
+
+                <br>
+
+                WhatsApp:
+                ${esc(customer.whatsapp || "-")}
+
+                <br>
+
+                Alamat:
+                ${esc(customer.alamat || "-")}
+
+                ${
+                  customer.kabupaten
+                  ? `<br>${esc(customer.kabupaten)}`
+                  : ""
+                }
+
+                ${
+                  customer.provinsi
+                  ? `, ${esc(customer.provinsi)}`
+                  : ""
+                }
+
+              </div>
+
+            </div>
+
+
+            <div class="badges">
+
+              ${orderBadge(o.status)}
+
+              ${paymentBadge(
+                o.status_pembayaran
+              )}
+
+            </div>
+
+          </div>
+
+
+          <div class="order-total">
+            ${rupiah(o.total)}
+          </div>
+
+
+          <div class="items">
+
+            ${
+              items.map(
+                i => `
+
+                <div class="item">
+
+                  <div>
+
+                    <div class="item-name">
+                      ${esc(i.nama_produk)}
+                    </div>
+
+                    <div class="item-meta">
+
+                      ${
+                        i.nama_variasi
+                        ? esc(i.nama_variasi) + " · "
+                        : ""
+                      }
+
+                      ${esc(i.sku || "-")}
+
+                    </div>
+
+                  </div>
+
+
+                  <div style="text-align:right">
+
+                    <strong>
+                      ${i.qty} ×
+                      ${rupiah(i.harga_satuan)}
+                    </strong>
+
+                    <div class="item-meta">
+                      ${rupiah(i.subtotal)}
+                    </div>
+
+                  </div>
+
+                </div>
+
+                `
+              ).join("")
+            }
+
+          </div>
+
+
+          ${
+            o.nomor_resi
+
+            ? `
+
+              <div class="meta" style="margin-top:10px">
+
+                Pengiriman:
+                <strong>
+                  ${esc(o.kurir || "J&T")}
+                </strong>
+
+                · Resi:
+                <strong>
+                  ${esc(o.nomor_resi)}
+                </strong>
+
+              </div>
+
+            `
+
+            : ""
+          }
+
+
+          ${
+            o.catatan_customer
+
+            ? `
+
+              <div class="meta" style="margin-top:8px">
+
+                Catatan customer:
+                ${esc(o.catatan_customer)}
+
+              </div>
+
+            `
+
+            : ""
+          }
+
+
+          ${
+            o.catatan_admin
+
+            ? `
+
+              <div class="meta" style="margin-top:8px">
+
+                Catatan admin:
+                ${esc(o.catatan_admin)}
+
+              </div>
+
+            `
+
+            : ""
+          }
+
+
+          <div class="actions">
+
+            ${
+              o.status_pembayaran !== "LUNAS"
+
+              ? `
+
+                <button
+                  class="btn success small"
+                  onclick="markPaid(${o.id})">
+
+                  Tandai Lunas
+
+                </button>
+
+              `
+
+              : ""
+            }
+
+
+            ${
+              o.status === "BARU" ||
+              o.status === "LUNAS"
+
+              ? `
+
+                <button
+                  class="btn blue small"
+                  onclick="setStatus(${o.id},'DIPROSES')">
+
+                  Proses Order
+
+                </button>
+
+              `
+
+              : ""
+            }
+
+
+            ${
+              o.status === "DIPROSES"
+
+              ? `
+
+                <button
+                  class="btn blue small"
+                  onclick="openShippingModal(${o.id})">
+
+                  Input Resi
+
+                </button>
+
+              `
+
+              : ""
+            }
+
+
+            ${
+              o.status === "DIKIRIM"
+
+              ? `
+
+                <button
+                  class="btn success small"
+                  onclick="setStatus(${o.id},'SELESAI')">
+
+                  Tandai Selesai
+
+                </button>
+
+              `
+
+              : ""
+            }
+
+
+            <button
+              class="btn secondary small"
+              onclick="openNoteModal(${o.id})">
+
+              Catatan
+
+            </button>
+
+
+            ${
+              o.status !== "SELESAI" &&
+              o.status !== "DIBATALKAN"
+
+              ? `
+
+                <button
+                  class="btn danger small"
+                  onclick="setStatus(${o.id},'DIBATALKAN')">
+
+                  Batalkan
+
+                </button>
+
+              `
+
+              : ""
+            }
+
+          </div>
+
+        </div>
+
+        `;
+
+      }
+    ).join("");
+
+}
+
+
+async function setStatus(
+  orderId,
+  status
+){
+
+  const {error} =
+    await supabaseClient.rpc(
+      "admin_update_order_status",
+      {
+        p_order_id:
+          orderId,
+
+        p_status:
+          status
+      }
+    );
+
+
+  if(error){
+
+    showToast(
+      error.message,
+      true
+    );
+
+    return;
+
+  }
+
+
+  showToast(
+    "Status order diperbarui."
+  );
+
+
+  await loadOrders();
+
+}
+
+
+async function markPaid(
+  orderId
+){
+
+  const {error} =
+    await supabaseClient.rpc(
+      "admin_update_payment_status",
+      {
+        p_order_id:
+          orderId,
+
+        p_status_pembayaran:
+          "LUNAS"
+      }
+    );
+
+
+  if(error){
+
+    showToast(
+      error.message,
+      true
+    );
+
+    return;
+
+  }
+
+
+  showToast(
+    "Pembayaran ditandai LUNAS."
+  );
+
+
+  await loadOrders();
+
+}
+
+
+function openShippingModal(
+  orderId
+){
+
+  document
+    .getElementById(
+      "shippingOrderId"
+    )
+    .value =
+      orderId;
+
+
+  document
+    .getElementById(
+      "shippingCourier"
+    )
+    .value =
+      "J&T";
+
+
+  document
+    .getElementById(
+      "shippingResi"
+    )
+    .value =
+      "";
+
+
+  document
+    .getElementById(
+      "shippingModal"
+    )
+    .classList.remove(
+      "hidden"
+    );
+
+}
+
+
+function closeShippingModal(){
+
+  document
+    .getElementById(
+      "shippingModal"
+    )
+    .classList.add(
+      "hidden"
+    );
+
+}
+
+
+async function saveShipping(){
+
+  const id =
+    Number(
+      document
+        .getElementById(
+          "shippingOrderId"
+        )
+        .value
+    );
+
+
+  const kurir =
+    document
+      .getElementById(
+        "shippingCourier"
+      )
+      .value
+      .trim();
+
+
+  const resi =
+    document
+      .getElementById(
+        "shippingResi"
+      )
+      .value
+      .trim();
+
+
+  if(!resi){
+
+    showToast(
+      "Nomor resi wajib diisi.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  const {error} =
+    await supabaseClient.rpc(
+      "admin_update_shipping",
+      {
+        p_order_id:
+          id,
+
+        p_kurir:
+          kurir,
+
+        p_nomor_resi:
+          resi
+      }
+    );
+
+
+  if(error){
+
+    showToast(
+      error.message,
+      true
+    );
+
+    return;
+
+  }
+
+
+  closeShippingModal();
+
+  showToast(
+    "Pengiriman berhasil disimpan."
+  );
+
+
+  await loadOrders();
+
+}
+
+
+function openNoteModal(
+  orderId
+){
+
+  const order =
+    orders.find(
+      x =>
+        Number(x.id) ===
+        Number(orderId)
+    );
+
+
+  document
+    .getElementById(
+      "noteOrderId"
+    )
+    .value =
+      orderId;
+
+
+  document
+    .getElementById(
+      "adminNote"
+    )
+    .value =
+      order?.catatan_admin || "";
+
+
+  document
+    .getElementById(
+      "noteModal"
+    )
+    .classList.remove(
+      "hidden"
+    );
+
+}
+
+
+function closeNoteModal(){
+
+  document
+    .getElementById(
+      "noteModal"
+    )
+    .classList.add(
+      "hidden"
+    );
+
+}
+
+
+async function saveAdminNote(){
+
+  const id =
+    Number(
+      document
+        .getElementById(
+          "noteOrderId"
+        )
+        .value
+    );
+
+
+  const note =
+    document
+      .getElementById(
+        "adminNote"
+      )
+      .value
+      .trim();
+
+
+  const {error} =
+    await supabaseClient.rpc(
+      "admin_update_order_note",
+      {
+        p_order_id:
+          id,
+
+        p_catatan:
+          note
+      }
+    );
+
+
+  if(error){
+
+    showToast(
+      error.message,
+      true
+    );
+
+    return;
+
+  }
+
+
+  closeNoteModal();
+
+  showToast(
+    "Catatan admin disimpan."
+  );
+
+
+  await loadOrders();
+
+}
+
+
+async function init(){
+
+  const {
+    data:{
+      session
+    }
+  } =
+    await supabaseClient.auth
+      .getSession();
+
+
+  if(
+    session &&
+    session.user
+  ){
+
+    currentUser =
+      session.user;
+
+    await loadProfile();
+
+  }
+
+}
+
+
+init();
+
+</script>
+
+</body>
+</html>
