@@ -1733,6 +1733,122 @@ async function loadProvinces(){
 
 
 
+async function fetchWilayah(url){
+
+  const response = await fetch(url);
+
+  if(!response.ok){
+
+    throw new Error(
+      "Gagal mengambil data wilayah."
+    );
+
+  }
+
+  const json =
+    await response.json();
+
+
+  /*
+    Mendukung format:
+    1. [ ... ]
+    2. { data: [ ... ] }
+  */
+  if(Array.isArray(json)){
+    return json;
+  }
+
+  if(Array.isArray(json?.data)){
+    return json.data;
+  }
+
+  return [];
+
+}
+
+
+
+async function loadProvinces(){
+
+  const provinsi =
+    document.getElementById(
+      "cProvinsi"
+    );
+
+  const kabupaten =
+    document.getElementById(
+      "cKabupaten"
+    );
+
+  const kecamatan =
+    document.getElementById(
+      "cKecamatan"
+    );
+
+
+  provinsi.innerHTML =
+    '<option value="">Memuat provinsi...</option>';
+
+  kabupaten.disabled = true;
+
+  kabupaten.innerHTML =
+    '<option value="">Pilih provinsi dulu</option>';
+
+  kecamatan.disabled = true;
+
+  kecamatan.innerHTML =
+    '<option value="">Pilih kabupaten dulu</option>';
+
+
+  try{
+
+    const data =
+      await fetchWilayah(
+        `${WILAYAH_API}/provinces.json`
+      );
+
+
+    if(!data.length){
+
+      throw new Error(
+        "Data provinsi kosong."
+      );
+
+    }
+
+
+    provinsi.innerHTML =
+      '<option value="">Pilih provinsi</option>' +
+
+      data.map(
+        item =>
+          `<option value="${esc(item.id)}">${esc(item.name)}</option>`
+      ).join("");
+
+
+  }catch(error){
+
+    console.error(
+      "Gagal memuat provinsi:",
+      error
+    );
+
+
+    provinsi.innerHTML =
+      '<option value="">Gagal memuat provinsi</option>';
+
+
+    showToast(
+      "Gagal memuat data provinsi.",
+      true
+    );
+
+  }
+
+}
+
+
+
 async function loadRegencies(){
 
   invalidateShipping();
@@ -1740,69 +1856,190 @@ async function loadRegencies(){
 
   const provinceId =
     document
-    .getElementById(
-      "cProvinsi"
-    )
-    .value;
+      .getElementById(
+        "cProvinsi"
+      )
+      .value;
 
 
-  const el =
+  const kabupaten =
     document.getElementById(
       "cKabupaten"
     );
 
 
-  document
-    .getElementById(
+  const kecamatan =
+    document.getElementById(
       "cKecamatan"
-    )
-    .innerHTML =
+    );
+
+
+  kecamatan.disabled = true;
+
+  kecamatan.innerHTML =
     '<option value="">Pilih kabupaten dulu</option>';
 
 
   if(!provinceId){
 
-    el.disabled = true;
+    kabupaten.disabled = true;
+
+    kabupaten.innerHTML =
+      '<option value="">Pilih provinsi dulu</option>';
 
     return;
 
   }
 
 
-  el.disabled = true;
+  kabupaten.disabled = true;
 
-  el.innerHTML =
-    '<option>Memuat...</option>';
+  kabupaten.innerHTML =
+    '<option value="">Memuat kabupaten...</option>';
 
 
-  const r =
-    await fetch(
-      `${WILAYAH_API}/regencies/${provinceId}.json`
+  try{
+
+    const data =
+      await fetchWilayah(
+        `${WILAYAH_API}/regencies/${provinceId}.json`
+      );
+
+
+    if(!data.length){
+
+      throw new Error(
+        "Data kabupaten kosong."
+      );
+
+    }
+
+
+    kabupaten.innerHTML =
+      '<option value="">Pilih kabupaten / kota</option>' +
+
+      data.map(
+        item =>
+          `<option value="${esc(item.id)}">${esc(item.name)}</option>`
+      ).join("");
+
+
+    kabupaten.disabled =
+      false;
+
+
+  }catch(error){
+
+    console.error(
+      "Gagal memuat kabupaten:",
+      error
     );
 
 
-  const data =
-    await r.json();
+    kabupaten.innerHTML =
+      '<option value="">Gagal memuat kabupaten</option>';
 
 
-  el.innerHTML =
+    showToast(
+      "Gagal memuat kabupaten / kota.",
+      true
+    );
 
-    '<option value="">Pilih kabupaten / kota</option>' +
-
-    data.map(
-      x =>
-        `<option value="${x.id}">${esc(x.name)}</option>`
-    ).join("");
-
-
-  el.disabled =
-    false;
+  }
 
 }
 
 
 
 async function loadDistricts(){
+
+  invalidateShipping();
+
+
+  const regencyId =
+    document
+      .getElementById(
+        "cKabupaten"
+      )
+      .value;
+
+
+  const kecamatan =
+    document.getElementById(
+      "cKecamatan"
+    );
+
+
+  if(!regencyId){
+
+    kecamatan.disabled = true;
+
+    kecamatan.innerHTML =
+      '<option value="">Pilih kabupaten dulu</option>';
+
+    return;
+
+  }
+
+
+  kecamatan.disabled =
+    true;
+
+
+  kecamatan.innerHTML =
+    '<option value="">Memuat kecamatan...</option>';
+
+
+  try{
+
+    const data =
+      await fetchWilayah(
+        `${WILAYAH_API}/districts/${regencyId}.json`
+      );
+
+
+    if(!data.length){
+
+      throw new Error(
+        "Data kecamatan kosong."
+      );
+
+    }
+
+
+    kecamatan.innerHTML =
+      '<option value="">Pilih kecamatan</option>' +
+
+      data.map(
+        item =>
+          `<option value="${esc(item.id)}">${esc(item.name)}</option>`
+      ).join("");
+
+
+    kecamatan.disabled =
+      false;
+
+
+  }catch(error){
+
+    console.error(
+      "Gagal memuat kecamatan:",
+      error
+    );
+
+
+    kecamatan.innerHTML =
+      '<option value="">Gagal memuat kecamatan</option>';
+
+
+    showToast(
+      "Gagal memuat kecamatan.",
+      true
+    );
+
+  }
+
+}
 
   invalidateShipping();
 
