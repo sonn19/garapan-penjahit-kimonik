@@ -188,6 +188,104 @@ input:focus,select:focus,textarea:focus{border-color:#999}
     </div>
 
     <div id="successBox" class="success-box hidden">
+
+  <div style="font-size:13px;color:var(--muted)">
+    Pesanan berhasil dibuat
+  </div>
+
+  <div
+    id="successCode"
+    class="success-code">
+    -
+  </div>
+
+  <div
+    id="successTotal"
+    style="
+      font-size:22px;
+      font-weight:800;
+      margin-top:10px;
+    ">
+    -
+  </div>
+
+  <div
+    style="
+      margin-top:18px;
+      padding:14px;
+      background:#fff8e9;
+      border:1px solid #eadbb8;
+      border-radius:12px;
+    ">
+
+    <div
+      style="
+        font-size:12px;
+        color:var(--muted);
+      ">
+      Transfer pembayaran ke
+    </div>
+
+    <div
+      style="
+        font-size:18px;
+        font-weight:800;
+        margin-top:4px;
+      ">
+      BCA
+    </div>
+
+    <div style="margin-top:7px">
+      No. Rekening:
+      <strong id="rekeningBca">
+        2470144028
+      </strong>
+    </div>
+
+    <div style="margin-top:4px">
+      Atas Nama:
+      <strong>Esti Asrofah</strong>
+    </div>
+
+    <button
+      class="btn secondary"
+      style="width:100%;margin-top:12px"
+      onclick="copyRekening()">
+      Salin No. Rekening
+    </button>
+
+  </div>
+
+  <button
+    id="successBayarBtn"
+    class="btn success"
+    style="width:100%;margin-top:12px"
+    onclick="konfirmasiBayarDariOrder()">
+    Saya Sudah Bayar
+  </button>
+
+  <a
+    id="successCheckLink"
+    href="cek-order.html"
+    class="btn secondary"
+    style="
+      display:block;
+      width:100%;
+      margin-top:8px;
+      text-align:center;
+      text-decoration:none;
+    ">
+    Cek Status Pesanan
+  </a>
+
+  <button
+    class="btn"
+    style="width:100%;margin-top:8px"
+    onclick="resetAfterSuccess()">
+    Buat Pesanan Baru
+  </button>
+
+</div>
       <div>Pesanan berhasil dibuat.</div>
       <div id="successCode" class="success-code">-</div>
       <div id="successTotal" class="muted"></div>
