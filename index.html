@@ -1,1 +1,1206 @@
 
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kimonik — Tenun untuk Momen Istimewa</title>
+
+<meta name="description"
+content="Kimonik menghadirkan koleksi busana tenun untuk kondangan, wisuda, lamaran, prewedding dan momen istimewa lainnya.">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --bg:#f7f4ef;
+  --surface:#ffffff;
+  --surface2:#eee8df;
+  --text:#292621;
+  --muted:#777168;
+  --line:#ded7cd;
+  --dark:#292621;
+  --accent:#9b7450;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+button{
+  font:inherit;
+  cursor:pointer;
+}
+
+.container{
+  width:min(1180px,calc(100% - 28px));
+  margin:auto;
+}
+
+/* ================= HEADER ================= */
+
+header{
+  position:sticky;
+  top:0;
+  z-index:50;
+  background:rgba(247,244,239,.94);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(222,215,205,.8);
+}
+
+.nav{
+  height:68px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
+
+.logo{
+  font-size:23px;
+  font-weight:900;
+  letter-spacing:2px;
+}
+
+.logo small{
+  display:block;
+  font-size:9px;
+  letter-spacing:3px;
+  color:var(--muted);
+  margin-top:2px;
+}
+
+.nav-links{
+  display:flex;
+  align-items:center;
+  gap:23px;
+  font-size:13px;
+}
+
+.nav-links a:hover{
+  opacity:.65;
+}
+
+.btn{
+  border:0;
+  border-radius:999px;
+  padding:12px 18px;
+  font-weight:700;
+  background:var(--dark);
+  color:#fff;
+}
+
+.btn.light{
+  background:#fff;
+  color:var(--dark);
+  border:1px solid var(--line);
+}
+
+/* ================= HERO ================= */
+
+.hero{
+  min-height:620px;
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  align-items:center;
+  gap:45px;
+  padding:70px 0;
+}
+
+.hero-copy{
+  max-width:650px;
+}
+
+.eyebrow{
+  font-size:12px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--accent);
+  font-weight:800;
+  margin-bottom:16px;
+}
+
+.hero h1{
+  font-size:clamp(42px,7vw,78px);
+  line-height:.98;
+  margin:0 0 24px;
+  letter-spacing:-3px;
+}
+
+.hero p{
+  max-width:560px;
+  font-size:17px;
+  line-height:1.7;
+  color:var(--muted);
+  margin:0 0 27px;
+}
+
+.hero-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.hero-card{
+  min-height:470px;
+  border-radius:30px;
+  background:
+    linear-gradient(
+      145deg,
+      #d8cab9,
+      #a98767
+    );
+  padding:36px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero-card:before{
+  content:"";
+  position:absolute;
+  width:330px;
+  height:330px;
+  border-radius:50%;
+  background:rgba(255,255,255,.13);
+  right:-100px;
+  top:-80px;
+}
+
+.hero-card:after{
+  content:"K";
+  position:absolute;
+  top:48px;
+  left:50%;
+  transform:translateX(-50%);
+  font-family:Georgia,serif;
+  font-size:220px;
+  color:rgba(255,255,255,.17);
+}
+
+.hero-card-content{
+  position:relative;
+  z-index:2;
+  color:#fff;
+}
+
+.hero-card h2{
+  font-size:31px;
+  margin:0 0 7px;
+}
+
+.hero-card p{
+  color:rgba(255,255,255,.8);
+  margin:0;
+  font-size:14px;
+}
+
+/* ================= SECTION ================= */
+
+.section{
+  padding:72px 0;
+}
+
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:20px;
+  margin-bottom:26px;
+}
+
+.section-head h2{
+  font-size:32px;
+  margin:0;
+}
+
+.section-head p{
+  margin:7px 0 0;
+  color:var(--muted);
+  line-height:1.6;
+  max-width:580px;
+}
+
+/* ================= PRODUCT ================= */
+
+.products{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
+
+.product-card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:20px;
+  overflow:hidden;
+  min-width:0;
+}
+
+.product-photo{
+  aspect-ratio:4/3;
+  background:#ede7df;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--muted);
+  overflow:hidden;
+  font-size:12px;
+}
+
+.product-photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.product-body{
+  padding:17px;
+}
+
+.product-name{
+  font-weight:800;
+  font-size:16px;
+  line-height:1.4;
+  min-height:44px;
+}
+
+.product-meta{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:6px;
+}
+
+.product-price{
+  font-size:18px;
+  font-weight:900;
+  margin-top:12px;
+}
+
+.product-stock{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:5px;
+}
+
+.loading,
+.empty{
+  grid-column:1/-1;
+  text-align:center;
+  background:#fff;
+  border:1px dashed var(--line);
+  border-radius:18px;
+  color:var(--muted);
+  padding:40px;
+}
+
+/* ================= VALUE ================= */
+
+.values{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+
+.value{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:23px;
+}
+
+.value-number{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--dark);
+  color:#fff;
+  font-size:13px;
+  font-weight:800;
+  margin-bottom:19px;
+}
+
+.value h3{
+  font-size:17px;
+  margin:0 0 8px;
+}
+
+.value p{
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.6;
+  margin:0;
+}
+
+/* ================= ORDER CTA ================= */
+
+.cta{
+  background:var(--dark);
+  color:#fff;
+  border-radius:28px;
+  padding:50px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:30px;
+}
+
+.cta h2{
+  font-size:36px;
+  margin:0 0 10px;
+}
+
+.cta p{
+  color:rgba(255,255,255,.7);
+  margin:0;
+  line-height:1.6;
+}
+
+.cta .btn{
+  background:#fff;
+  color:var(--dark);
+  white-space:nowrap;
+}
+
+/* ================= FOOTER ================= */
+
+footer{
+  padding:45px 0 35px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.footer{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  border-top:1px solid var(--line);
+  padding-top:25px;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:850px){
+
+  .nav-links a:not(.btn){
+    display:none;
+  }
+
+  .hero{
+    grid-template-columns:1fr;
+    padding:45px 0;
+    min-height:auto;
+  }
+
+  .hero-card{
+    min-height:360px;
+  }
+
+  .products{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .values{
+    grid-template-columns:1fr;
+  }
+
+  .cta{
+    flex-direction:column;
+    align-items:flex-start;
+    padding:32px;
+  }
+
+}
+
+@media(max-width:560px){
+
+  .products{
+    grid-template-columns:1fr;
+  }
+
+  .hero h1{
+    letter-spacing:-2px;
+  }
+
+  .hero-card{
+    min-height:310px;
+  }
+
+  .section{
+    padding:52px 0;
+  }
+
+  .section-head{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .footer{
+    flex-direction:column;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+  <div class="container nav">
+
+    <a class="logo" href="#">
+      KIMONIK
+      <small>INDONESIA</small>
+    </a>
+
+    <nav class="nav-links">
+
+      <a href="#koleksi">Koleksi</a>
+
+      <a href="#tentang">Tentang</a>
+
+      <a href="#cara-pesan">Cara Pesan</a>
+
+<a href="cek-order.html">
+  Cek Pesanan
+</a>
+
+<a class="btn" href="order.html">
+  Pesan Sekarang
+</a>
+
+    </nav>
+
+  </div>
+
+</header>
+
+
+<main>
+
+<!-- HERO -->
+
+<section class="container hero">
+
+  <div class="hero-copy">
+
+    <div class="eyebrow">
+      Kimonik Indonesia
+    </div>
+
+    <h1>
+      Tenun untuk<br>
+      momen istimewa.
+    </h1>
+
+    <p>
+      Koleksi busana Kimonik untuk kondangan,
+      wisuda, lamaran, prewedding dan berbagai
+      momen yang ingin dikenang.
+    </p>
+
+    <div class="hero-actions">
+
+      <a class="btn" href="order.html">
+        Belanja Sekarang
+      </a>
+
+      <a class="btn light" href="#koleksi">
+        Lihat Koleksi
+      </a>
+
+    </div>
+
+  </div>
+
+
+  <div class="hero-card">
+
+    <div class="hero-card-content">
+
+      <div class="eyebrow"
+           style="color:rgba(255,255,255,.7)">
+        KIMONIK
+      </div>
+
+      <h2>
+        Crafted for your story.
+      </h2>
+
+      <p>
+        Modern silhouettes with the character
+        of Indonesian tenun.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- PRODUCT PREVIEW -->
+
+<section
+  id="koleksi"
+  class="section">
+
+  <div class="container">
+
+    <div class="section-head">
+
+      <div>
+
+        <div class="eyebrow">
+          Koleksi
+        </div>
+
+        <h2>
+          Pilihan Kimonik
+        </h2>
+
+        <p>
+          Beberapa koleksi aktif dari katalog Kimonik.
+          Lihat seluruh variasi, harga dan stok
+          melalui halaman pemesanan.
+        </p>
+
+      </div>
+
+      <a class="btn light" href="order.html">
+        Lihat Semua →
+      </a>
+
+    </div>
+
+
+    <div
+      id="products"
+      class="products">
+
+      <div class="loading">
+        Memuat koleksi Kimonik...
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- VALUE -->
+
+<section
+  id="tentang"
+  class="section">
+
+  <div class="container">
+
+    <div class="section-head">
+
+      <div>
+
+        <div class="eyebrow">
+          Kimonik
+        </div>
+
+        <h2>
+          Dibuat untuk dipakai,
+          bukan hanya dilihat.
+        </h2>
+
+      </div>
+
+    </div>
+
+
+    <div class="values">
+
+      <div class="value">
+
+        <div class="value-number">
+          01
+        </div>
+
+        <h3>Karakter Tenun</h3>
+
+        <p>
+          Kimonik membawa karakter kain tenun
+          ke dalam busana yang mudah digunakan
+          untuk berbagai acara.
+        </p>
+
+      </div>
+
+
+      <div class="value">
+
+        <div class="value-number">
+          02
+        </div>
+
+        <h3>Pilihan untuk Momen Anda</h3>
+
+        <p>
+          Temukan variasi busana untuk kondangan,
+          wisuda, lamaran, prewedding,
+          maupun kebutuhan lainnya.
+        </p>
+
+      </div>
+
+
+      <div class="value">
+
+        <div class="value-number">
+          03
+        </div>
+
+        <h3>Pesan Langsung</h3>
+
+        <p>
+          Pilih produk dan variasi yang tersedia,
+          masukkan ke keranjang dan buat pesanan
+          langsung melalui sistem Kimonik.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- CARA PESAN -->
+
+<section
+  id="cara-pesan"
+  class="section">
+
+  <div class="container">
+
+    <div class="section-head">
+
+      <div>
+
+        <div class="eyebrow">
+          Mudah
+        </div>
+
+        <h2>
+          Cara pesan
+        </h2>
+
+      </div>
+
+    </div>
+
+
+    <div class="values">
+
+      <div class="value">
+
+        <div class="value-number">
+          1
+        </div>
+
+        <h3>Pilih Produk</h3>
+
+        <p>
+          Buka katalog, pilih produk
+          dan variasi yang Anda inginkan.
+        </p>
+
+      </div>
+
+
+      <div class="value">
+
+        <div class="value-number">
+          2
+        </div>
+
+        <h3>Isi Data</h3>
+
+        <p>
+          Masukkan nama, nomor WhatsApp,
+          alamat dan informasi pemesanan.
+        </p>
+
+      </div>
+
+
+      <div class="value">
+
+        <div class="value-number">
+          3
+        </div>
+
+        <h3>Dapatkan Kode Order</h3>
+
+<p>
+  Pesanan langsung tercatat dalam sistem Kimonik.
+  Simpan kode order untuk mengecek perkembangan pesanan Anda.
+</p>
+
+<a
+  href="cek-order.html"
+  style="
+    display:inline-block;
+    margin-top:14px;
+    font-size:13px;
+    font-weight:700;
+  ">
+  Cek status pesanan →
+</a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<section class="section">
+
+  <div class="container">
+
+    <div class="section-head">
+
+      <div>
+
+        <div class="eyebrow">
+          FAQ
+        </div>
+
+        <h2>
+          Pertanyaan umum
+        </h2>
+
+      </div>
+
+    </div>
+
+    <div class="values">
+
+      <div class="value">
+
+        <h3>Bagaimana cara pesan?</h3>
+
+        <p>
+          Klik tombol Pesan Sekarang, pilih produk dan variasi,
+          masukkan ke keranjang, lalu isi data pemesanan.
+        </p>
+
+      </div>
+
+
+      <div class="value">
+
+        <h3>Apakah stok selalu tersedia?</h3>
+
+        <p>
+          Stok yang tampil mengikuti data katalog Kimonik.
+          Ketersediaan dapat berubah mengikuti penjualan.
+        </p>
+
+      </div>
+
+
+      <div class="value">
+
+        <h3>Bagaimana pembayaran dilakukan?</h3>
+
+        <p>
+          Setelah pesanan dibuat, tim Kimonik akan membantu
+          proses pembayaran dan konfirmasi melalui WhatsApp.
+        </p>
+
+      </div>
+
+
+      <div class="value">
+
+        <h3>Apakah bisa dikirim ke luar kota?</h3>
+
+        <p>
+          Bisa. Pengiriman dapat diproses ke berbagai wilayah
+          sesuai alamat pelanggan.
+        </p>
+
+      </div>
+
+
+      <div class="value">
+
+        <h3>Apakah bisa tanya ukuran dulu?</h3>
+
+        <p>
+          Bisa. Hubungi WhatsApp Kimonik sebelum membuat pesanan
+          jika ingin memastikan variasi atau ukuran.
+        </p>
+
+      </div>
+
+
+      <div class="value">
+
+        <h3>Bagaimana mengecek status pesanan?</h3>
+
+        <p>
+          Simpan kode order Anda. Tim Kimonik dapat membantu
+          pengecekan status berdasarkan kode tersebut.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+<!-- CTA -->
+
+<section class="section">
+
+  <div class="container">
+
+    <div class="cta">
+
+      <div>
+
+        <h2>
+          Temukan Kimonik Anda.
+        </h2>
+
+        <p>
+          Pilih koleksi dan buat pesanan
+          langsung melalui Kimonik.
+        </p>
+
+      </div>
+
+      <a class="btn" href="order.html">
+        Mulai Pesan →
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+</main>
+
+
+<footer>
+
+  <div class="container footer">
+
+    <div>
+      <strong style="color:var(--text)">
+        KIMONIK
+      </strong>
+      <br>
+      Tenun untuk momen istimewa.
+    </div>
+
+    <div>
+      © 2026 Kimonik
+    </div>
+
+  </div>
+
+</footer>
+
+
+<script>
+
+const SUPABASE_URL =
+"https://ilxahxzrtzpzhnlskfns.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_eetxbGhYGFLhJdXhiU2W0A_qG63dTyU";
+
+const supabaseClient =
+supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+
+function esc(v){
+
+  return String(v ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+function rupiah(v){
+
+  return new Intl.NumberFormat(
+    "id-ID",
+    {
+      style:"currency",
+      currency:"IDR",
+      maximumFractionDigits:0
+    }
+  ).format(Number(v || 0));
+
+}
+
+
+function stockProduct(p){
+
+  const vars =
+    Array.isArray(p.variasi)
+    ? p.variasi
+    : [];
+
+  if(vars.length){
+
+    return vars.reduce(
+      (total,v)=>
+        total + Number(v.stok || 0),
+      0
+    );
+
+  }
+
+  return Number(p.stok || 0);
+
+}
+
+
+function productPrice(p){
+
+  const vars =
+    (
+      Array.isArray(p.variasi)
+      ? p.variasi
+      : []
+    )
+    .filter(
+      v =>
+        Number(v.harga || 0) > 0
+    );
+
+  if(!vars.length)
+    return rupiah(p.harga_jual || 0);
+
+
+  const prices =
+    vars.map(
+      v =>
+        Number(v.harga)
+    );
+
+  const min =
+    Math.min(...prices);
+
+  const max =
+    Math.max(...prices);
+
+
+  return min === max
+    ? rupiah(min)
+    : `${rupiah(min)} – ${rupiah(max)}`;
+
+}
+
+
+async function loadProducts(){
+
+  const el =
+    document.getElementById("products");
+
+
+  const {data,error} =
+    await supabaseClient.rpc(
+      "get_katalog_kimonik"
+    );
+
+
+  if(error){
+
+    console.error(error);
+
+    el.innerHTML = `
+      <div class="empty">
+        Koleksi belum bisa dimuat.
+        Silakan buka halaman pemesanan.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  let products =
+    Array.isArray(data)
+    ? data
+    : [];
+
+
+  /*
+    Hanya tampilkan produk:
+    - harga > 0
+    - stok > 0
+  */
+
+  products =
+    products
+      .filter(
+        p =>
+          Number(p.harga_jual || 0) > 0 &&
+          stockProduct(p) > 0
+      )
+      .slice(0,6);
+
+
+  if(!products.length){
+
+    el.innerHTML = `
+      <div class="empty">
+        Belum ada koleksi aktif.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  el.innerHTML =
+    products.map(
+      p => {
+
+        const photo =
+          p.foto_url
+
+          ? `
+            <img
+              src="${esc(p.foto_url)}"
+              alt="${esc(p.nama_produk)}"
+              loading="lazy"
+              onerror="
+                this.parentElement.innerHTML=
+                'Foto belum tersedia'
+              ">
+          `
+
+          : "Foto belum tersedia";
+
+
+        return `
+
+        <a
+          href="order.html"
+          class="product-card">
+
+          <div class="product-photo">
+            ${photo}
+          </div>
+
+
+          <div class="product-body">
+
+            <div class="product-name">
+              ${esc(
+                p.nama_produk ||
+                "Produk Kimonik"
+              )}
+            </div>
+
+
+            <div class="product-meta">
+
+              ${
+                p.kategori
+                ? esc(p.kategori)
+                : "Kimonik"
+              }
+
+              · stok ${stockProduct(p)}
+
+            </div>
+
+
+            <div class="product-price">
+              ${productPrice(p)}
+            </div>
+
+          </div>
+
+        </a>
+
+        `;
+
+      }
+    )
+    .join("");
+
+}
+
+
+loadProducts();
+
+</script>
+<!-- FLOATING WHATSAPP -->
+<a
+  href="https://wa.me/6281227675034"
+  target="_blank"
+  aria-label="Chat WhatsApp Kimonik"
+  style="
+    position:fixed;
+    right:18px;
+    bottom:18px;
+    z-index:99;
+    width:56px;
+    height:56px;
+    border-radius:50%;
+    background:#25D366;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    box-shadow:0 6px 18px rgba(0,0,0,.18);
+    text-decoration:none;
+  ">
+  ☎
+</a>
+</body>
+</html>
