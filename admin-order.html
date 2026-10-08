@@ -1305,6 +1305,8 @@ function printShippingLabel(orderId){
       <div class="muted">${i.nama_variasi ? 'Variasi: '+safe(i.nama_variasi)+' · ' : ''}SKU: ${safe(i.sku)}</div>
       </td><td class="qty">${Number(i.qty)||0} pcs</td></tr>`).join("");
   const totalQty = items.reduce((n,i) => n + (Number(i.qty)||0),0);
+  const resiRaw = String(order.nomor_resi || "").trim();
+  const resiForBarcode = /^[\x20-\x7e]{1,80}$/.test(resiRaw) ? resiRaw : "";
   const w = window.open("", "_blank", "width=520,height=780");
   if(!w){ showToast("Izinkan pop-up untuk mencetak label.",true); return; }
   const html = `<!doctype html><html lang="id"><head><meta charset="utf-8">
@@ -1318,6 +1320,9 @@ function printShippingLabel(orderId){
       .rule{border-top:2px solid #111;margin:3mm 0}.thin{border-top:1px solid #555;margin:3mm 0}
       .hint{font-size:8pt;font-weight:bold;color:#444;margin-bottom:1mm}
       .resi{font-size:16pt;font-weight:900;letter-spacing:.3px}
+      .barcode-wrap{margin:2mm 0;text-align:center}
+      .barcode-wrap svg{width:100%;max-height:23mm}
+      .barcode-error{font-size:8pt;color:#a00}
       .name{font-size:12pt;font-weight:800}.detail{font-size:10pt;line-height:1.35}
       .muted{font-size:8pt;color:#444;margin-top:1mm}
       table{width:100%;border-collapse:collapse;font-size:9pt}td{padding:2mm 0;border-bottom:1px dashed #bbb;vertical-align:top}
@@ -1326,25 +1331,39 @@ function printShippingLabel(orderId){
       .printbar{padding:12px;background:#eee;text-align:center}
       .printbar button{padding:10px 20px;cursor:pointer}
       @media print{.printbar{display:none}.label{height:150mm}}
-    </style></head><body>
+    </style><script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"><\/script></head><body>
     <div class="printbar"><button onclick="window.print()">Cetak Label</button></div>
     <div class="label">
       <div class="head"><div class="brand">KIMONIK</div><div class="courier">${safe(order.kurir||'J&T')}</div></div>
       <div class="rule"></div>
       <div class="hint">NOMOR RESI</div><div class="resi">${safe(order.nomor_resi)}</div>
+      ${resiForBarcode ? `<div class="barcode-wrap"><svg id="resiBarcode" aria-label="Barcode nomor resi"></svg><div id="barcodeError" class="barcode-error"></div></div>` : `<div class="muted">Barcode tersedia setelah nomor resi valid diisi.</div>`}
       <div class="muted">Label internal — bukan label resmi/airway bill kurir</div>
       <div class="thin"></div>
       <div class="hint">PENERIMA</div><div class="name">${safe(c.nama)}</div>
       <div class="detail">WhatsApp: ${safe(c.whatsapp)}<br>${address||'-'}</div>
       <div class="thin"></div>
-      <div class="hint">PENGIRIM</div><div class="detail"><strong>KIMONIK</strong></div>
+      <div class="hint">PENGIRIM</div><div class="detail"><strong>KIMONIK</strong><br>HP: 081227675034</div>
       <div class="thin"></div>
       <div class="hint">DETAIL PRODUK</div>
       <table>${rows||'<tr><td>Detail produk tidak tersedia</td></tr>'}</table>
       <div class="thin"></div>
       <div class="foot"><span>ORDER: ${safe(order.kode_order)}</span><span>${totalQty} PCS</span></div>
       ${order.catatan_customer ? `<div class="thin"></div><div class="hint">CATATAN PELANGGAN</div><div class="detail">${safe(order.catatan_customer)}</div>` : ''}
-    </div></body></html>`;
+    </div>
+    <script>
+      (function(){
+        const resi = ${JSON.stringify(resiForBarcode).replace(/</g, "\\u003c")};
+        const el = document.getElementById("resiBarcode");
+        if (!el) return;
+        if (typeof JsBarcode !== "function") {
+          document.getElementById("barcodeError").textContent = "Barcode belum termuat. Periksa koneksi internet sebelum mencetak.";
+          return;
+        }
+        try { JsBarcode(el, resi, {format:"CODE128", displayValue:false, margin:0, width:2, height:66}); }
+        catch(e) { document.getElementById("barcodeError").textContent = "Nomor resi tidak dapat dijadikan barcode."; }
+      })();
+    <\/script></body></html>`;
   w.document.open(); w.document.write(html); w.document.close();
 }
 
