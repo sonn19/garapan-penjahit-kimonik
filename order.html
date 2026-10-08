@@ -2163,8 +2163,105 @@ async function submitOrder(){
     "Pesanan berhasil dibuat."
   );
  
+ 
+  const emailResult =
+    await kirimEmailOrderOtomatis();
+ 
+ 
+  if(emailResult?.success){
+ 
+    if(emailResult?.skipped){
+ 
+      showToast(
+        "Pesanan berhasil. Email customer kosong, jadi email tidak dikirim."
+      );
+ 
+    }else{
+ 
+      showToast(
+        "Pesanan berhasil dan email detail sudah dikirim."
+      );
+ 
+    }
+ 
+  }else{
+ 
+    console.error(
+      "Email order tidak terkirim:",
+      emailResult
+    );
+ 
+    showToast(
+      "Pesanan berhasil, tetapi email belum terkirim: " +
+      (
+        emailResult?.message ||
+        "error tidak diketahui"
+      ),
+      true
+    );
+ 
+  }
 }
  
+ 
+ 
+ 
+ 
+async function kirimEmailOrderOtomatis(){
+ 
+  if(
+    !lastOrder?.kode_order ||
+    !lastOrder?.whatsapp
+  ){
+    return {
+      success:false,
+      message:"Data order untuk email tidak lengkap."
+    };
+  }
+ 
+  try{
+ 
+    const {data,error} =
+      await supabaseClient.functions.invoke(
+        "kirim-email-order",
+        {
+          body:{
+            kode_order:lastOrder.kode_order,
+            whatsapp:lastOrder.whatsapp
+          }
+        }
+      );
+ 
+    if(error){
+      console.error("Email order gagal dikirim:", error);
+      return {
+        success:false,
+        message:error.message || "Gagal memanggil function email."
+      };
+    }
+ 
+    if(data?.success === false){
+      console.error("Email order gagal dikirim:", data);
+      return data;
+    }
+ 
+    return data || {
+      success:false,
+      message:"Response email kosong."
+    };
+ 
+  }catch(error){
+ 
+    console.error("Email order gagal dikirim:", error);
+ 
+    return {
+      success:false,
+      message:error?.message || "Gagal mengirim email order."
+    };
+ 
+  }
+ 
+}
  
  
 async function copyRekening(){
