@@ -1,13 +1,11 @@
 <!doctype html>
 <html lang="id">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Order Kimonik</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<style>
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Order Kimonik</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
 :root{
   --bg:#f6f3ee;
   --surface:#fff;
@@ -21,19 +19,19 @@
   --blue:#4267a8;
   --warning:#fff8e9;
 }
-
+ 
 *{box-sizing:border-box}
-
+ 
 body{
   margin:0;
   font-family:Arial,Helvetica,sans-serif;
   background:var(--bg);
   color:var(--text);
 }
-
+ 
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
-
+ 
 header{
   background:var(--primary);
   color:#fff;
@@ -41,7 +39,7 @@ header{
   top:0;
   z-index:30;
 }
-
+ 
 .header-inner{
   max-width:1180px;
   margin:auto;
@@ -50,18 +48,18 @@ header{
   justify-content:space-between;
   align-items:center;
 }
-
+ 
 .brand{
   font-size:20px;
   font-weight:800;
 }
-
+ 
 .sub{
   font-size:11px;
   opacity:.7;
   margin-top:3px;
 }
-
+ 
 .cart-btn{
   border:0;
   background:#fff;
@@ -69,37 +67,37 @@ header{
   padding:10px 13px;
   font-weight:700;
 }
-
+ 
 .container{
   max-width:1180px;
   margin:auto;
   padding:20px 14px 80px;
 }
-
+ 
 .hero{
   background:#fff;
   border:1px solid var(--line);
   border-radius:18px;
   padding:20px;
 }
-
+ 
 .hero h1{
   margin:0 0 7px;
 }
-
+ 
 .hero p{
   margin:0;
   color:var(--muted);
   line-height:1.6;
 }
-
+ 
 .tools{
   display:grid;
   grid-template-columns:1fr 220px;
   gap:9px;
   margin:15px 0;
 }
-
+ 
 input,select,textarea{
   width:100%;
   padding:11px 12px;
@@ -108,20 +106,20 @@ input,select,textarea{
   background:#fff;
   outline:none;
 }
-
+ 
 .products{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
   gap:14px;
 }
-
+ 
 .card{
   background:#fff;
   border:1px solid var(--line);
   border-radius:15px;
   overflow:hidden;
 }
-
+ 
 .photo{
   aspect-ratio:4/3;
   background:var(--surface2);
@@ -132,51 +130,51 @@ input,select,textarea{
   font-size:12px;
   overflow:hidden;
 }
-
+ 
 .photo img{
   width:100%;
   height:100%;
   object-fit:cover;
 }
-
+ 
 .card-body{
   padding:14px;
 }
-
+ 
 .product-name{
   font-weight:800;
   line-height:1.4;
 }
-
+ 
 .meta{
   color:var(--muted);
   font-size:12px;
   line-height:1.55;
 }
-
+ 
 .price{
   font-size:18px;
   font-weight:800;
   margin-top:9px;
 }
-
+ 
 .stock{
   margin:6px 0;
   font-size:12px;
   color:var(--muted);
 }
-
+ 
 .row{
   display:flex;
   align-items:center;
   gap:7px;
   margin-top:9px;
 }
-
+ 
 .qty{
   width:75px;
 }
-
+ 
 .btn{
   border:0;
   background:var(--primary);
@@ -185,25 +183,25 @@ input,select,textarea{
   padding:10px 12px;
   border-radius:9px;
 }
-
+ 
 .btn.secondary{
   background:var(--surface2);
   color:var(--text);
 }
-
+ 
 .btn.success{
   background:var(--success);
 }
-
+ 
 .btn.blue{
   background:var(--blue);
 }
-
+ 
 .btn:disabled{
   opacity:.45;
   cursor:not-allowed;
 }
-
+ 
 .drawer-backdrop{
   display:none;
   position:fixed;
@@ -211,11 +209,11 @@ input,select,textarea{
   background:rgba(0,0,0,.35);
   z-index:80;
 }
-
+ 
 .drawer-backdrop.open{
   display:block;
 }
-
+ 
 .drawer{
   position:fixed;
   top:0;
@@ -228,11 +226,11 @@ input,select,textarea{
   transition:.2s;
   overflow:auto;
 }
-
+ 
 .drawer.open{
   transform:translateX(0);
 }
-
+ 
 .drawer-head{
   position:sticky;
   top:0;
@@ -244,41 +242,41 @@ input,select,textarea{
   align-items:center;
   z-index:2;
 }
-
+ 
 .drawer-body{
   padding:15px;
 }
-
+ 
 .cart-item{
   border-bottom:1px solid var(--line);
   padding:11px 0;
 }
-
+ 
 .cart-title{
   font-weight:700;
 }
-
+ 
 .cart-actions{
   display:flex;
   gap:7px;
   align-items:center;
   margin-top:8px;
 }
-
+ 
 .summary{
   background:var(--surface2);
   padding:13px;
   border-radius:11px;
   margin:13px 0;
 }
-
+ 
 .summary-row{
   display:flex;
   justify-content:space-between;
   padding:5px 0;
   gap:15px;
 }
-
+ 
 .summary-total{
   font-size:18px;
   font-weight:800;
@@ -286,23 +284,23 @@ input,select,textarea{
   padding-top:10px;
   margin-top:5px;
 }
-
+ 
 .section-title{
   font-weight:800;
   margin:21px 0 10px;
 }
-
+ 
 .field{
   margin-bottom:11px;
 }
-
+ 
 label{
   display:block;
   font-size:12px;
   font-weight:700;
   margin-bottom:5px;
 }
-
+ 
 .notice{
   padding:12px;
   border:1px solid var(--line);
@@ -312,7 +310,7 @@ label{
   line-height:1.5;
   margin-bottom:11px;
 }
-
+ 
 .shipping-box{
   padding:13px;
   border:1px solid #d9e1ee;
@@ -320,7 +318,7 @@ label{
   border-radius:11px;
   margin-top:10px;
 }
-
+ 
 .payment-box{
   padding:14px;
   background:#fff8e9;
@@ -328,31 +326,31 @@ label{
   border-radius:12px;
   margin-top:15px;
 }
-
+ 
 .success-box{
   padding:15px;
   background:#e8f5ec;
   border:1px solid #b9dfc5;
   border-radius:13px;
 }
-
+ 
 .success-code{
   font-size:22px;
   font-weight:800;
   margin-top:5px;
 }
-
+ 
 .empty,.loading{
   grid-column:1/-1;
   padding:30px;
   text-align:center;
   color:var(--muted);
 }
-
+ 
 .hidden{
   display:none!important;
 }
-
+ 
 .toast{
   position:fixed;
   bottom:18px;
@@ -364,484 +362,184 @@ label{
   border-radius:9px;
   z-index:200;
 }
-
+ 
 .toast.error{
   background:var(--danger);
 }
-
+ 
 @media(max-width:900px){
   .products{
     grid-template-columns:repeat(2,1fr);
   }
 }
-
+ 
 @media(max-width:650px){
   .products{
     grid-template-columns:1fr;
   }
-
+ 
   .tools{
     grid-template-columns:1fr;
   }
 }
 </style>
-</head>
-
-<body>
-
-<header>
-  <div class="header-inner">
-
+ </head>
+ <body>
+  <header>
+   <div class="header-inner">
     <div>
-      <div class="brand">Kimonik</div>
-      <div class="sub">Order langsung dari Kimonik</div>
+     <div class="brand">Kimonik</div>
+     <div class="sub">Order langsung dari Kimonik</div>
     </div>
-
-    <button
-      class="cart-btn"
-      onclick="openCart()">
-      Keranjang
-      <span id="cartCount">0</span>
-    </button>
-
-  </div>
-</header>
-
-<main class="container">
-
-  <section class="hero">
-
+    <button class="cart-btn" onclick="openCart()">Keranjang <span id="cartCount">0</span></button>
+   </div>
+  </header>
+  <main class="container">
+   <section class="hero">
     <h1>Pilih produk Kimonik</h1>
-
-    <p>
-      Pilih produk dan variasi,
-      tentukan alamat pengiriman,
-      lalu sistem akan menghitung ongkir secara otomatis.
-    </p>
-
-  </section>
-
-  <div class="tools">
-
-    <input
-      id="searchInput"
-      placeholder="Cari produk..."
-      oninput="renderProducts()">
-
-    <select
-      id="categoryFilter"
-      onchange="renderProducts()">
-
-      <option value="">
-        Semua kategori
-      </option>
-
-    </select>
-
-  </div>
-
-  <section
-    id="productGrid"
-    class="products">
-
-    <div class="loading">
-      Memuat katalog...
-    </div>
-
-  </section>
-
-</main>
-
-
-<div
-  id="drawerBackdrop"
-  class="drawer-backdrop"
-  onclick="closeCart()">
-</div>
-
-
-<aside
-  id="cartDrawer"
-  class="drawer">
-
-  <div class="drawer-head">
-
-    <strong>
-      Keranjang Pesanan
-    </strong>
-
-    <button
-      class="btn secondary"
-      onclick="closeCart()">
-      Tutup
-    </button>
-
-  </div>
-
-
-  <div class="drawer-body">
-
+    <p>Pilih produk dan variasi, tentukan alamat pengiriman, lalu sistem akan menghitung ongkir secara otomatis.</p>
+   </section>
+   <div class="tools">
+    <input id="searchInput" placeholder="Cari produk..." oninput="renderProducts()"> <select id="categoryFilter" onchange="renderProducts()"> <option value=""> Semua kategori </option> </select>
+   </div>
+   <section id="productGrid" class="products">
+    <div class="loading">Memuat katalog...</div>
+   </section>
+  </main>
+  <div id="drawerBackdrop" class="drawer-backdrop" onclick="closeCart()"></div>
+  <aside id="cartDrawer" class="drawer">
+   <div class="drawer-head">
+    <strong> Keranjang Pesanan </strong>
+    <button class="btn secondary" onclick="closeCart()">Tutup</button>
+   </div>
+   <div class="drawer-body">
     <div id="cartItems"></div>
-
     <div id="cartSummary"></div>
-
-
-    <div
-      id="checkoutForm"
-      class="hidden">
-
-
-      <div class="section-title">
-        Data Pemesan
-      </div>
-
-
-      <div class="field">
-        <label>Nama *</label>
-        <input id="cNama">
-      </div>
-
-
-      <div class="field">
-        <label>WhatsApp *</label>
-        <input
-          id="cWhatsapp"
-          inputmode="tel"
-          placeholder="08xxxxxxxxxx">
-      </div>
-
-
-      <div class="field">
-        <label>Email</label>
-        <input
-          id="cEmail"
-          type="email">
-      </div>
-
-
-      <div class="section-title">
-        Alamat Pengiriman
-      </div>
-
-
-      <div class="field">
-
-        <label>Provinsi *</label>
-
-        <select
-          id="cProvinsi"
-          onchange="loadRegencies()">
-
-          <option value="">
-            Memuat provinsi...
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <div class="field">
-
-        <label>Kabupaten / Kota *</label>
-
-        <select
-          id="cKabupaten"
-          onchange="loadDistricts()"
-          disabled>
-
-          <option value="">
-            Pilih provinsi dulu
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <div class="field">
-
-        <label>Kecamatan *</label>
-
-        <select
-          id="cKecamatan"
-          disabled>
-
-          <option value="">
-            Pilih kabupaten dulu
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <div class="field">
-
-        <label>Alamat Lengkap *</label>
-
-        <textarea
-          id="cAlamat"
-          rows="3"
-          placeholder="Jalan, nomor rumah, RT/RW, desa/kelurahan..."></textarea>
-
-      </div>
-
-
-      <div class="field">
-
-        <label>Kode Pos *</label>
-
-        <input
-          id="cKodePos"
-          inputmode="numeric"
-          maxlength="5"
-          placeholder="Contoh: 50132"
-          oninput="invalidateShipping()">
-
-      </div>
-
-
-      <button
-        id="cekOngkirBtn"
-        class="btn blue"
-        style="width:100%"
-        onclick="cekOngkir()">
-
-        Cek Ongkir
-
-      </button>
-
-
-      <div
-        id="shippingOptions"
-        class="shipping-box hidden">
-
-        <label>
-          Pilih layanan pengiriman *
-        </label>
-
-        <select
-          id="shippingRate"
-          onchange="selectShippingRate()">
-
-          <option value="">
-            Pilih layanan
-          </option>
-
-        </select>
-
-        <div
-          id="shippingInfo"
-          class="meta"
-          style="margin-top:8px">
-        </div>
-
-      </div>
-
-
-      <div class="field" style="margin-top:14px">
-
-        <label>Catatan Pesanan</label>
-
-        <textarea
-          id="cCatatan"
-          rows="3">
+    <div id="checkoutForm" class="hidden">
+     <div class="section-title">Data Pemesan</div>
+     <div class="field">
+      <label>Nama *</label> <input id="cNama">
+     </div>
+     <div class="field">
+      <label>WhatsApp *</label> <input id="cWhatsapp" inputmode="tel" placeholder="08xxxxxxxxxx">
+     </div>
+     <div class="field">
+      <label>Email</label> <input id="cEmail" type="email">
+     </div>
+     <div class="section-title">Alamat Pengiriman</div>
+     <div class="field">
+      <label>Provinsi *</label> <select id="cProvinsi" onchange="loadRegencies()"> <option value=""> Memuat provinsi... </option> </select>
+     </div>
+     <div class="field">
+      <label>Kabupaten / Kota *</label> <select id="cKabupaten" onchange="loadDistricts()" disabled> <option value=""> Pilih provinsi dulu </option> </select>
+     </div>
+     <div class="field">
+      <label>Kecamatan *</label> <select id="cKecamatan" disabled> <option value=""> Pilih kabupaten dulu </option> </select>
+     </div>
+     <div class="field">
+      <label>Alamat Lengkap *</label> <textarea id="cAlamat" rows="3" placeholder="Jalan, nomor rumah, RT/RW, desa/kelurahan..."></textarea>
+     </div>
+     <div class="field">
+      <label>Kode Pos *</label> <input id="cKodePos" inputmode="numeric" maxlength="5" placeholder="Contoh: 50132" oninput="invalidateShipping()">
+     </div>
+     <button id="cekOngkirBtn" class="btn blue" style="width:100%" onclick="cekOngkir()">Cek Ongkir</button>
+     <div id="shippingOptions" class="shipping-box hidden">
+      <label> Pilih layanan pengiriman * </label> <select id="shippingRate" onchange="selectShippingRate()"> <option value=""> Pilih layanan </option> </select>
+      <div id="shippingInfo" class="meta" style="margin-top:8px"></div>
+     </div>
+     <div class="field" style="margin-top:14px">
+      <label>Catatan Pesanan</label> <textarea id="cCatatan" rows="3">
         </textarea>
-
-      </div>
-
-
-      <div class="notice">
-
-        Berat sementara dihitung
-        <strong>500 gram per item</strong>.
-        Nanti kita bisa menambahkan berat asli
-        ke Master Produk.
-
-      </div>
-
-
-      <button
-        id="submitOrderBtn"
-        class="btn success"
-        style="width:100%"
-        onclick="submitOrder()">
-
-        Buat Pesanan
-
-      </button>
-
+     </div>
+     <div class="notice">
+      Berat sementara dihitung <strong>500 gram per item</strong>. Nanti kita bisa menambahkan berat asli ke Master Produk.
+     </div>
+     <button id="submitOrderBtn" class="btn success" style="width:100%" onclick="submitOrder()">Buat Pesanan</button>
     </div>
-
-
-    <div
-      id="successBox"
-      class="success-box hidden">
-
-      <div class="meta">
-        Pesanan berhasil dibuat
-      </div>
-
-      <div
-        id="successCode"
-        class="success-code">
-        -
-      </div>
-
-      <div
-        id="successTotal"
-        style="
+    <div id="successBox" class="success-box hidden">
+     <div class="meta">Pesanan berhasil dibuat</div>
+     <div id="successCode" class="success-code">-</div>
+     <div id="successTotal" style="
           font-size:24px;
           font-weight:800;
           margin-top:12px
-        ">
-        -
-      </div>
-
-      <div
-        id="successShipping"
-        class="meta"
-        style="margin-top:5px">
-      </div>
-
-
-      <div class="payment-box">
-
-        <div class="meta">
-          Transfer pembayaran ke
-        </div>
-
-        <div
-          style="
+        ">-</div>
+     <div id="successShipping" class="meta" style="margin-top:5px"></div>
+     <div class="payment-box">
+      <div class="meta">Transfer pembayaran ke</div>
+      <div style="
             font-size:20px;
             font-weight:800;
             margin-top:5px
-          ">
-          BCA
-        </div>
-
-        <div
-          id="rekeningBca"
-          style="
+          ">BCA</div>
+      <div id="rekeningBca" style="
             font-size:22px;
             font-weight:800;
             margin-top:8px
-          ">
-          2470144028
-        </div>
-
-        <div style="margin-top:5px">
-          a.n.
-          <strong>Esti Asrofah</strong>
-        </div>
-
-        <button
-          class="btn secondary"
-          style="width:100%;margin-top:12px"
-          onclick="copyRekening()">
-
-          Salin No. Rekening
-
-        </button>
-
+          ">2470144028</div>
+      <div style="margin-top:5px">
+       a.n. <strong>Esti Asrofah</strong>
       </div>
-
-
-      <button
-        id="successBayarBtn"
-        class="btn success"
-        style="width:100%;margin-top:12px"
-        onclick="konfirmasiBayarDariOrder()">
-
-        Saya Sudah Bayar
-
-      </button>
-
-
-      <a
-        href="cek-order.html"
-        class="btn secondary"
-        style="
+      <button class="btn secondary" style="width:100%;margin-top:12px" onclick="copyRekening()">Salin No. Rekening</button>
+     </div>
+     <button id="successBayarBtn" class="btn success" style="width:100%;margin-top:12px" onclick="konfirmasiBayarDariOrder()">Saya Sudah Bayar</button>
+     <a href="cek-order.html" class="btn secondary" style="
           display:block;
           text-align:center;
           text-decoration:none;
           width:100%;
           margin-top:8px
-        ">
-
-        Cek Status Pesanan
-
-      </a>
-
-
-      <button
-        class="btn"
-        style="width:100%;margin-top:8px"
-        onclick="resetAfterSuccess()">
-
-        Buat Pesanan Baru
-
-      </button>
-
+        "> Cek Status Pesanan </a>
+     <button class="btn" style="width:100%;margin-top:8px" onclick="resetAfterSuccess()">Buat Pesanan Baru</button>
     </div>
-
-  </div>
-
-</aside>
-
-
-<div
-  id="toast"
-  class="toast hidden">
-</div>
-
-
-<script>
-
+   </div>
+  </aside>
+  <div id="toast" class="toast hidden"></div>
+  <script>
+ 
 const SUPABASE_URL =
 "https://ilxahxzrtzpzhnlskfns.supabase.co";
-
+ 
 const SUPABASE_KEY =
 "sb_publishable_eetxbGhYGFLhJdXhiU2W0A_qG63dTyU";
-
+ 
 const WILAYAH_API =
 "https://www.emsifa.com/api-wilayah-indonesia/v2";
-
+ 
 const supabaseClient =
 supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
-
-
+ 
+ 
 let katalog = [];
-
+ 
 let cart = [];
-
+ 
 let shippingRates = [];
-
+ 
 let selectedRate = null;
-
+ 
 let lastOrder = null;
-
-
-
+ 
+ 
+ 
 function esc(v){
-
+ 
   return String(v ?? "")
     .replaceAll("&","&amp;")
     .replaceAll("<","&lt;")
     .replaceAll(">","&gt;")
     .replaceAll('"',"&quot;")
     .replaceAll("'","&#039;");
-
+ 
 }
-
-
-
+ 
+ 
+ 
 function rupiah(v){
-
+ 
   return new Intl.NumberFormat(
     "id-ID",
     {
@@ -852,83 +550,83 @@ function rupiah(v){
   ).format(
     Number(v || 0)
   );
-
+ 
 }
-
-
-
+ 
+ 
+ 
 function showToast(
   message,
   error=false
 ){
-
+ 
   const el =
     document.getElementById(
       "toast"
     );
-
+ 
   el.textContent =
     message;
-
+ 
   el.classList.remove(
     "hidden"
   );
-
+ 
   el.classList.toggle(
     "error",
     error
   );
-
+ 
   clearTimeout(
     showToast._t
   );
-
+ 
   showToast._t =
     setTimeout(
       ()=>el.classList.add("hidden"),
       3500
     );
-
+ 
 }
-
-
-
+ 
+ 
+ 
 async function loadKatalog(){
-
+ 
   const {data,error} =
     await supabaseClient.rpc(
       "get_katalog_kimonik"
     );
-
-
+ 
+ 
   if(error){
-
+ 
     document
       .getElementById("productGrid")
       .innerHTML =
       '<div class="empty">Katalog gagal dimuat.</div>';
-
+ 
     return;
-
+ 
   }
-
-
+ 
+ 
   katalog =
     Array.isArray(data)
     ? data
     : [];
-
-
+ 
+ 
   fillCategories();
-
+ 
   renderProducts();
-
+ 
 }
-
-
-
+ 
+ 
+ 
 function fillCategories(){
-
+ 
   const categories =
     [
       ...new Set(
@@ -943,50 +641,50 @@ function fillCategories(){
       )
     ]
     .sort();
-
-
+ 
+ 
   document
     .getElementById(
       "categoryFilter"
     )
     .innerHTML =
-
+ 
     '<option value="">Semua kategori</option>' +
-
+ 
     categories.map(
       c =>
         `<option value="${esc(c)}">${esc(c)}</option>`
     ).join("");
-
+ 
 }
-
-
-
+ 
+ 
+ 
 function effectiveStock(p){
-
+ 
   if(
     Array.isArray(p.variasi) &&
     p.variasi.length
   ){
-
+ 
     return p.variasi.reduce(
       (a,v)=>
         a + Number(v.stok || 0),
       0
     );
-
+ 
   }
-
+ 
   return Number(
     p.stok || 0
   );
-
+ 
 }
-
-
-
+ 
+ 
+ 
 function priceRange(p){
-
+ 
   const values =
     (
       p.variasi || []
@@ -998,34 +696,34 @@ function priceRange(p){
     .filter(
       x => x > 0
     );
-
-
+ 
+ 
   if(!values.length){
-
+ 
     return rupiah(
       p.harga_jual || 0
     );
-
+ 
   }
-
-
+ 
+ 
   const min =
     Math.min(...values);
-
+ 
   const max =
     Math.max(...values);
-
-
+ 
+ 
   return min === max
     ? rupiah(min)
     : `${rupiah(min)} - ${rupiah(max)}`;
-
+ 
 }
-
-
-
+ 
+ 
+ 
 function renderProducts(){
-
+ 
   const q =
     document
     .getElementById(
@@ -1034,27 +732,27 @@ function renderProducts(){
     .value
     .trim()
     .toLowerCase();
-
-
+ 
+ 
   const category =
     document
     .getElementById(
       "categoryFilter"
     )
     .value;
-
-
+ 
+ 
   const filtered =
     katalog.filter(
       p => {
-
+ 
         if(
           category &&
           p.kategori !== category
         )
           return false;
-
-
+ 
+ 
         const text =
           [
             p.nama_produk,
@@ -1065,97 +763,97 @@ function renderProducts(){
           ]
           .join(" ")
           .toLowerCase();
-
-
+ 
+ 
         return !q ||
           text.includes(q);
-
+ 
       }
     );
-
-
+ 
+ 
   document
     .getElementById(
       "productGrid"
     )
     .innerHTML =
-
+ 
     filtered.map(
       p => {
-
+ 
         const vars =
           p.variasi || [];
-
+ 
         const stock =
           effectiveStock(p);
-
-
+ 
+ 
         return `
-
+ 
           <article class="card">
-
+ 
             <div class="photo">
-
+ 
               ${
                 p.foto_url
-
+ 
                 ? `
                   <img
                     src="${esc(p.foto_url)}"
                     onerror="this.parentElement.innerHTML='Foto belum tersedia'">
                 `
-
+ 
                 : "Foto belum tersedia"
               }
-
+ 
             </div>
-
-
+ 
+ 
             <div class="card-body">
-
+ 
               <div class="product-name">
-
+ 
                 ${esc(p.nama_produk)}
-
+ 
               </div>
-
-
+ 
+ 
               <div class="meta">
-
+ 
                 ${esc(p.sku || "-")}
-
+ 
               </div>
-
-
+ 
+ 
               <div class="price">
-
+ 
                 ${priceRange(p)}
-
+ 
               </div>
-
-
+ 
+ 
               <div class="stock">
-
+ 
                 Stok ${stock}
-
+ 
               </div>
-
-
+ 
+ 
               ${
                 vars.length
-
+ 
                 ? `
-
+ 
                   <select id="var-${p.id}">
-
+ 
                     <option value="">
                       Pilih variasi
                     </option>
-
+ 
                     ${
                       vars.map(
                         v => `
-
+ 
                           <option
                             value="${v.id}"
                             ${
@@ -1163,79 +861,79 @@ function renderProducts(){
                               ? "disabled"
                               : ""
                             }>
-
+ 
                             ${esc(
                               v.nama_variasi ||
                               v.sku ||
                               "Variasi"
                             )}
-
+ 
                             ·
                             ${rupiah(v.harga)}
-
+ 
                             · stok
                             ${v.stok}
-
+ 
                           </option>
-
+ 
                         `
                       ).join("")
                     }
-
+ 
                   </select>
-
+ 
                 `
-
+ 
                 : ""
               }
-
-
+ 
+ 
               <div class="row">
-
+ 
                 <input
                   id="qty-${p.id}"
                   class="qty"
                   type="number"
                   min="1"
                   value="1">
-
-
+ 
+ 
                 <button
                   class="btn"
                   style="flex:1"
                   ${stock <= 0 ? "disabled" : ""}
                   onclick="addToCart(${p.id})">
-
+ 
                   Tambah
-
+ 
                 </button>
-
+ 
               </div>
-
+ 
             </div>
-
+ 
           </article>
-
+ 
         `;
-
+ 
       }
     )
     .join("");
-
+ 
 }
-
-
-
+ 
+ 
+ 
 function addToCart(produkId){
-
+ 
   const p =
     katalog.find(
       x =>
         Number(x.id) ===
         Number(produkId)
     );
-
-
+ 
+ 
   const qty =
     Math.max(
       1,
@@ -1247,163 +945,163 @@ function addToCart(produkId){
         .value || 1
       )
     );
-
-
+ 
+ 
   let variation =
     null;
-
-
+ 
+ 
   if(
     Array.isArray(p.variasi) &&
     p.variasi.length
   ){
-
+ 
     const id =
       document
       .getElementById(
         `var-${p.id}`
       )
       .value;
-
-
+ 
+ 
     if(!id){
-
+ 
       showToast(
         "Pilih variasi.",
         true
       );
-
+ 
       return;
-
+ 
     }
-
-
+ 
+ 
     variation =
       p.variasi.find(
         v =>
           Number(v.id) ===
           Number(id)
       );
-
+ 
   }
-
-
+ 
+ 
   const stock =
     Number(
       variation
       ? variation.stok
       : p.stok
     );
-
-
+ 
+ 
   if(qty > stock){
-
+ 
     showToast(
       "Qty melebihi stok.",
       true
     );
-
+ 
     return;
-
+ 
   }
-
-
+ 
+ 
   const key =
     variation
     ? `v-${variation.id}`
     : `p-${p.id}`;
-
-
+ 
+ 
   const existing =
     cart.find(
       x =>
         x.key === key
     );
-
-
+ 
+ 
   if(existing){
-
+ 
     if(
       existing.qty + qty >
       stock
     ){
-
+ 
       showToast(
         "Qty melebihi stok.",
         true
       );
-
+ 
       return;
-
+ 
     }
-
+ 
     existing.qty += qty;
-
+ 
   }else{
-
+ 
     cart.push({
-
+ 
       key,
-
+ 
       produk_id:
         p.id,
-
+ 
       variasi_id:
         variation
         ? variation.id
         : null,
-
+ 
       nama_produk:
         p.nama_produk,
-
+ 
       nama_variasi:
         variation
         ? variation.nama_variasi
         : null,
-
+ 
       harga:
         Number(
           variation
           ? variation.harga
           : p.harga_jual
         ),
-
+ 
       stok:
         stock,
-
+ 
       qty
-
+ 
     });
-
+ 
   }
-
-
+ 
+ 
   invalidateShipping();
-
+ 
   renderCart();
-
+ 
   showToast(
     "Masuk keranjang."
   );
-
+ 
 }
-
-
-
+ 
+ 
+ 
 function cartSubtotal(){
-
+ 
   return cart.reduce(
     (a,x)=>
       a + x.harga * x.qty,
     0
   );
-
+ 
 }
-
-
-
+ 
+ 
+ 
 function renderCart(){
-
+ 
   document
     .getElementById(
       "cartCount"
@@ -1413,25 +1111,25 @@ function renderCart(){
       (a,x)=>a+x.qty,
       0
     );
-
-
+ 
+ 
   const items =
     document.getElementById(
       "cartItems"
     );
-
-
+ 
+ 
   if(!cart.length){
-
+ 
     items.innerHTML =
       '<div class="empty">Keranjang kosong.</div>';
-
+ 
     document
       .getElementById(
         "cartSummary"
       )
       .innerHTML = "";
-
+ 
     document
       .getElementById(
         "checkoutForm"
@@ -1439,72 +1137,72 @@ function renderCart(){
       .classList.add(
         "hidden"
       );
-
+ 
     return;
-
+ 
   }
-
-
+ 
+ 
   items.innerHTML =
     cart.map(
       (x,i)=>`
-
+ 
         <div class="cart-item">
-
+ 
           <div class="cart-title">
             ${esc(x.nama_produk)}
           </div>
-
+ 
           <div class="meta">
-
+ 
             ${
               x.nama_variasi
               ? esc(x.nama_variasi)
               : ""
             }
-
+ 
             ·
             ${rupiah(x.harga)}
-
+ 
           </div>
-
+ 
           <div class="cart-actions">
-
+ 
             <button
               class="btn secondary"
               onclick="changeQty(${i},-1)">
               -
             </button>
-
+ 
             <strong>
               ${x.qty}
             </strong>
-
+ 
             <button
               class="btn secondary"
               onclick="changeQty(${i},1)">
               +
             </button>
-
+ 
             <button
               class="btn secondary"
               style="margin-left:auto"
               onclick="removeItem(${i})">
               Hapus
             </button>
-
+ 
           </div>
-
+ 
         </div>
-
+ 
       `
     )
     .join("");
-
-
+ 
+ 
   renderSummary();
-
-
+ 
+ 
   document
     .getElementById(
       "checkoutForm"
@@ -1512,47 +1210,47 @@ function renderCart(){
     .classList.remove(
       "hidden"
     );
-
+ 
 }
-
-
-
+ 
+ 
+ 
 function renderSummary(){
-
+ 
   const subtotal =
     cartSubtotal();
-
+ 
   const ongkir =
     Number(
       selectedRate?.price || 0
     );
-
+ 
   const total =
     subtotal + ongkir;
-
-
+ 
+ 
   document
     .getElementById(
       "cartSummary"
     )
     .innerHTML = `
-
+ 
       <div class="summary">
-
+ 
         <div class="summary-row">
-
+ 
           <span>Subtotal</span>
-
+ 
           <strong>
             ${rupiah(subtotal)}
           </strong>
-
+ 
         </div>
-
+ 
         <div class="summary-row">
-
+ 
           <span>Ongkir</span>
-
+ 
           <strong>
             ${
               selectedRate
@@ -1560,90 +1258,90 @@ function renderSummary(){
               : "Belum dipilih"
             }
           </strong>
-
+ 
         </div>
-
+ 
         <div
           class="summary-row summary-total">
-
+ 
           <span>Total</span>
-
+ 
           <span>
             ${rupiah(total)}
           </span>
-
+ 
         </div>
-
+ 
       </div>
-
+ 
     `;
-
+ 
 }
-
-
-
+ 
+ 
+ 
 function changeQty(
   index,
   delta
 ){
-
+ 
   const item =
     cart[index];
-
+ 
   const next =
     item.qty + delta;
-
-
+ 
+ 
   if(next < 1){
-
+ 
     removeItem(index);
-
+ 
     return;
-
+ 
   }
-
-
+ 
+ 
   if(next > item.stok){
-
+ 
     showToast(
       "Qty melebihi stok.",
       true
     );
-
+ 
     return;
-
+ 
   }
-
-
+ 
+ 
   item.qty =
     next;
-
-
+ 
+ 
   invalidateShipping();
-
+ 
   renderCart();
-
+ 
 }
-
-
-
+ 
+ 
+ 
 function removeItem(index){
-
+ 
   cart.splice(
     index,
     1
   );
-
+ 
   invalidateShipping();
-
+ 
   renderCart();
-
+ 
 }
-
-
-
+ 
+ 
+ 
 function openCart(){
-
+ 
   document
     .getElementById(
       "cartDrawer"
@@ -1651,8 +1349,8 @@ function openCart(){
     .classList.add(
       "open"
     );
-
-
+ 
+ 
   document
     .getElementById(
       "drawerBackdrop"
@@ -1660,16 +1358,16 @@ function openCart(){
     .classList.add(
       "open"
     );
-
-
+ 
+ 
   renderCart();
-
+ 
 }
-
-
-
+ 
+ 
+ 
 function closeCart(){
-
+ 
   document
     .getElementById(
       "cartDrawer"
@@ -1677,8 +1375,8 @@ function closeCart(){
     .classList.remove(
       "open"
     );
-
-
+ 
+ 
   document
     .getElementById(
       "drawerBackdrop"
@@ -1686,480 +1384,241 @@ function closeCart(){
     .classList.remove(
       "open"
     );
-
+ 
 }
-
-
-
-async function loadProvinces(){
-
-  try{
-
-    const r =
-      await fetch(
-        `${WILAYAH_API}/provinces.json`
-      );
-
-    const data =
-      await r.json();
-
-
-    document
-      .getElementById(
-        "cProvinsi"
-      )
-      .innerHTML =
-
-      '<option value="">Pilih provinsi</option>' +
-
-      data.map(
-        x =>
-          `<option value="${x.id}">${esc(x.name)}</option>`
-      ).join("");
-
-
-  }catch(e){
-
-    document
-      .getElementById(
-        "cProvinsi"
-      )
-      .innerHTML =
-      '<option value="">Gagal memuat provinsi</option>';
-
-  }
-
-}
-
-
-
+ 
+ 
+ 
 async function fetchWilayah(url){
-
+ 
   const response = await fetch(url);
-
+ 
   if(!response.ok){
-
-    throw new Error(
-      "Gagal mengambil data wilayah."
-    );
-
+    throw new Error("Gagal mengambil data wilayah.");
   }
-
-  const json =
-    await response.json();
-
-
-  /*
-    Mendukung format:
-    1. [ ... ]
-    2. { data: [ ... ] }
-  */
+ 
+  const json = await response.json();
+ 
   if(Array.isArray(json)){
     return json;
   }
-
+ 
   if(Array.isArray(json?.data)){
     return json.data;
   }
-
+ 
   return [];
-
+ 
 }
-
-
-
+ 
+ 
 async function loadProvinces(){
-
-  const provinsi =
-    document.getElementById(
-      "cProvinsi"
-    );
-
-  const kabupaten =
-    document.getElementById(
-      "cKabupaten"
-    );
-
-  const kecamatan =
-    document.getElementById(
-      "cKecamatan"
-    );
-
-
-  provinsi.innerHTML =
-    '<option value="">Memuat provinsi...</option>';
-
+ 
+  const provinsi = document.getElementById("cProvinsi");
+  const kabupaten = document.getElementById("cKabupaten");
+  const kecamatan = document.getElementById("cKecamatan");
+ 
+  provinsi.innerHTML = '<option value="">Memuat provinsi...</option>';
   kabupaten.disabled = true;
-
-  kabupaten.innerHTML =
-    '<option value="">Pilih provinsi dulu</option>';
-
+  kabupaten.innerHTML = '<option value="">Pilih provinsi dulu</option>';
   kecamatan.disabled = true;
-
-  kecamatan.innerHTML =
-    '<option value="">Pilih kabupaten dulu</option>';
-
-
+  kecamatan.innerHTML = '<option value="">Pilih kabupaten dulu</option>';
+ 
   try{
-
-    const data =
-      await fetchWilayah(
-        `${WILAYAH_API}/provinces.json`
-      );
-
-
+ 
+    const data = await fetchWilayah(
+      `${WILAYAH_API}/provinces.json`
+    );
+ 
     if(!data.length){
-
-      throw new Error(
-        "Data provinsi kosong."
-      );
-
+      throw new Error("Data provinsi kosong.");
     }
-
-
+ 
     provinsi.innerHTML =
       '<option value="">Pilih provinsi</option>' +
-
       data.map(
-        item =>
-          `<option value="${esc(item.id)}">${esc(item.name)}</option>`
+        item => `<option value="${esc(item.id)}">${esc(item.name)}</option>`
       ).join("");
-
-
+ 
   }catch(error){
-
-    console.error(
-      "Gagal memuat provinsi:",
-      error
-    );
-
-
+ 
+    console.error("Gagal memuat provinsi:", error);
+ 
     provinsi.innerHTML =
       '<option value="">Gagal memuat provinsi</option>';
-
-
-    showToast(
-      "Gagal memuat data provinsi.",
-      true
-    );
-
+ 
+    showToast("Gagal memuat data provinsi.", true);
+ 
   }
-
+ 
 }
-
-
-
+ 
+ 
 async function loadRegencies(){
-
+ 
   invalidateShipping();
-
-
-  const provinceId =
-    document
-      .getElementById(
-        "cProvinsi"
-      )
-      .value;
-
-
-  const kabupaten =
-    document.getElementById(
-      "cKabupaten"
-    );
-
-
-  const kecamatan =
-    document.getElementById(
-      "cKecamatan"
-    );
-
-
+ 
+  const provinceId = document.getElementById("cProvinsi").value;
+  const kabupaten = document.getElementById("cKabupaten");
+  const kecamatan = document.getElementById("cKecamatan");
+ 
   kecamatan.disabled = true;
-
   kecamatan.innerHTML =
     '<option value="">Pilih kabupaten dulu</option>';
-
-
+ 
   if(!provinceId){
-
     kabupaten.disabled = true;
-
     kabupaten.innerHTML =
       '<option value="">Pilih provinsi dulu</option>';
-
     return;
-
   }
-
-
+ 
   kabupaten.disabled = true;
-
   kabupaten.innerHTML =
     '<option value="">Memuat kabupaten...</option>';
-
-
+ 
   try{
-
-    const data =
-      await fetchWilayah(
-        `${WILAYAH_API}/regencies/${provinceId}.json`
-      );
-
-
+ 
+    const data = await fetchWilayah(
+      `${WILAYAH_API}/regencies/${provinceId}.json`
+    );
+ 
     if(!data.length){
-
-      throw new Error(
-        "Data kabupaten kosong."
-      );
-
+      throw new Error("Data kabupaten kosong.");
     }
-
-
+ 
     kabupaten.innerHTML =
       '<option value="">Pilih kabupaten / kota</option>' +
-
       data.map(
-        item =>
-          `<option value="${esc(item.id)}">${esc(item.name)}</option>`
+        item => `<option value="${esc(item.id)}">${esc(item.name)}</option>`
       ).join("");
-
-
-    kabupaten.disabled =
-      false;
-
-
+ 
+    kabupaten.disabled = false;
+ 
   }catch(error){
-
-    console.error(
-      "Gagal memuat kabupaten:",
-      error
-    );
-
-
+ 
+    console.error("Gagal memuat kabupaten:", error);
+ 
     kabupaten.innerHTML =
       '<option value="">Gagal memuat kabupaten</option>';
-
-
-    showToast(
-      "Gagal memuat kabupaten / kota.",
-      true
-    );
-
+ 
+    showToast("Gagal memuat kabupaten / kota.", true);
+ 
   }
-
+ 
 }
-
-
-
+ 
+ 
 async function loadDistricts(){
-
+ 
   invalidateShipping();
-
-
-  const regencyId =
-    document
-      .getElementById(
-        "cKabupaten"
-      )
-      .value;
-
-
-  const kecamatan =
-    document.getElementById(
-      "cKecamatan"
-    );
-
-
+ 
+  const regencyId = document.getElementById("cKabupaten").value;
+  const kecamatan = document.getElementById("cKecamatan");
+ 
   if(!regencyId){
-
     kecamatan.disabled = true;
-
     kecamatan.innerHTML =
       '<option value="">Pilih kabupaten dulu</option>';
-
     return;
-
   }
-
-
-  kecamatan.disabled =
-    true;
-
-
+ 
+  kecamatan.disabled = true;
   kecamatan.innerHTML =
     '<option value="">Memuat kecamatan...</option>';
-
-
+ 
   try{
-
-    const data =
-      await fetchWilayah(
-        `${WILAYAH_API}/districts/${regencyId}.json`
-      );
-
-
-    if(!data.length){
-
-      throw new Error(
-        "Data kecamatan kosong."
-      );
-
-    }
-
-
-    kecamatan.innerHTML =
-      '<option value="">Pilih kecamatan</option>' +
-
-      data.map(
-        item =>
-          `<option value="${esc(item.id)}">${esc(item.name)}</option>`
-      ).join("");
-
-
-    kecamatan.disabled =
-      false;
-
-
-  }catch(error){
-
-    console.error(
-      "Gagal memuat kecamatan:",
-      error
-    );
-
-
-    kecamatan.innerHTML =
-      '<option value="">Gagal memuat kecamatan</option>';
-
-
-    showToast(
-      "Gagal memuat kecamatan.",
-      true
-    );
-
-  }
-
-}
-
-  invalidateShipping();
-
-
-  const regencyId =
-    document
-    .getElementById(
-      "cKabupaten"
-    )
-    .value;
-
-
-  const el =
-    document.getElementById(
-      "cKecamatan"
-    );
-
-
-  if(!regencyId){
-
-    el.disabled = true;
-
-    return;
-
-  }
-
-
-  el.disabled = true;
-
-  el.innerHTML =
-    '<option>Memuat...</option>';
-
-
-  const r =
-    await fetch(
+ 
+    const data = await fetchWilayah(
       `${WILAYAH_API}/districts/${regencyId}.json`
     );
-
-
-  const data =
-    await r.json();
-
-
-  el.innerHTML =
-
-    '<option value="">Pilih kecamatan</option>' +
-
-    data.map(
-      x =>
-        `<option value="${x.id}">${esc(x.name)}</option>`
-    ).join("");
-
-
-  el.disabled =
-    false;
-
+ 
+    if(!data.length){
+      throw new Error("Data kecamatan kosong.");
+    }
+ 
+    kecamatan.innerHTML =
+      '<option value="">Pilih kecamatan</option>' +
+      data.map(
+        item => `<option value="${esc(item.id)}">${esc(item.name)}</option>`
+      ).join("");
+ 
+    kecamatan.disabled = false;
+ 
+  }catch(error){
+ 
+    console.error("Gagal memuat kecamatan:", error);
+ 
+    kecamatan.innerHTML =
+      '<option value="">Gagal memuat kecamatan</option>';
+ 
+    showToast("Gagal memuat kecamatan.", true);
+ 
+  }
+ 
 }
-
-
-
+ 
+ 
 function selectedText(id){
-
+ 
   const el =
     document.getElementById(id);
-
-
+ 
+ 
   if(
     !el ||
     el.selectedIndex < 0
   )
     return "";
-
-
+ 
+ 
   return el.options[
     el.selectedIndex
   ]?.text || "";
-
+ 
 }
-
-
-
+ 
+ 
+ 
 function invalidateShipping(){
-
+ 
   shippingRates = [];
-
+ 
   selectedRate = null;
-
-
+ 
+ 
   const box =
     document.getElementById(
       "shippingOptions"
     );
-
-
+ 
+ 
   if(box)
     box.classList.add(
       "hidden"
     );
-
-
+ 
+ 
   renderSummary();
-
+ 
 }
-
-
-
+ 
+ 
+ 
 async function cekOngkir(){
-
+ 
   if(!cart.length){
-
+ 
     showToast(
       "Keranjang kosong.",
       true
     );
-
+ 
     return;
-
+ 
   }
-
-
+ 
+ 
   const postal =
     document
     .getElementById(
@@ -2167,83 +1626,83 @@ async function cekOngkir(){
     )
     .value
     .trim();
-
-
+ 
+ 
   if(!/^[0-9]{5}$/.test(postal)){
-
+ 
     showToast(
       "Masukkan kode pos 5 digit.",
       true
     );
-
+ 
     return;
-
+ 
   }
-
-
+ 
+ 
   if(
     !document
       .getElementById("cProvinsi")
       .value ||
-
+ 
     !document
       .getElementById("cKabupaten")
       .value ||
-
+ 
     !document
       .getElementById("cKecamatan")
       .value
   ){
-
+ 
     showToast(
       "Pilih provinsi, kabupaten dan kecamatan.",
       true
     );
-
+ 
     return;
-
+ 
   }
-
-
+ 
+ 
   const btn =
     document.getElementById(
       "cekOngkirBtn"
     );
-
-
+ 
+ 
   btn.disabled =
     true;
-
+ 
   btn.textContent =
     "Menghitung ongkir...";
-
-
+ 
+ 
   const items =
     cart.map(
       x => ({
-
+ 
         name:
           x.nama_produk,
-
+ 
         description:
           x.nama_variasi || "",
-
+ 
         value:
           x.harga,
-
+ 
         /*
           Sementara 500 gram per pcs
         */
         weight:
           500,
-
+ 
         quantity:
           x.qty
-
+ 
       })
     );
-
-
+ 
+ 
   const {data,error} =
     await supabaseClient.functions.invoke(
       "cek-ongkir",
@@ -2255,99 +1714,99 @@ async function cekOngkir(){
         }
       }
     );
-
-
+ 
+ 
   btn.disabled =
     false;
-
+ 
   btn.textContent =
     "Cek Ongkir";
-
-
+ 
+ 
   if(error){
-
+ 
     console.error(error);
-
+ 
     showToast(
       "Gagal menghitung ongkir.",
       true
     );
-
+ 
     return;
-
+ 
   }
-
-
+ 
+ 
   if(!data?.success){
-
+ 
     showToast(
       data?.message ||
       "Tarif pengiriman tidak ditemukan.",
       true
     );
-
+ 
     return;
-
+ 
   }
-
-
+ 
+ 
   shippingRates =
     Array.isArray(data.rates)
     ? data.rates
     : [];
-
-
+ 
+ 
   shippingRates.sort(
     (a,b)=>
       Number(a.price) -
       Number(b.price)
   );
-
-
+ 
+ 
   if(!shippingRates.length){
-
+ 
     showToast(
       "Tidak ada layanan pengiriman tersedia.",
       true
     );
-
+ 
     return;
-
+ 
   }
-
-
+ 
+ 
   const select =
     document.getElementById(
       "shippingRate"
     );
-
-
+ 
+ 
   select.innerHTML =
     '<option value="">Pilih layanan</option>' +
-
+ 
     shippingRates.map(
       (r,i)=>`
-
+ 
         <option value="${i}">
-
+ 
           ${esc(r.courier_name)}
-
+ 
           ${esc(r.service_name)}
-
+ 
           · ${rupiah(r.price)}
-
+ 
           ${
             r.duration
             ? ` · ${esc(r.duration)}`
             : ""
           }
-
+ 
         </option>
-
+ 
       `
     ).join("");
-
-
+ 
+ 
   document
     .getElementById(
       "shippingOptions"
@@ -2355,67 +1814,67 @@ async function cekOngkir(){
     .classList.remove(
       "hidden"
     );
-
-
+ 
+ 
   showToast(
     "Tarif pengiriman ditemukan."
   );
-
+ 
 }
-
-
-
+ 
+ 
+ 
 function selectShippingRate(){
-
+ 
   const index =
     document
     .getElementById(
       "shippingRate"
     )
     .value;
-
-
+ 
+ 
   selectedRate =
     index === ""
     ? null
     : shippingRates[
         Number(index)
       ];
-
-
+ 
+ 
   document
     .getElementById(
       "shippingInfo"
     )
     .textContent =
-
+ 
     selectedRate
-
+ 
     ? `${selectedRate.courier_name} ${selectedRate.service_name} · ${rupiah(selectedRate.price)} · ${selectedRate.duration || ""}`
-
+ 
     : "";
-
-
+ 
+ 
   renderSummary();
-
+ 
 }
-
-
-
+ 
+ 
+ 
 async function submitOrder(){
-
+ 
   if(!selectedRate){
-
+ 
     showToast(
       "Pilih layanan pengiriman terlebih dahulu.",
       true
     );
-
+ 
     return;
-
+ 
   }
-
-
+ 
+ 
   const nama =
     document
     .getElementById(
@@ -2423,8 +1882,8 @@ async function submitOrder(){
     )
     .value
     .trim();
-
-
+ 
+ 
   const whatsapp =
     document
     .getElementById(
@@ -2432,8 +1891,8 @@ async function submitOrder(){
     )
     .value
     .trim();
-
-
+ 
+ 
   const alamat =
     document
     .getElementById(
@@ -2441,8 +1900,8 @@ async function submitOrder(){
     )
     .value
     .trim();
-
-
+ 
+ 
   const kodePos =
     document
     .getElementById(
@@ -2450,26 +1909,26 @@ async function submitOrder(){
     )
     .value
     .trim();
-
-
+ 
+ 
   const provinsi =
     selectedText(
       "cProvinsi"
     );
-
-
+ 
+ 
   const kabupaten =
     selectedText(
       "cKabupaten"
     );
-
-
+ 
+ 
   const kecamatan =
     selectedText(
       "cKecamatan"
     );
-
-
+ 
+ 
   if(
     !nama ||
     !whatsapp ||
@@ -2479,36 +1938,36 @@ async function submitOrder(){
     !kecamatan ||
     !kodePos
   ){
-
+ 
     showToast(
       "Lengkapi data pemesan dan alamat.",
       true
     );
-
+ 
     return;
-
+ 
   }
-
-
+ 
+ 
   const btn =
     document.getElementById(
       "submitOrderBtn"
     );
-
-
+ 
+ 
   btn.disabled =
     true;
-
+ 
   btn.textContent =
     "Membuat pesanan...";
-
-
+ 
+ 
   const p_customer = {
-
+ 
     nama,
-
+ 
     whatsapp,
-
+ 
     email:
       document
       .getElementById(
@@ -2516,46 +1975,46 @@ async function submitOrder(){
       )
       .value
       .trim() || null,
-
+ 
     alamat,
-
+ 
     kecamatan,
-
+ 
     kabupaten,
-
+ 
     provinsi,
-
+ 
     kode_pos:
       kodePos
-
+ 
   };
-
-
+ 
+ 
   const p_items =
     cart.map(
       x =>
-
+ 
         x.variasi_id
-
+ 
         ? {
             variasi_id:
               x.variasi_id,
-
+ 
             qty:
               x.qty
           }
-
+ 
         : {
             produk_id:
               x.produk_id,
-
+ 
             qty:
               x.qty
           }
-
+ 
     );
-
-
+ 
+ 
   const p_catatan =
     document
     .getElementById(
@@ -2563,80 +2022,80 @@ async function submitOrder(){
     )
     .value
     .trim() || null;
-
-
+ 
+ 
   const kurir =
     `${selectedRate.courier_name} ${selectedRate.service_name}`;
-
-
+ 
+ 
   const {data,error} =
     await supabaseClient.rpc(
       "buat_order_kimonik_dengan_ongkir",
       {
-
+ 
         p_customer,
-
+ 
         p_items,
-
+ 
         p_catatan,
-
+ 
         p_ongkir:
           Number(
             selectedRate.price
           ),
-
+ 
         p_kurir:
           kurir
-
+ 
       }
     );
-
-
+ 
+ 
   btn.disabled =
     false;
-
+ 
   btn.textContent =
     "Buat Pesanan";
-
-
+ 
+ 
   if(error){
-
+ 
     console.error(error);
-
+ 
     showToast(
       "Pesanan gagal dibuat: " +
       error.message,
       true
     );
-
+ 
     return;
-
+ 
   }
-
-
+ 
+ 
   lastOrder = {
-
+ 
     kode_order:
       data?.kode_order,
-
+ 
     total:
       Number(
         data?.total || 0
       ),
-
+ 
     whatsapp,
-
+ 
     ongkir:
       Number(
         data?.ongkir ||
         selectedRate.price
       ),
-
+ 
     kurir
-
+ 
   };
-
-
+ 
+ 
   document
     .getElementById(
       "checkoutForm"
@@ -2644,8 +2103,8 @@ async function submitOrder(){
     .classList.add(
       "hidden"
     );
-
-
+ 
+ 
   document
     .getElementById(
       "cartItems"
@@ -2653,8 +2112,8 @@ async function submitOrder(){
     .classList.add(
       "hidden"
     );
-
-
+ 
+ 
   document
     .getElementById(
       "cartSummary"
@@ -2662,16 +2121,16 @@ async function submitOrder(){
     .classList.add(
       "hidden"
     );
-
-
+ 
+ 
   document
     .getElementById(
       "successCode"
     )
     .textContent =
     lastOrder.kode_order;
-
-
+ 
+ 
   document
     .getElementById(
       "successTotal"
@@ -2681,16 +2140,16 @@ async function submitOrder(){
     rupiah(
       lastOrder.total
     );
-
-
+ 
+ 
   document
     .getElementById(
       "successShipping"
     )
     .textContent =
     `${kurir} · Ongkir ${rupiah(lastOrder.ongkir)}`;
-
-
+ 
+ 
   document
     .getElementById(
       "successBox"
@@ -2698,141 +2157,141 @@ async function submitOrder(){
     .classList.remove(
       "hidden"
     );
-
-
+ 
+ 
   showToast(
     "Pesanan berhasil dibuat."
   );
-
+ 
 }
-
-
-
+ 
+ 
+ 
 async function copyRekening(){
-
+ 
   const nomor =
     "2470144028";
-
-
+ 
+ 
   try{
-
+ 
     await navigator
       .clipboard
       .writeText(
         nomor
       );
-
-
+ 
+ 
     showToast(
       "Nomor rekening disalin."
     );
-
-
+ 
+ 
   }catch(e){
-
+ 
     alert(
       "BCA " + nomor
     );
-
+ 
   }
-
+ 
 }
-
-
-
+ 
+ 
+ 
 async function konfirmasiBayarDariOrder(){
-
+ 
   if(!lastOrder)
     return;
-
-
+ 
+ 
   const yakin =
     confirm(
       "Konfirmasi bahwa Anda sudah melakukan pembayaran?"
     );
-
-
+ 
+ 
   if(!yakin)
     return;
-
-
+ 
+ 
   const btn =
     document.getElementById(
       "successBayarBtn"
     );
-
-
+ 
+ 
   btn.disabled =
     true;
-
+ 
   btn.textContent =
     "Mengirim konfirmasi...";
-
-
+ 
+ 
   const {data,error} =
     await supabaseClient.rpc(
       "konfirmasi_pembayaran_kimonik",
       {
-
+ 
         p_kode_order:
           lastOrder.kode_order,
-
+ 
         p_whatsapp:
           lastOrder.whatsapp,
-
+ 
         p_bukti_url:
           null
-
+ 
       }
     );
-
-
+ 
+ 
   if(error || !data?.success){
-
+ 
     btn.disabled =
       false;
-
+ 
     btn.textContent =
       "Saya Sudah Bayar";
-
+ 
     showToast(
       data?.message ||
       error?.message ||
       "Konfirmasi gagal.",
       true
     );
-
+ 
     return;
-
+ 
   }
-
-
+ 
+ 
   btn.textContent =
     "Menunggu Verifikasi";
-
-
+ 
+ 
   showToast(
     "Pembayaran menunggu verifikasi admin."
   );
-
+ 
 }
-
-
-
+ 
+ 
+ 
 function resetAfterSuccess(){
-
+ 
   cart = [];
-
+ 
   selectedRate =
     null;
-
+ 
   shippingRates =
     [];
-
+ 
   lastOrder =
     null;
-
-
+ 
+ 
   document
     .getElementById(
       "successBox"
@@ -2840,8 +2299,8 @@ function resetAfterSuccess(){
     .classList.add(
       "hidden"
     );
-
-
+ 
+ 
   document
     .getElementById(
       "cartItems"
@@ -2849,8 +2308,8 @@ function resetAfterSuccess(){
     .classList.remove(
       "hidden"
     );
-
-
+ 
+ 
   document
     .getElementById(
       "cartSummary"
@@ -2858,21 +2317,20 @@ function resetAfterSuccess(){
     .classList.remove(
       "hidden"
     );
-
-
+ 
+ 
   renderCart();
-
+ 
 }
-
-
-
+ 
+ 
+ 
 loadKatalog();
-
+ 
 loadProvinces();
-
+ 
 renderCart();
-
+ 
 </script>
-
-</body>
+ </body>
 </html>
