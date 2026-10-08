@@ -25,6 +25,23 @@ Deno.serve(async (req) => {
   if (profileError || profile?.role !== "owner") return respond(403, { error: "Hanya Owner yang boleh membuat akun" });
   let payload: Record<string, unknown>;
   try { payload = await req.json(); } catch { return respond(400, { error: "Data tidak valid" }); }
+  if (payload.action === "reset_password" || payload.action === "set_disabled") {
+    const userId = String(payload.user_id ?? "");
+    if (!/^[0-9a-f-]{36}$/i.test(userId)) return respond(400, { error: "ID akun tidak valid" });
+    const { data: target, error: targetError } = await admin.from("profiles").select("id,role").eq("id", userId).single();
+    if (targetError || !target || !["admin","penjahit"].includes(target.role)) return respond(403, { error: "Akun tidak dapat diubah" });
+    if (payload.action === "reset_password") {
+      const password = String(payload.password ?? "");
+      if (password.length < 10 || password.length > 128) return respond(400, { error: "Password harus 10-128 karakter" });
+      const { error } = await admin.auth.admin.updateUserById(userId, { password });
+      if (error) return respond(500, { error: "Gagal mereset password" });
+      return respond(200, { ok: true });
+    }
+    if (typeof payload.disabled !== "boolean") return respond(400, { error: "Status tidak valid" });
+    const { error } = await admin.auth.admin.updateUserById(userId, { ban_duration: payload.disabled ? "876000h" : "none" });
+    if (error) return respond(500, { error: "Gagal mengubah status akun" });
+    return respond(200, { ok: true, disabled: payload.disabled });
+  }
   if (payload.action === "update_username") {
     const userId = String(payload.user_id ?? "");
     const newUsername = String(payload.username ?? "").trim().toLowerCase();
