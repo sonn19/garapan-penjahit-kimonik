@@ -25,6 +25,25 @@ Deno.serve(async (req) => {
   if (profileError || profile?.role !== "owner") return respond(403, { error: "Hanya Owner yang boleh membuat akun" });
   let payload: Record<string, unknown>;
   try { payload = await req.json(); } catch { return respond(400, { error: "Data tidak valid" }); }
+  if (payload.action === "update_username") {
+    const userId = String(payload.user_id ?? "");
+    const newUsername = String(payload.username ?? "").trim().toLowerCase();
+    if (!/^[0-9a-f-]{36}$/i.test(userId) || !/^[a-z0-9_]{3,30}$/.test(newUsername))
+      return respond(400, { error: "ID atau username tidak valid" });
+    const { data: target, error: targetError } = await admin.from("profiles")
+      .select("id,role,nama").eq("id", userId).single();
+    if (targetError || !target || !["admin","penjahit"].includes(target.role))
+      return respond(403, { error: "Akun tidak dapat diubah" });
+    const { data: used, error: usedError } = await admin.from("profiles")
+      .select("id").eq("username", newUsername).neq("id", userId).limit(1);
+    if (usedError) return respond(500, { error: "Gagal memeriksa username" });
+    if (used?.length) return respond(409, { error: "Username sudah digunakan" });
+    const { error: updateError } = await admin.from("profiles")
+      .update({ username: newUsername }).eq("id", userId);
+    if (updateError) return respond(updateError.code === "23505" ? 409 : 500,
+      { error: updateError.code === "23505" ? "Username sudah digunakan" : "Gagal menyimpan username" });
+    return respond(200, { ok: true, nama: target.nama, username: newUsername });
+  }
   const nama = String(payload.nama ?? "").trim();
   const username = String(payload.username ?? "").trim().toLowerCase();
   const password = String(payload.password ?? "");
