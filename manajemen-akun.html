@@ -1,5 +1,24 @@
 <!doctype html>
-<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Manajemen Akun — Kimonik</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Manajemen Akun — Kimonik</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+/* Kimonik: pemeriksaan sesi berkala. Pembatasan database tetap wajib melalui RLS. */
+let kimonikSessionCheckRunning=false;
+async function kimonikCheckSession(){
+ if(kimonikSessionCheckRunning)return;
+ kimonikSessionCheckRunning=true;
+ try{
+  const {data:{session}}=await db.auth.getSession();
+  if(!session)return;
+  const {data:{user},error}=await db.auth.getUser();
+  if(error||!user){await db.auth.signOut();location.reload();return;}
+  const {data:profile,error:profileError}=await db.from('profiles').select('role').eq('id',user.id).single();
+  if(profileError||!profile){await db.auth.signOut();location.reload();return;}
+  const allowed=['owner'];
+  if(!allowed.includes(profile.role)){await db.auth.signOut();location.reload();}
+ }catch(e){console.warn('Pemeriksaan sesi tertunda',e)}finally{kimonikSessionCheckRunning=false;}
+}
+setInterval(kimonikCheckSession,60000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)kimonikCheckSession()});
+</script><style>
 *{box-sizing:border-box}body{margin:0;background:#f6f3ee;color:#292621;font:14px Arial,sans-serif}header{background:#292621;color:#fff;padding:18px 5%;font-size:20px;font-weight:800}main{max-width:1080px;margin:auto;padding:20px 14px 70px}.card{background:#fff;border:1px solid #ded8cf;border-radius:14px;padding:20px;margin:14px 0}.hidden{display:none!important}.nav{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 18px}.nav a,button{display:inline-block;border:0;border-radius:9px;background:#292621;color:#fff;text-decoration:none;padding:11px 14px;font:inherit;cursor:pointer}.nav a{background:#eee8df;color:#292621}input,select{width:100%;padding:11px;border:1px solid #d6cfc7;border-radius:9px;font:inherit}label{display:block;font-weight:700;margin:10px 0 6px}.muted{color:#777168}.error{color:#b33a3a}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:540px}td,th{text-align:left;padding:12px;border-bottom:1px solid #eee}th{background:#f8f6f2}.note{background:#f3eee6;padding:12px;border-radius:9px;line-height:1.6}@media(max-width:600px){.grid{grid-template-columns:1fr}}</style></head><body><header>KIMONIK <small style="font-size:12px;font-weight:normal">/ Manajemen Akun</small></header><main>
 <section id="login" class="card" style="max-width:440px;margin:40px auto"><h2>Masuk Owner</h2><p class="muted">Masuk dengan akun Owner Kimonik yang sudah ada.</p><label>Username atau Email</label><input id="email" type="text" autocomplete="username" placeholder="owner atau email"><label>Password</label><input id="password" type="password" autocomplete="current-password"><p><button id="loginBtn">Masuk</button></p><p id="loginError" class="error" role="alert"></p></section>
 <section id="app" class="hidden"><nav class="nav" aria-label="Menu Owner"><a href="admin-order.html">Order</a><a href="master-hpp.html">Master HPP</a><a href="pembukuan.html">Pembukuan</a><a href="manajemen-akun.html" aria-current="page">Manajemen Akun</a></nav><div class="card"><h2>Daftar Akun Kimonik</h2><p class="muted">Akun Owner, Admin, dan Penjahit yang sudah terdaftar.</p><div class="tablewrap"><table><thead><tr><th>Nama</th><th>Username</th><th>Peran</th><th>Pengaturan</th></tr></thead><tbody id="users"><tr><td colspan="3">Memuat...</td></tr></tbody></table></div><p id="status" role="status"></p></div>
