@@ -482,7 +482,13 @@ label{
       </div>
       <button class="btn secondary" style="width:100%;margin-top:12px" onclick="copyRekening()">Salin No. Rekening</button>
      </div>
-     <button id="successBayarBtn" class="btn success" style="width:100%;margin-top:12px" onclick="konfirmasiBayarDariOrder()">Saya Sudah Bayar</button>
+     <div class="payment-box" style="margin-top:12px">
+      <div style="font-weight:800;margin-bottom:8px">Upload Bukti Transfer</div>
+      <div class="meta" style="margin-bottom:10px">Pilih foto bukti pembayaran JPG, PNG, atau WEBP. Maksimal 5 MB.</div>
+      <input id="buktiFile" type="file" accept="image/jpeg,image/png,image/webp" style="margin-bottom:10px">
+      <button id="uploadBuktiBtn" class="btn success" style="width:100%" onclick="uploadBuktiPembayaran()">Upload Bukti &amp; Konfirmasi</button>
+      <div id="uploadBuktiInfo" class="meta" style="margin-top:8px"></div>
+     </div>
      <a href="cek-order.html" class="btn secondary" style="
           display:block;
           text-align:center;
@@ -2296,80 +2302,192 @@ async function copyRekening(){
  
  
  
-async function konfirmasiBayarDariOrder(){
+async function uploadBuktiPembayaran(){
  
-  if(!lastOrder)
-    return;
- 
- 
-  const yakin =
-    confirm(
-      "Konfirmasi bahwa Anda sudah melakukan pembayaran?"
-    );
- 
- 
-  if(!yakin)
-    return;
- 
- 
-  const btn =
-    document.getElementById(
-      "successBayarBtn"
-    );
- 
- 
-  btn.disabled =
-    true;
- 
-  btn.textContent =
-    "Mengirim konfirmasi...";
- 
- 
-  const {data,error} =
-    await supabaseClient.rpc(
-      "konfirmasi_pembayaran_kimonik",
-      {
- 
-        p_kode_order:
-          lastOrder.kode_order,
- 
-        p_whatsapp:
-          lastOrder.whatsapp,
- 
-        p_bukti_url:
-          null
- 
-      }
-    );
- 
- 
-  if(error || !data?.success){
- 
-    btn.disabled =
-      false;
- 
-    btn.textContent =
-      "Saya Sudah Bayar";
+  if(!lastOrder){
  
     showToast(
-      data?.message ||
-      error?.message ||
-      "Konfirmasi gagal.",
+      "Data order tidak ditemukan.",
       true
     );
  
     return;
- 
   }
  
  
+  const input =
+    document.getElementById(
+      "buktiFile"
+    );
+ 
+ 
+  const file =
+    input?.files?.[0];
+ 
+ 
+  if(!file){
+ 
+    showToast(
+      "Pilih foto bukti transfer terlebih dahulu.",
+      true
+    );
+ 
+    return;
+  }
+ 
+ 
+  const allowedTypes = [
+    "image/jpeg",
+    "image/png",
+    "image/webp"
+  ];
+ 
+ 
+  if(!allowedTypes.includes(file.type)){
+ 
+    showToast(
+      "Format file harus JPG, PNG, atau WEBP.",
+      true
+    );
+ 
+    return;
+  }
+ 
+ 
+  if(file.size > 5 * 1024 * 1024){
+ 
+    showToast(
+      "Ukuran file maksimal 5 MB.",
+      true
+    );
+ 
+    return;
+  }
+ 
+ 
+  const btn =
+    document.getElementById(
+      "uploadBuktiBtn"
+    );
+ 
+ 
+  const info =
+    document.getElementById(
+      "uploadBuktiInfo"
+    );
+ 
+ 
+  btn.disabled = true;
+ 
   btn.textContent =
-    "Menunggu Verifikasi";
+    "Mengupload bukti...";
  
  
-  showToast(
-    "Pembayaran menunggu verifikasi admin."
-  );
+  info.textContent =
+    "Mohon tunggu, bukti pembayaran sedang dikirim.";
+ 
+ 
+  try{
+ 
+    const formData =
+      new FormData();
+ 
+ 
+    formData.append(
+      "kode_order",
+      lastOrder.kode_order
+    );
+ 
+ 
+    formData.append(
+      "whatsapp",
+      lastOrder.whatsapp
+    );
+ 
+ 
+    formData.append(
+      "file",
+      file
+    );
+ 
+ 
+    const response =
+      await fetch(
+        `${SUPABASE_URL}/functions/v1/upload-bukti-pembayaran`,
+        {
+          method: "POST",
+ 
+          headers: {
+            "Authorization":
+              `Bearer ${SUPABASE_KEY}`,
+ 
+            "apikey":
+              SUPABASE_KEY
+          },
+ 
+          body:
+            formData
+        }
+      );
+ 
+ 
+    const data =
+      await response.json();
+ 
+ 
+    if(
+      !response.ok ||
+      !data?.success
+    ){
+ 
+      throw new Error(
+        data?.message ||
+        "Upload bukti pembayaran gagal."
+      );
+ 
+    }
+ 
+ 
+    btn.textContent =
+      "Menunggu Verifikasi";
+ 
+ 
+    info.textContent =
+      "Bukti pembayaran berhasil dikirim. Admin Kimonik akan melakukan verifikasi.";
+ 
+ 
+    input.disabled = true;
+ 
+ 
+    showToast(
+      "Bukti pembayaran berhasil dikirim."
+    );
+ 
+ 
+  }catch(error){
+ 
+    console.error(
+      "Upload bukti gagal:",
+      error
+    );
+ 
+ 
+    btn.disabled = false;
+ 
+    btn.textContent =
+      "Upload Bukti & Konfirmasi";
+ 
+ 
+    info.textContent = "";
+ 
+ 
+    showToast(
+      error?.message ||
+      "Upload bukti pembayaran gagal.",
+      true
+    );
+ 
+  }
  
 }
  
@@ -2414,6 +2532,50 @@ function resetAfterSuccess(){
     .classList.remove(
       "hidden"
     );
+ 
+ 
+  const buktiFile =
+    document.getElementById(
+      "buktiFile"
+    );
+ 
+ 
+  const uploadBuktiBtn =
+    document.getElementById(
+      "uploadBuktiBtn"
+    );
+ 
+ 
+  const uploadBuktiInfo =
+    document.getElementById(
+      "uploadBuktiInfo"
+    );
+ 
+ 
+  if(buktiFile){
+ 
+    buktiFile.value = "";
+ 
+    buktiFile.disabled = false;
+ 
+  }
+ 
+ 
+  if(uploadBuktiBtn){
+ 
+    uploadBuktiBtn.disabled = false;
+ 
+    uploadBuktiBtn.textContent =
+      "Upload Bukti & Konfirmasi";
+ 
+  }
+ 
+ 
+  if(uploadBuktiInfo){
+ 
+    uploadBuktiInfo.textContent = "";
+ 
+  }
  
  
   renderCart();
