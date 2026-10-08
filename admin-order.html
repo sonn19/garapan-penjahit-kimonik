@@ -466,6 +466,49 @@ input,select,textarea{
 
 </div>
 
+
+<div id="proofModal" class="modal hidden">
+
+  <div class="modal-box">
+
+    <div class="modal-head">
+      <h3 style="margin:0">Bukti Pembayaran</h3>
+      <button class="close" onclick="closeProofModal()">×</button>
+    </div>
+
+    <div id="proofOrderInfo" class="meta" style="margin-bottom:12px"></div>
+
+    <div id="proofLoading" class="empty">
+      Memuat bukti pembayaran...
+    </div>
+
+    <img
+      id="proofImage"
+      class="hidden"
+      alt="Bukti pembayaran"
+      style="
+        width:100%;
+        max-height:65vh;
+        object-fit:contain;
+        border:1px solid var(--line);
+        border-radius:12px;
+        background:#f6f3ee
+      ">
+
+    <div id="proofError" class="hidden" style="color:var(--danger);font-size:13px"></div>
+
+    <button
+      id="proofVerifyBtn"
+      class="btn success hidden"
+      style="width:100%;margin-top:14px"
+      onclick="verifyPaymentFromModal()">
+      Verifikasi & Tandai Lunas
+    </button>
+
+  </div>
+
+</div>
+
 <div id="toast" class="toast hidden"></div>
 
 <script>
@@ -485,6 +528,9 @@ supabase.createClient(
 let currentUser = null;
 let currentProfile = null;
 let orders = [];
+
+let proofOrderId = null;
+let proofObjectUrl = null;
 
 
 function esc(v){
@@ -595,6 +641,9 @@ function paymentBadge(status){
 
   else if(status === "BELUM_BAYAR")
     cls = "warning";
+
+  else if(status === "MENUNGGU_VERIFIKASI")
+    cls = "blue";
 
   else if(status === "GAGAL")
     cls = "danger";
@@ -1100,6 +1149,25 @@ function renderOrders(){
           <div class="actions">
 
             ${
+              o.status_pembayaran === "MENUNGGU_VERIFIKASI"
+
+              ? `
+
+                <button
+                  class="btn warning small"
+                  onclick="openProofModal(${o.id})">
+
+                  Lihat Bukti
+
+                </button>
+
+              `
+
+              : ""
+            }
+
+
+            ${
               o.status_pembayaran !== "LUNAS"
 
               ? `
@@ -1260,39 +1328,328 @@ async function markPaid(
   orderId
 ){
 
-  const {error} =
-    await supabaseClient.rpc(
-      "admin_update_payment_status",
-      {
-        p_order_id:
-          orderId,
-
-        p_status_pembayaran:
-          "LUNAS"
-      }
+  const order =
+    orders.find(
+      x =>
+        Number(x.id) ===
+        Number(orderId)
     );
 
 
-  if(error){
+  if(!order){
 
     showToast(
-      error.message,
+      "Order tidak ditemukan.",
       true
     );
 
     return;
+  }
 
+
+  const yakin =
+    confirm(
+      `Tandai ${order.kode_order} sebagai LUNAS?`
+    );
+
+
+  if(!yakin)
+    return;
+
+
+  const {data,error} =
+    await supabaseClient.functions.invoke(
+      "admin-verifikasi-pembayaran",
+      {
+        body:{
+          action:"verify",
+          order_id:Number(orderId)
+        }
+      }
+    );
+
+
+  if(error || !data?.success){
+
+    showToast(
+      data?.message ||
+      error?.message ||
+      "Verifikasi pembayaran gagal.",
+      true
+    );
+
+    return;
   }
 
 
   showToast(
-    "Pembayaran ditandai LUNAS."
+    data?.email_sent
+      ? "Pembayaran LUNAS dan email customer terkirim."
+      : "Pembayaran ditandai LUNAS."
   );
 
+
+  closeProofModal();
 
   await loadOrders();
 
 }
+
+
+
+async function openProofModal(
+  orderId
+){
+
+  const order =
+    orders.find(
+      x =>
+        Number(x.id) ===
+        Number(orderId)
+    );
+
+
+  proofOrderId =
+    Number(orderId);
+
+
+  document
+    .getElementById(
+      "proofModal"
+    )
+    .classList.remove(
+      "hidden"
+    );
+
+
+  document
+    .getElementById(
+      "proofOrderInfo"
+    )
+    .textContent =
+    order
+      ? `${order.kode_order} · ${order.customer?.nama || "-"}`
+      : `Order #${orderId}`;
+
+
+  const loading =
+    document.getElementById(
+      "proofLoading"
+    );
+
+
+  const image =
+    document.getElementById(
+      "proofImage"
+    );
+
+
+  const errorEl =
+    document.getElementById(
+      "proofError"
+    );
+
+
+  const verifyBtn =
+    document.getElementById(
+      "proofVerifyBtn"
+    );
+
+
+  loading.classList.remove(
+    "hidden"
+  );
+
+  image.classList.add(
+    "hidden"
+  );
+
+  errorEl.classList.add(
+    "hidden"
+  );
+
+  verifyBtn.classList.add(
+    "hidden"
+  );
+
+
+  image.removeAttribute(
+    "src"
+  );
+
+
+  if(proofObjectUrl){
+
+    URL.revokeObjectURL(
+      proofObjectUrl
+    );
+
+    proofObjectUrl =
+      null;
+
+  }
+
+
+  try{
+
+    const {
+      data:{
+        session
+      }
+    } =
+      await supabaseClient.auth
+        .getSession();
+
+
+    if(!session?.access_token){
+
+      throw new Error(
+        "Sesi admin tidak tersedia."
+      );
+
+    }
+
+
+    const response =
+      await fetch(
+        `${SUPABASE_URL}/functions/v1/admin-verifikasi-pembayaran`,
+        {
+          method:"POST",
+
+          headers:{
+            "Authorization":
+              `Bearer ${session.access_token}`,
+
+            "apikey":
+              SUPABASE_KEY,
+
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify({
+              action:"proof",
+              order_id:Number(orderId)
+            })
+        }
+      );
+
+
+    if(!response.ok){
+
+      const problem =
+        await response.json()
+          .catch(()=>({}));
+
+      throw new Error(
+        problem?.message ||
+        "Gagal memuat bukti pembayaran."
+      );
+
+    }
+
+
+    const blob =
+      await response.blob();
+
+
+    proofObjectUrl =
+      URL.createObjectURL(
+        blob
+      );
+
+
+    image.src =
+      proofObjectUrl;
+
+
+    loading.classList.add(
+      "hidden"
+    );
+
+
+    image.classList.remove(
+      "hidden"
+    );
+
+
+    if(
+      order?.status_pembayaran !==
+      "LUNAS"
+    ){
+
+      verifyBtn.classList.remove(
+        "hidden"
+      );
+
+    }
+
+
+  }catch(error){
+
+    console.error(error);
+
+    loading.classList.add(
+      "hidden"
+    );
+
+    errorEl.textContent =
+      error?.message ||
+      "Gagal memuat bukti pembayaran.";
+
+    errorEl.classList.remove(
+      "hidden"
+    );
+
+  }
+
+}
+
+
+
+function closeProofModal(){
+
+  document
+    .getElementById(
+      "proofModal"
+    )
+    .classList.add(
+      "hidden"
+    );
+
+
+  proofOrderId =
+    null;
+
+
+  if(proofObjectUrl){
+
+    URL.revokeObjectURL(
+      proofObjectUrl
+    );
+
+    proofObjectUrl =
+      null;
+
+  }
+
+}
+
+
+
+async function verifyPaymentFromModal(){
+
+  if(!proofOrderId)
+    return;
+
+
+  await markPaid(
+    proofOrderId
+  );
+
+}
+
 
 
 function openShippingModal(
