@@ -735,7 +735,7 @@ async function loadProfile(){
       .toLowerCase();
 
 
-  if(role !== "admin"){
+  if(!["admin","owner"].includes(role)){
 
     await supabaseClient.auth.signOut();
 
