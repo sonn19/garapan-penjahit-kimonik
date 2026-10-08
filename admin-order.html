@@ -4,7 +4,26 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Admin Order Kimonik</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+/* Kimonik: pemeriksaan sesi berkala. Pembatasan database tetap wajib melalui RLS. */
+let kimonikSessionCheckRunning=false;
+async function kimonikCheckSession(){
+ if(kimonikSessionCheckRunning)return;
+ kimonikSessionCheckRunning=true;
+ try{
+  const {data:{session}}=await supabaseClient.auth.getSession();
+  if(!session)return;
+  const {data:{user},error}=await supabaseClient.auth.getUser();
+  if(error||!user){await supabaseClient.auth.signOut();location.reload();return;}
+  const {data:profile,error:profileError}=await supabaseClient.from('profiles').select('role').eq('id',user.id).single();
+  if(profileError||!profile){await supabaseClient.auth.signOut();location.reload();return;}
+  const allowed=['owner','admin'];
+  if(!allowed.includes(profile.role)){await supabaseClient.auth.signOut();location.reload();}
+ }catch(e){console.warn('Pemeriksaan sesi tertunda',e)}finally{kimonikSessionCheckRunning=false;}
+}
+setInterval(kimonikCheckSession,60000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)kimonikCheckSession()});
+</script>
 
 <style>
 :root{
