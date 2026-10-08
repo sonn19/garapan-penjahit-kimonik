@@ -312,6 +312,18 @@ header{
   padding:40px;
 }
 
+.catalog-tools{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;margin:0 0 10px}
+.catalog-tools input,.catalog-tools select{width:100%;min-width:0;padding:13px 15px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--text);font:inherit}
+.catalog-tools input:focus,.catalog-tools select:focus{outline:2px solid #a18a6c;outline-offset:1px}
+.catalog-count{font-size:13px;color:var(--muted);margin:8px 0 18px}
+.product-card{display:flex;flex-direction:column;text-decoration:none;color:inherit;transition:transform .18s,box-shadow .18s}
+.product-card:hover{transform:translateY(-3px);box-shadow:0 14px 35px #29262114}
+.product-photo{aspect-ratio:1/1}
+.product-body{display:flex;flex:1;flex-direction:column;gap:7px}
+.product-name{min-height:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.product-price{margin-top:auto;padding-top:8px}
+.product-stock{font-size:12px}
+@media(max-width:650px){.catalog-tools{grid-template-columns:1fr 1fr}.catalog-tools input{grid-column:1/-1}}
 /* ================= VALUE ================= */
 
 .values{
@@ -596,6 +608,16 @@ footer{
     </div>
 
 
+    <div class="catalog-tools">
+      <input id="catalogSearch" type="search" placeholder="Cari nama produk, motif, atau SKU..." aria-label="Cari koleksi">
+      <select id="catalogCategory" aria-label="Filter kategori"><option value="">Semua kategori</option></select>
+      <select id="catalogSort" aria-label="Urutkan koleksi">
+        <option value="name">Nama A–Z</option>
+        <option value="low">Harga terendah</option>
+        <option value="high">Harga tertinggi</option>
+      </select>
+    </div>
+    <p id="catalogCount" class="catalog-count" aria-live="polite"></p>
     <div
       id="products"
       class="products">
@@ -1040,140 +1062,45 @@ function productPrice(p){
 }
 
 
-async function loadProducts(){
-
-  const el =
-    document.getElementById("products");
-
-
-  const {data,error} =
-    await supabaseClient.rpc(
-      "get_katalog_kimonik"
-    );
-
-
-  if(error){
-
-    console.error(error);
-
-    el.innerHTML = `
-      <div class="empty">
-        Koleksi belum bisa dimuat.
-        Silakan buka halaman pemesanan.
-      </div>
-    `;
-
-    return;
-
-  }
-
-
-  let products =
-    Array.isArray(data)
-    ? data
-    : [];
-
-
-  /*
-    Hanya tampilkan produk:
-    - harga > 0
-    - stok > 0
-  */
-
-  products =
-    products
-      .filter(
-        p =>
-          Number(p.harga_jual || 0) > 0 &&
-          stockProduct(p) > 0
-      )
-      .slice(0,6);
-
-
-  if(!products.length){
-
-    el.innerHTML = `
-      <div class="empty">
-        Belum ada koleksi aktif.
-      </div>
-    `;
-
-    return;
-
-  }
-
-
-  el.innerHTML =
-    products.map(
-      p => {
-
-        const photo =
-          p.foto_url
-
-          ? `
-            <img
-              src="${esc(p.foto_url)}"
-              alt="${esc(p.nama_produk)}"
-              loading="lazy"
-              onerror="
-                this.parentElement.innerHTML=
-                'Foto belum tersedia'
-              ">
-          `
-
-          : "Foto belum tersedia";
-
-
-        return `
-
-        <a
-          href="order.html"
-          class="product-card">
-
-          <div class="product-photo">
-            ${photo}
-          </div>
-
-
-          <div class="product-body">
-
-            <div class="product-name">
-              ${esc(
-                p.nama_produk ||
-                "Produk Kimonik"
-              )}
-            </div>
-
-
-            <div class="product-meta">
-
-              ${
-                p.kategori
-                ? esc(p.kategori)
-                : "Kimonik"
-              }
-
-              · stok ${stockProduct(p)}
-
-            </div>
-
-
-            <div class="product-price">
-              ${productPrice(p)}
-            </div>
-
-          </div>
-
-        </a>
-
-        `;
-
-      }
-    )
-    .join("");
-
+let catalogProducts=[];
+function catalogMinPrice(p){
+  const prices=(Array.isArray(p.variasi)?p.variasi:[]).map(v=>Number(v.harga||0)).filter(v=>v>0);
+  return prices.length?Math.min(...prices):Number(p.harga_jual||0);
 }
-
+function renderCatalog(){
+  const term=document.getElementById("catalogSearch").value.trim().toLocaleLowerCase("id");
+  const cat=document.getElementById("catalogCategory").value;
+  const sort=document.getElementById("catalogSort").value;
+  const filtered=catalogProducts.filter(p=>{
+    const haystack=[p.nama_produk,p.sku,p.kategori,p.motif,p.bahan].join(" ").toLocaleLowerCase("id");
+    return (!term||haystack.includes(term))&&(!cat||(p.kategori||"Lainnya")===cat);
+  }).sort((a,b)=>sort==="low"?catalogMinPrice(a)-catalogMinPrice(b):sort==="high"?catalogMinPrice(b)-catalogMinPrice(a):String(a.nama_produk||"").localeCompare(String(b.nama_produk||""),"id"));
+  document.getElementById("catalogCount").textContent=filtered.length+" koleksi ditemukan";
+  document.getElementById("products").innerHTML=filtered.length?filtered.map(p=>{
+    const photo=p.foto_url?`<img src="${esc(p.foto_url)}" alt="${esc(p.nama_produk)}" loading="lazy" onerror="this.remove();this.parentElement.append('Foto belum tersedia')">`:"Foto belum tersedia";
+    const stok=stockProduct(p);
+    const variations=Array.isArray(p.variasi)?p.variasi.length:0;
+    return `<a href="order.html" class="product-card">
+      <div class="product-photo">${photo}</div>
+      <div class="product-body">
+        <div class="product-meta">${esc(p.kategori||"Koleksi Kimonik")}</div>
+        <div class="product-name">${esc(p.nama_produk||"Produk Kimonik")}</div>
+        <div class="product-meta">${esc(p.sku||"Tanpa SKU")}${variations?" · "+variations+" variasi":""}</div>
+        <div class="product-price">${productPrice(p)}</div>
+        <div class="product-stock">${stok>0?"Stok tersedia: "+stok:"Stok habis"}</div>
+      </div></a>`;
+  }).join(""):'<div class="empty">Tidak ada koleksi yang cocok. Coba kata kunci atau kategori lain.</div>';
+}
+async function loadProducts(){
+  const el=document.getElementById("products");
+  const {data,error}=await supabaseClient.rpc("get_katalog_kimonik");
+  if(error){console.error(error);el.innerHTML='<div class="empty">Koleksi belum bisa dimuat. Silakan coba lagi nanti.</div>';return;}
+  catalogProducts=(Array.isArray(data)?data:[]).filter(p=>catalogMinPrice(p)>0);
+  const categories=[...new Set(catalogProducts.map(p=>p.kategori||"Lainnya"))].sort((a,b)=>a.localeCompare(b,"id"));
+  document.getElementById("catalogCategory").innerHTML='<option value="">Semua kategori</option>'+categories.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join("");
+  ["catalogSearch","catalogCategory","catalogSort"].forEach(id=>document.getElementById(id).addEventListener(id==="catalogSearch"?"input":"change",renderCatalog));
+  renderCatalog();
+}
 
 loadProducts();
 
