@@ -13,14 +13,14 @@ const links=[
 ['dashboard-admin.html#audit','⌕','Audit Data','all']
 ];
 const css=`
-#km-page-loader{position:fixed;inset:0;z-index:10000;background:rgba(246,243,238,.88);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .18s ease;backdrop-filter:blur(3px)}
+#km-page-loader{position:fixed;inset:0;z-index:10000;background:rgba(246,243,238,.88);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .24s ease;backdrop-filter:blur(5px)}
 #km-page-loader.km-active{opacity:1;pointer-events:auto}
 #km-page-loader .km-loading-box{padding:24px 32px;background:#fff;border:1px solid #e1d8ce;border-radius:16px;box-shadow:0 12px 35px #0002;text-align:center;color:#292621;font-weight:700}
 #km-page-loader .km-spinner{width:32px;height:32px;border:3px solid #e6ddd2;border-top-color:#292621;border-radius:50%;animation:km-spin .75s linear infinite;margin:0 auto 12px}
 @keyframes km-spin{to{transform:rotate(360deg)}}
-@media(prefers-reduced-motion:reduce){#km-page-loader{transition:none}#km-page-loader .km-spinner{animation:none}}
+@media(prefers-reduced-motion:reduce){#km-page-loader{transition:none}#km-page-loader .km-spinner{animation:none}body.km-with-sidebar{animation:none}}
 
-body.km-with-sidebar{margin-left:228px!important}
+body.km-with-sidebar{margin-left:228px!important;animation:km-enter .28s ease-out both}\n@keyframes km-enter{from{opacity:.65;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 #km-sidebar{position:fixed;z-index:9990;left:0;top:0;bottom:0;width:228px;background:#292621;color:#fff;box-shadow:2px 0 12px #0002;overflow-y:auto;font-family:Arial,sans-serif}
 #km-sidebar *{box-sizing:border-box}
 #km-sidebar .km-brand{padding:24px 18px 22px;border-bottom:1px solid #ffffff24;font-weight:800;font-size:18px;letter-spacing:1px}
