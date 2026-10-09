@@ -20,7 +20,7 @@ const css=`
 @keyframes km-spin{to{transform:rotate(360deg)}}
 @media(prefers-reduced-motion:reduce){#km-page-loader{transition:none}#km-page-loader .km-spinner{animation:none}body.km-with-sidebar{animation:none}}
 
-body.km-with-sidebar{margin-left:228px!important;animation:km-enter .28s ease-out both}\n@keyframes km-enter{from{opacity:.65;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+body.km-with-sidebar{margin-left:228px!important;animation:km-enter .28s ease-out}\n@keyframes km-enter{from{opacity:.65}to{opacity:1}}
 #km-sidebar{position:fixed;z-index:9990;left:0;top:0;bottom:0;width:228px;background:#292621;color:#fff;box-shadow:2px 0 12px #0002;overflow-y:auto;font-family:Arial,sans-serif}
 #km-sidebar *{box-sizing:border-box}
 #km-sidebar .km-brand{padding:24px 18px 22px;border-bottom:1px solid #ffffff24;font-weight:800;font-size:18px;letter-spacing:1px}
