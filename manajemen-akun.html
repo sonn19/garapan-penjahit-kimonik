@@ -13,7 +13,7 @@ async function kimonikCheckSession(){
   const {data:profile,error:profileError}=await db.from('profiles').select('role').eq('id',user.id).single();
   if(profileError||!profile){await db.auth.signOut();location.reload();return;}
   const allowed=['owner'];
-  if(!allowed.includes(profile.role)){await db.auth.signOut();location.reload();}
+  if(!allowed.includes(profile.role)){console.warn('Akses halaman ini khusus Owner');}
  }catch(e){console.warn('Pemeriksaan sesi tertunda',e)}finally{kimonikSessionCheckRunning=false;}
 }
 setInterval(kimonikCheckSession,60000);
