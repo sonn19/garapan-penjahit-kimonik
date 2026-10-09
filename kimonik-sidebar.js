@@ -13,13 +13,10 @@ const links=[
 ['dashboard-admin.html#audit','⌕','Audit Data','all']
 ];
 const css=`
-#km-page-loader{position:fixed;inset:0;z-index:10000;background:rgba(246,243,238,.88);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .12s ease}
-#km-page-loader.km-active{opacity:1;pointer-events:auto}
-#km-page-loader .km-loading-box{padding:24px 32px;background:#fff;border:1px solid #e1d8ce;border-radius:16px;box-shadow:0 12px 35px #0002;text-align:center;color:#292621;font-weight:700}
-#km-page-loader .km-spinner{width:32px;height:32px;border:3px solid #e6ddd2;border-top-color:#292621;border-radius:50%;animation:km-spin .9s linear infinite;margin:0 auto 12px}
-@keyframes km-spin{to{transform:rotate(360deg)}}
-@media(prefers-reduced-motion:reduce){#km-page-loader{transition:none}#km-page-loader .km-spinner{animation:none}}
-
+#km-page-loader{position:fixed;top:0;left:0;right:0;height:3px;z-index:10000;background:transparent;opacity:0;pointer-events:none;transition:opacity .1s ease}
+#km-page-loader.km-active{opacity:1;background:linear-gradient(90deg,#cbbba4,#292621,#cbbba4);background-size:200% 100%;animation:km-progress 1s linear infinite}
+@keyframes km-progress{to{background-position:-200% 0}}
+@media(prefers-reduced-motion:reduce){#km-page-loader{transition:none}#km-page-loader.km-active{animation:none;background:#292621}}
 body.km-with-sidebar{margin-left:228px!important}
 #km-sidebar{position:fixed!important;z-index:9990;left:0!important;top:0!important;bottom:0!important;width:228px;background:#292621;color:#fff;box-shadow:2px 0 12px #0002;overflow-y:auto;font-family:Arial,sans-serif}
 #km-sidebar *{box-sizing:border-box}
@@ -39,7 +36,22 @@ body.km-menu-open #km-sidebar{transform:translateX(0)}
 #km-menu-toggle{display:block}
 body.km-menu-open #km-menu-shade{display:block;position:fixed;inset:0;background:#0007;z-index:9989}
 }`;
-function setupTransitions(){if(document.getElementById('km-page-loader'))return;const loader=document.createElement('div');loader.id='km-page-loader';loader.setAttribute('aria-live','polite');loader.innerHTML='<div class="km-loading-box"><div class="km-spinner"></div>Memuat halaman Kimonik...</div>';document.body.appendChild(loader);document.addEventListener('click',e=>{const a=e.target.closest('a[href]');if(!a||e.defaultPrevented||e.button!==0||e.ctrlKey||e.metaKey||e.shiftKey||e.altKey||a.target==='_blank'||a.hasAttribute('download'))return;const u=new URL(a.href,location.href);if(u.origin!==location.origin||u.pathname===location.pathname&&u.search===location.search)return;loader.classList.add('km-active')});window.addEventListener('pageshow',()=>loader.classList.remove('km-active'))}
+function setupTransitions(){
+ if(document.getElementById('km-page-loader'))return;
+ const loader=document.createElement('div');loader.id='km-page-loader';loader.setAttribute('role','progressbar');loader.setAttribute('aria-label','Memuat halaman');document.body.appendChild(loader);
+ let pending=null;
+ const reset=()=>{if(pending!==null)clearTimeout(pending);pending=null;loader.classList.remove('km-active')};
+ document.addEventListener('click',e=>{
+  const a=e.target.closest('a[href]');
+  if(!a||e.defaultPrevented||e.button!==0||e.ctrlKey||e.metaKey||e.shiftKey||e.altKey||a.target==='_blank'||a.hasAttribute('download'))return;
+  const u=new URL(a.href,location.href);
+  if(!['http:','https:'].includes(u.protocol)||u.origin!==location.origin||u.pathname===location.pathname&&u.search===location.search)return;
+  reset();
+  pending=setTimeout(()=>{loader.classList.add('km-active');pending=null},350);
+ });
+ window.addEventListener('pageshow',reset);
+ window.addEventListener('focus',()=>{if(document.visibilityState==='visible')reset()});
+}
 async function init(){
 if(typeof supabase==='undefined')return;
 const client=supabase.createClient('https://ilxahxzrtzpzhnlskfns.supabase.co','sb_publishable_eetxbGhYGFLhJdXhiU2W0A_qG63dTyU');
