@@ -27,4 +27,4 @@ $('findings').innerHTML=findings.slice(0,1000).map(x=>'<tr><td>'+esc(x.type)+'</
 $('auditStatus').className='ok';$('auditStatus').textContent='Audit selesai. '+findings.length+' temuan'+(findings.length>1000?' (hanya 1.000 ditampilkan)':'')+'.';$('auditResult').classList.remove('hidden')
 }catch(e){$('auditStatus').className='error';$('auditStatus').textContent='Audit gagal: '+e.message}finally{$('auditBtn').disabled=false}}
 $('loginBtn').onclick=login;$('password').onkeydown=e=>{if(e.key==='Enter')login()};$('logout').onclick=async()=>{await db.auth.signOut();location.reload()};$('auditBtn').onclick=audit;(async()=>{const {data}=await db.auth.getSession();if(data.session?.user)try{await enter(data.session.user)}catch(e){$('loginError').textContent=e.message}})();
-</script></body></html>
+</script><script src="kimonik-sidebar.js"></script></body></html>
