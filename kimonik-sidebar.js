@@ -4,6 +4,7 @@ const links=[
 ['dashboard-admin.html','⌂','Dashboard','all'],
 ['admin-order.html','▣','Order','all'],
 ['master-katalog.html','◇','Master Produk','all'],
+['penjahit.html','♧','Penjahit','all'],
 ['master-hpp.html','✂','Master HPP','owner'],
 ['pembukuan.html','▤','Pembukuan','owner'],
 ['manajemen-akun.html','♙','Manajemen Akun','owner'],
