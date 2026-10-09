@@ -2,6 +2,7 @@
 'use strict';
 const links=[
 ['dashboard-admin.html','⌂','Dashboard','all'],
+['dashboard-owner.html','▥','Dashboard Owner','owner'],
 ['admin-order.html','▣','Order','all'],
 ['master-katalog.html','◇','Master Produk','all'],
 ['penjahit.html','♧','Penjahit','all'],
