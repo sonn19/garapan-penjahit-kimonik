@@ -1406,7 +1406,7 @@ function printShippingLabel(orderId){
     if(typeof JsBarcode!=='function'){document.getElementById('barcodeError').textContent='Barcode belum termuat. Periksa koneksi internet.';return;}
     try{JsBarcode(el,resi,{format:'CODE128',displayValue:false,margin:0,width:2,height:58});}
     catch(e){document.getElementById('barcodeError').textContent='Nomor resi tidak dapat dijadikan barcode.';}
-  })();<\/script></body></html>`;
+  })();<\/script><script src="kimonik-sidebar.js"></script></body></html>`;
   w.document.open();w.document.write(html);w.document.close();
 }
 
