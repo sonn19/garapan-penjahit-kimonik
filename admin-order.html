@@ -1374,7 +1374,7 @@ function printShippingLabel(orderId){
     .notice{font-size:8pt;font-weight:bold;margin-top:2mm}
     @media screen{.sheet{border:1px solid #ddd;margin:12px auto}}
     @media print{.printbar{display:none!important}.sheet{border:0!important;margin:0!important;page-break-after:avoid;break-after:avoid}body.mode-label .packing{display:none!important}body.mode-packing .label{display:none!important}body.mode-packing .packing{display:block!important}}
-  </style><script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"><\/script></head>
+  </style><script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script><\/script></head>
   <body class="mode-label">
   <div class="printbar"><button onclick="document.body.className='mode-label';window.print()">Cetak Label 10×15</button>
   ${needsPacking ? `<button onclick="document.body.className='mode-packing';window.print()">Cetak Packing List</button><span style="font-size:12px;align-self:center">Packing list disarankan untuk order ini</span>` : ''}</div>
@@ -1406,7 +1406,7 @@ function printShippingLabel(orderId){
     if(typeof JsBarcode!=='function'){document.getElementById('barcodeError').textContent='Barcode belum termuat. Periksa koneksi internet.';return;}
     try{JsBarcode(el,resi,{format:'CODE128',displayValue:false,margin:0,width:2,height:58});}
     catch(e){document.getElementById('barcodeError').textContent='Nomor resi tidak dapat dijadikan barcode.';}
-  })();<\/script><script src="kimonik-sidebar.js"></script></body></html>`;
+  })();<\/script><script src="kimonik-sidebar.js"></script></script></body></html>`;
   w.document.open();w.document.write(html);w.document.close();
 }
 
