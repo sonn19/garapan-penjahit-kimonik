@@ -13,10 +13,10 @@ const links=[
 ['dashboard-admin.html#audit','⌕','Audit Data','all']
 ];
 const css=`
-#km-page-loader{position:fixed;inset:0;z-index:10000;background:rgba(246,243,238,.88);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .24s ease;backdrop-filter:blur(5px)}
+#km-page-loader{position:fixed;inset:0;z-index:10000;background:rgba(246,243,238,.88);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .12s ease}
 #km-page-loader.km-active{opacity:1;pointer-events:auto}
 #km-page-loader .km-loading-box{padding:24px 32px;background:#fff;border:1px solid #e1d8ce;border-radius:16px;box-shadow:0 12px 35px #0002;text-align:center;color:#292621;font-weight:700}
-#km-page-loader .km-spinner{width:32px;height:32px;border:3px solid #e6ddd2;border-top-color:#292621;border-radius:50%;animation:km-spin .75s linear infinite;margin:0 auto 12px}
+#km-page-loader .km-spinner{width:32px;height:32px;border:3px solid #e6ddd2;border-top-color:#292621;border-radius:50%;animation:km-spin .9s linear infinite;margin:0 auto 12px}
 @keyframes km-spin{to{transform:rotate(360deg)}}
 @media(prefers-reduced-motion:reduce){#km-page-loader{transition:none}#km-page-loader .km-spinner{animation:none}}
 
@@ -34,7 +34,7 @@ body.km-with-sidebar{margin-left:228px!important}
 #km-menu-shade{display:none}
 @media(max-width:850px){
 body.km-with-sidebar{margin-left:0!important}
-#km-sidebar{transform:translateX(-105%);transition:transform .2s}
+#km-sidebar{transform:translateX(-105%);transition:transform .16s}
 body.km-menu-open #km-sidebar{transform:translateX(0)}
 #km-menu-toggle{display:block}
 body.km-menu-open #km-menu-shade{display:block;position:fixed;inset:0;background:#0007;z-index:9989}
