@@ -3967,6 +3967,12 @@ function renderAdminSetoran(){
     </button>
 
     <button
+     class="btn blue small"
+     onclick="terimaSebagianSetoran('${s.id}',${qty})">
+     Terima Sebagian
+    </button>
+
+    <button
      class="btn danger small"
      onclick="rejectSetoran('${s.id}')">
 
@@ -5655,6 +5661,18 @@ async function approveSetoran(id){
 
 }
 
+
+async function terimaSebagianSetoran(id,total){
+ const raw=prompt("Dari "+total+" pcs, berapa yang DITERIMA? Contoh: 4. Sisanya dikembalikan untuk perbaikan.");
+ if(raw===null)return;
+ const diterima=Number(raw);
+ if(!Number.isInteger(diterima)||diterima<1||diterima>=total){showToast("Masukkan jumlah diterima antara 1 sampai "+(total-1)+" pcs.",true);return}
+ if(!confirm("Terima "+diterima+" pcs dan kembalikan "+(total-diterima)+" pcs untuk perbaikan?"))return;
+ const {data,error}=await supabaseClient.rpc("terima_sebagian_setoran",{p_setoran_id:Number(id),p_jumlah_diterima:diterima});
+ if(error){showToast("Gagal terima sebagian: "+error.message+". Jalankan SQL penjahit-terima-sebagian.sql dahulu.",true);return}
+ showToast(data.diterima+" pcs diterima; "+data.perbaikan+" pcs menunggu perbaikan.");
+ await loadAll();
+}
 
 async function rejectSetoran(id){
 
