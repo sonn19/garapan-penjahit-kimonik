@@ -243,7 +243,7 @@ header{
 
 .products{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(4,1fr);
   gap:16px;
 }
 
@@ -448,7 +448,7 @@ footer{
 @media(max-width:560px){
 
   .products{
-    grid-template-columns:1fr;
+    grid-template-columns:repeat(2,1fr);
   }
 
   .hero h1{
@@ -608,7 +608,7 @@ footer{
     </div>
 
 
-    <div class="catalog-tools">
+    <div class="catalog-tools" hidden>
       <input id="catalogSearch" type="search" placeholder="Cari nama produk, motif, atau SKU..." aria-label="Cari koleksi">
       <select id="catalogCategory" aria-label="Filter kategori"><option value="">Semua kategori</option></select>
       <select id="catalogSort" aria-label="Urutkan koleksi">
@@ -627,6 +627,7 @@ footer{
       </div>
 
     </div>
+    <div style="text-align:center;margin-top:28px"><a class="btn light" href="order.html">Lihat Semua Koleksi &rarr;</a></div>
 
   </div>
 
@@ -1075,8 +1076,8 @@ function renderCatalog(){
     const haystack=[p.nama_produk,p.sku,p.kategori,p.motif,p.bahan].join(" ").toLocaleLowerCase("id");
     return (!term||haystack.includes(term))&&(!cat||(p.kategori||"Lainnya")===cat);
   }).sort((a,b)=>sort==="low"?catalogMinPrice(a)-catalogMinPrice(b):sort==="high"?catalogMinPrice(b)-catalogMinPrice(a):String(a.nama_produk||"").localeCompare(String(b.nama_produk||""),"id"));
-  document.getElementById("catalogCount").textContent=filtered.length+" koleksi ditemukan";
-  document.getElementById("products").innerHTML=filtered.length?filtered.map(p=>{
+  document.getElementById("catalogCount").textContent="Pilihan koleksi";
+  document.getElementById("products").innerHTML=filtered.length?filtered.slice(0,8).map(p=>{
     const photo=p.foto_url?`<img src="${esc(p.foto_url)}" alt="${esc(p.nama_produk)}" loading="lazy" onerror="this.remove();this.parentElement.append('Foto belum tersedia')">`:"Foto belum tersedia";
     const stok=stockProduct(p);
     const variations=Array.isArray(p.variasi)?p.variasi.length:0;
