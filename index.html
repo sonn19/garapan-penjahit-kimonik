@@ -186,7 +186,7 @@ header{
 }
 
 .hero-card:after{
-  content:"K";
+  content:"";
   position:absolute;
   top:48px;
   left:50%;
@@ -243,7 +243,7 @@ header{
 
 .products{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(4,1fr);
   gap:16px;
 }
 
@@ -448,7 +448,7 @@ footer{
 @media(max-width:560px){
 
   .products{
-    grid-template-columns:1fr;
+    grid-template-columns:repeat(2,1fr);
   }
 
   .hero h1{
@@ -456,7 +456,7 @@ footer{
   }
 
   .hero-card{
-    min-height:310px;
+    min-height:250px;
   }
 
   .section{
@@ -493,7 +493,7 @@ footer{
 
       <a href="#tentang">Tentang</a>
 
-      <a href="#cara-pesan">Cara Pesan</a>
+      
 
 <a href="cek-order.html">
   Cek Pesanan
@@ -518,9 +518,7 @@ footer{
 
   <div class="hero-copy">
 
-    <div class="eyebrow">
-      Kimonik Indonesia
-    </div>
+
 
     <h1>
       Tenun untuk<br>
@@ -528,9 +526,7 @@ footer{
     </h1>
 
     <p>
-      Koleksi busana Kimonik untuk kondangan,
-      wisuda, lamaran, prewedding dan berbagai
-      momen yang ingin dikenang.
+      Busana tenun dengan karakter Indonesia untuk momen yang berarti.
     </p>
 
     <div class="hero-actions">
@@ -539,9 +535,7 @@ footer{
         Belanja Sekarang
       </a>
 
-      <a class="btn light" href="#koleksi">
-        Lihat Koleksi
-      </a>
+
 
     </div>
 
@@ -594,9 +588,7 @@ footer{
         </h2>
 
         <p>
-          Beberapa koleksi aktif dari katalog Kimonik.
-          Lihat seluruh variasi, harga dan stok
-          melalui halaman pemesanan.
+          Pilihan busana tenun Kimonik.
         </p>
 
       </div>
@@ -608,7 +600,7 @@ footer{
     </div>
 
 
-    <div class="catalog-tools">
+    <div class="catalog-tools" hidden>
       <input id="catalogSearch" type="search" placeholder="Cari nama produk, motif, atau SKU..." aria-label="Cari koleksi">
       <select id="catalogCategory" aria-label="Filter kategori"><option value="">Semua kategori</option></select>
       <select id="catalogSort" aria-label="Urutkan koleksi">
@@ -628,315 +620,11 @@ footer{
 
     </div>
 
-  </div>
-
-</section>
-
-
-<!-- VALUE -->
-
-<section
-  id="tentang"
-  class="section">
-
-  <div class="container">
-
-    <div class="section-head">
-
-      <div>
-
-        <div class="eyebrow">
-          Kimonik
-        </div>
-
-        <h2>
-          Dibuat untuk dipakai,
-          bukan hanya dilihat.
-        </h2>
-
-      </div>
-
-    </div>
-
-
-    <div class="values">
-
-      <div class="value">
-
-        <div class="value-number">
-          01
-        </div>
-
-        <h3>Karakter Tenun</h3>
-
-        <p>
-          Kimonik membawa karakter kain tenun
-          ke dalam busana yang mudah digunakan
-          untuk berbagai acara.
-        </p>
-
-      </div>
-
-
-      <div class="value">
-
-        <div class="value-number">
-          02
-        </div>
-
-        <h3>Pilihan untuk Momen Anda</h3>
-
-        <p>
-          Temukan variasi busana untuk kondangan,
-          wisuda, lamaran, prewedding,
-          maupun kebutuhan lainnya.
-        </p>
-
-      </div>
-
-
-      <div class="value">
-
-        <div class="value-number">
-          03
-        </div>
-
-        <h3>Pesan Langsung</h3>
-
-        <p>
-          Pilih produk dan variasi yang tersedia,
-          masukkan ke keranjang dan buat pesanan
-          langsung melalui sistem Kimonik.
-        </p>
-
-      </div>
-
-    </div>
 
   </div>
 
 </section>
 
-
-<!-- CARA PESAN -->
-
-<section
-  id="cara-pesan"
-  class="section">
-
-  <div class="container">
-
-    <div class="section-head">
-
-      <div>
-
-        <div class="eyebrow">
-          Mudah
-        </div>
-
-        <h2>
-          Cara pesan
-        </h2>
-
-      </div>
-
-    </div>
-
-
-    <div class="values">
-
-      <div class="value">
-
-        <div class="value-number">
-          1
-        </div>
-
-        <h3>Pilih Produk</h3>
-
-        <p>
-          Buka katalog, pilih produk
-          dan variasi yang Anda inginkan.
-        </p>
-
-      </div>
-
-
-      <div class="value">
-
-        <div class="value-number">
-          2
-        </div>
-
-        <h3>Isi Data</h3>
-
-        <p>
-          Masukkan nama, nomor WhatsApp,
-          alamat dan informasi pemesanan.
-        </p>
-
-      </div>
-
-
-      <div class="value">
-
-        <div class="value-number">
-          3
-        </div>
-
-        <h3>Dapatkan Kode Order</h3>
-
-<p>
-  Pesanan langsung tercatat dalam sistem Kimonik.
-  Simpan kode order untuk mengecek perkembangan pesanan Anda.
-</p>
-
-<a
-  href="cek-order.html"
-  style="
-    display:inline-block;
-    margin-top:14px;
-    font-size:13px;
-    font-weight:700;
-  ">
-  Cek status pesanan →
-</a>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-<section class="section">
-
-  <div class="container">
-
-    <div class="section-head">
-
-      <div>
-
-        <div class="eyebrow">
-          FAQ
-        </div>
-
-        <h2>
-          Pertanyaan umum
-        </h2>
-
-      </div>
-
-    </div>
-
-    <div class="values">
-
-      <div class="value">
-
-        <h3>Bagaimana cara pesan?</h3>
-
-        <p>
-          Klik tombol Pesan Sekarang, pilih produk dan variasi,
-          masukkan ke keranjang, lalu isi data pemesanan.
-        </p>
-
-      </div>
-
-
-      <div class="value">
-
-        <h3>Apakah stok selalu tersedia?</h3>
-
-        <p>
-          Stok yang tampil mengikuti data katalog Kimonik.
-          Ketersediaan dapat berubah mengikuti penjualan.
-        </p>
-
-      </div>
-
-
-      <div class="value">
-
-        <h3>Bagaimana pembayaran dilakukan?</h3>
-
-        <p>
-          Setelah pesanan dibuat, tim Kimonik akan membantu
-          proses pembayaran dan konfirmasi melalui WhatsApp.
-        </p>
-
-      </div>
-
-
-      <div class="value">
-
-        <h3>Apakah bisa dikirim ke luar kota?</h3>
-
-        <p>
-          Bisa. Pengiriman dapat diproses ke berbagai wilayah
-          sesuai alamat pelanggan.
-        </p>
-
-      </div>
-
-
-      <div class="value">
-
-        <h3>Apakah bisa tanya ukuran dulu?</h3>
-
-        <p>
-          Bisa. Hubungi WhatsApp Kimonik sebelum membuat pesanan
-          jika ingin memastikan variasi atau ukuran.
-        </p>
-
-      </div>
-
-
-      <div class="value">
-
-        <h3>Bagaimana mengecek status pesanan?</h3>
-
-        <p>
-          Simpan kode order Anda. Tim Kimonik dapat membantu
-          pengecekan status berdasarkan kode tersebut.
-        </p>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-<!-- CTA -->
-
-<section class="section">
-
-  <div class="container">
-
-    <div class="cta">
-
-      <div>
-
-        <h2>
-          Temukan Kimonik Anda.
-        </h2>
-
-        <p>
-          Pilih koleksi dan buat pesanan
-          langsung melalui Kimonik.
-        </p>
-
-      </div>
-
-      <a class="btn" href="order.html">
-        Mulai Pesan →
-      </a>
-
-    </div>
-
-  </div>
-
-</section>
 
 </main>
 
@@ -1075,8 +763,8 @@ function renderCatalog(){
     const haystack=[p.nama_produk,p.sku,p.kategori,p.motif,p.bahan].join(" ").toLocaleLowerCase("id");
     return (!term||haystack.includes(term))&&(!cat||(p.kategori||"Lainnya")===cat);
   }).sort((a,b)=>sort==="low"?catalogMinPrice(a)-catalogMinPrice(b):sort==="high"?catalogMinPrice(b)-catalogMinPrice(a):String(a.nama_produk||"").localeCompare(String(b.nama_produk||""),"id"));
-  document.getElementById("catalogCount").textContent=filtered.length+" koleksi ditemukan";
-  document.getElementById("products").innerHTML=filtered.length?filtered.map(p=>{
+  document.getElementById("catalogCount").textContent="";
+  document.getElementById("products").innerHTML=filtered.length?filtered.slice(0,8).map(p=>{
     const photo=p.foto_url?`<img src="${esc(p.foto_url)}" alt="${esc(p.nama_produk)}" loading="lazy" onerror="this.remove();this.parentElement.append('Foto belum tersedia')">`:"Foto belum tersedia";
     const stok=stockProduct(p);
     const variations=Array.isArray(p.variasi)?p.variasi.length:0;
@@ -1093,7 +781,7 @@ function renderCatalog(){
 }
 async function loadProducts(){
   const el=document.getElementById("products");
-  const {data,error}=await supabaseClient.rpc("get_katalog_kimonik");
+  const {data,error}=await supabaseClient.rpc("get_katalog_kimonik_page",{p_limit:8,p_offset:0});
   if(error){console.error(error);el.innerHTML='<div class="empty">Koleksi belum bisa dimuat. Silakan coba lagi nanti.</div>';return;}
   catalogProducts=(Array.isArray(data)?data:[]).filter(p=>catalogMinPrice(p)>0);
   const categories=[...new Set(catalogProducts.map(p=>p.kategori||"Lainnya"))].sort((a,b)=>a.localeCompare(b,"id"));
