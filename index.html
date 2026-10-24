@@ -1116,9 +1116,9 @@ function renderCatalog(){
 }
 async function loadProducts(){
   const el=document.getElementById("products");
-  const {data,error}=await supabaseClient.rpc("get_katalog_kimonik_page",{p_limit:8,p_offset:0});
+  const {data,error}=await supabaseClient.rpc("get_katalog_kimonik");
   if(error){console.error(error);el.innerHTML='<div class="empty">Koleksi belum bisa dimuat. Silakan coba lagi nanti.</div>';return;}
-  catalogProducts=(Array.isArray(data)?data:[]).filter(p=>catalogMinPrice(p)>0);
+  catalogProducts=(Array.isArray(data)?data:[]).filter(p=>catalogMinPrice(p)>0).sort((a,b)=>Number(Boolean(b.foto_url))-Number(Boolean(a.foto_url))||String(a.nama_produk||"").localeCompare(String(b.nama_produk||""),"id")).slice(0,8);
   const categories=[...new Set(catalogProducts.map(p=>p.kategori||"Lainnya"))].sort((a,b)=>a.localeCompare(b,"id"));
   document.getElementById("catalogCategory").innerHTML='<option value="">Semua kategori</option>'+categories.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join("");
   ["catalogSearch","catalogCategory","catalogSort"].forEach(id=>document.getElementById(id).addEventListener(id==="catalogSearch"?"input":"change",renderCatalog));
