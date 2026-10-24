@@ -243,10 +243,12 @@ header{
 }
 
 /* ================= PRODUCT ================= */
+.catalog-tools{display:none!important}
+@media(max-width:650px){.products{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 .products{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(4,minmax(0,1fr));
   gap:16px;
 }
 
@@ -1075,8 +1077,8 @@ function renderCatalog(){
     const haystack=[p.nama_produk,p.sku,p.kategori,p.motif,p.bahan].join(" ").toLocaleLowerCase("id");
     return (!term||haystack.includes(term))&&(!cat||(p.kategori||"Lainnya")===cat);
   }).sort((a,b)=>sort==="low"?catalogMinPrice(a)-catalogMinPrice(b):sort==="high"?catalogMinPrice(b)-catalogMinPrice(a):String(a.nama_produk||"").localeCompare(String(b.nama_produk||""),"id"));
-  document.getElementById("catalogCount").textContent=filtered.length+" koleksi ditemukan";
-  document.getElementById("products").innerHTML=filtered.length?filtered.map(p=>{
+  document.getElementById("catalogCount").textContent="8 pilihan koleksi Kimonik";
+  document.getElementById("products").innerHTML=filtered.length?filtered.slice(0,8).map(p=>{
     const photo=p.foto_url?`<img src="${esc(p.foto_url)}" alt="${esc(p.nama_produk)}" loading="lazy" onerror="this.remove();this.parentElement.append('Foto belum tersedia')">`:"Foto belum tersedia";
     const stok=stockProduct(p);
     const variations=Array.isArray(p.variasi)?p.variasi.length:0;
@@ -1093,7 +1095,7 @@ function renderCatalog(){
 }
 async function loadProducts(){
   const el=document.getElementById("products");
-  const {data,error}=await supabaseClient.rpc("get_katalog_kimonik");
+  const {data,error}=await supabaseClient.rpc("get_katalog_kimonik_page",{p_limit:8,p_offset:0});
   if(error){console.error(error);el.innerHTML='<div class="empty">Koleksi belum bisa dimuat. Silakan coba lagi nanti.</div>';return;}
   catalogProducts=(Array.isArray(data)?data:[]).filter(p=>catalogMinPrice(p)>0);
   const categories=[...new Set(catalogProducts.map(p=>p.kategori||"Lainnya"))].sort((a,b)=>a.localeCompare(b,"id"));
