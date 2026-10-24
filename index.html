@@ -1094,7 +1094,7 @@ function renderCatalog(){
 }
 async function loadProducts(){
   const el=document.getElementById("products");
-  const {data,error}=await supabaseClient.rpc("get_katalog_kimonik");
+  const {data,error}=await supabaseClient.rpc("get_katalog_kimonik_page",{p_limit:8,p_offset:0});
   if(error){console.error(error);el.innerHTML='<div class="empty">Koleksi belum bisa dimuat. Silakan coba lagi nanti.</div>';return;}
   catalogProducts=(Array.isArray(data)?data:[]).filter(p=>catalogMinPrice(p)>0);
   const categories=[...new Set(catalogProducts.map(p=>p.kategori||"Lainnya"))].sort((a,b)=>a.localeCompare(b,"id"));
