@@ -619,128 +619,12 @@ footer{
       </div>
 
     </div>
-    <div style="text-align:center;margin-top:28px"><a class="btn light" href="order.html">Lihat Semua Koleksi &rarr;</a></div>
+
 
   </div>
 
 </section>
 
-
-<!-- VALUE -->
-
-<section
-  id="tentang"
-  class="section">
-
-  <div class="container">
-
-    <div class="section-head">
-
-      <div>
-
-        <div class="eyebrow">
-          Kimonik
-        </div>
-
-        <h2>
-          Dibuat untuk dipakai,
-          bukan hanya dilihat.
-        </h2>
-
-      </div>
-
-    </div>
-
-
-    <div class="values">
-
-      <div class="value">
-
-        <div class="value-number">
-          01
-        </div>
-
-        <h3>Karakter Tenun</h3>
-
-        <p>
-          Kimonik membawa karakter kain tenun
-          ke dalam busana yang mudah digunakan
-          untuk berbagai acara.
-        </p>
-
-      </div>
-
-
-      <div class="value">
-
-        <div class="value-number">
-          02
-        </div>
-
-        <h3>Pilihan untuk Momen Anda</h3>
-
-        <p>
-          Temukan variasi busana untuk kondangan,
-          wisuda, lamaran, prewedding,
-          maupun kebutuhan lainnya.
-        </p>
-
-      </div>
-
-
-      <div class="value">
-
-        <div class="value-number">
-          03
-        </div>
-
-        <h3>Pesan Langsung</h3>
-
-        <p>
-          Pilih produk dan variasi yang tersedia,
-          masukkan ke keranjang dan buat pesanan
-          langsung melalui sistem Kimonik.
-        </p>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- CTA -->
-
-<section class="section">
-
-  <div class="container">
-
-    <div class="cta">
-
-      <div>
-
-        <h2>
-          Temukan Kimonik Anda.
-        </h2>
-
-        <p>
-          Pilih koleksi dan buat pesanan
-          langsung melalui Kimonik.
-        </p>
-
-      </div>
-
-      <a class="btn" href="order.html">
-        Mulai Pesan →
-      </a>
-
-    </div>
-
-  </div>
-
-</section>
 
 </main>
 
@@ -879,7 +763,7 @@ function renderCatalog(){
     const haystack=[p.nama_produk,p.sku,p.kategori,p.motif,p.bahan].join(" ").toLocaleLowerCase("id");
     return (!term||haystack.includes(term))&&(!cat||(p.kategori||"Lainnya")===cat);
   }).sort((a,b)=>sort==="low"?catalogMinPrice(a)-catalogMinPrice(b):sort==="high"?catalogMinPrice(b)-catalogMinPrice(a):String(a.nama_produk||"").localeCompare(String(b.nama_produk||""),"id"));
-  document.getElementById("catalogCount").textContent="Pilihan koleksi";
+  document.getElementById("catalogCount").textContent="";
   document.getElementById("products").innerHTML=filtered.length?filtered.slice(0,8).map(p=>{
     const photo=p.foto_url?`<img src="${esc(p.foto_url)}" alt="${esc(p.nama_produk)}" loading="lazy" onerror="this.remove();this.parentElement.append('Foto belum tersedia')">`:"Foto belum tersedia";
     const stok=stockProduct(p);
