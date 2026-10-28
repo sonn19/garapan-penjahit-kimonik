@@ -1,0 +1,33 @@
+/* Kimonik Atelier UI 2026: visual-only overrides; no application logic changed. */
+:root{--bg:#faf8f5;--surface:#fff;--surface2:#f1ede7;--text:#24221f;--muted:#77716b;--line:#e8e2da;--dark:#24221f;--accent:#9c8063}
+html{scroll-behavior:smooth}body{background:#faf8f5;color:#24221f;font-family:Inter,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3{letter-spacing:-.035em}h1{line-height:1.09}button,input,select,textarea{font-family:inherit}
+a,button{transition:background-color .2s,border-color .2s,color .2s,box-shadow .2s,transform .2s}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #b6a08b;outline-offset:3px}
+input,select,textarea{max-width:100%;border-color:#ded7ce!important;border-radius:10px!important;background:#fff;color:#24221f}
+input:focus,select:focus,textarea:focus{border-color:#9c8063!important;box-shadow:0 0 0 3px #9c806322}
+button:not(.close),.btn{border-radius:10px!important}
+.card,.tile,.stat,.login-box{border-color:#e8e2da!important;border-radius:18px!important;box-shadow:0 8px 28px rgba(36,34,31,.035)}
+.tile:hover{transform:translateY(-3px);box-shadow:0 15px 35px rgba(36,34,31,.075)}
+table{border-collapse:collapse}th{font-size:12px;letter-spacing:.045em;text-transform:uppercase;color:#706b65;background:#f6f3ef!important}td{font-size:14px}td,th{border-bottom-color:#eee9e2!important}
+header{letter-spacing:-.025em}
+body:has(.hero) header{background:rgba(250,248,245,.94);backdrop-filter:blur(16px);border-bottom:1px solid #e8e2da}
+body:has(.hero) .nav{min-height:76px}
+body:has(.hero) .hero{padding-top:clamp(38px,6vw,95px);padding-bottom:clamp(38px,6vw,90px)}
+body:has(.hero) .hero h1{font-size:clamp(42px,6.3vw,88px);font-weight:600;letter-spacing:-.065em;line-height:1.02}
+body:has(.hero) .eyebrow{letter-spacing:.18em;text-transform:uppercase;font-size:11px;font-weight:700;color:#8b7158}
+body:has(.hero) .hero p{line-height:1.75;color:#6c665f}
+body:has(.hero) .product-card{border-radius:12px;overflow:hidden}
+body:has(.hero) .product-photo{background:#eeeae5;overflow:hidden;border-radius:10px}
+body:has(.hero) .product-photo img{width:100%;height:100%;object-fit:cover}
+body:has(.hero) .product-name{line-height:1.5}
+body:has(.hero) .section{scroll-margin-top:88px}
+body:not(:has(.hero)) main{max-width:1200px}
+body:not(:has(.hero)) main h1{font-size:clamp(27px,3.5vw,40px);font-weight:700;letter-spacing:-.05em}
+body:not(:has(.hero)) .grid{gap:16px}
+body:not(:has(.hero)) .stat{background:#fff!important;padding:20px!important}
+body:not(:has(.hero)) .stat b,body:not(:has(.hero)) .num{font-size:clamp(23px,3vw,34px);letter-spacing:-.045em}
+body:not(:has(.hero)) .muted{line-height:1.65}
+body:not(:has(.hero)) .scroll{border-radius:12px}
+@media(max-width:700px){body:has(.hero) .nav{min-height:64px}body:has(.hero) .hero h1{font-size:clamp(39px,10vw,62px)}body:not(:has(.hero)) main{padding:16px 12px 70px}body:not(:has(.hero)) .card{padding:17px!important}body:not(:has(.hero)) .grid{grid-template-columns:repeat(auto-fit,minmax(155px,1fr))}body:not(:has(.hero)) .tile{padding:17px!important}body:not(:has(.hero)) .top{align-items:flex-start}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
