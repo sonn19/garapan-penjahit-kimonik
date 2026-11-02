@@ -1,0 +1,289 @@
+[
+  {
+    "id": "729287",
+    "name": "Karina Dandelion",
+    "price": 395000,
+    "category": "perempuan",
+    "color": "Netral",
+    "images": [
+      "storefront/assets/729287-0.webp",
+      "storefront/assets/729287-1.webp",
+      "storefront/assets/729287-2.webp",
+      "storefront/assets/729287-3.webp"
+    ],
+    "url": "https://kimonik.com/p/karina-dandelion-i.729287",
+    "options": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL",
+      "BIG SIZE"
+    ],
+    "collection": "Karina",
+    "rank": 0
+  },
+  {
+    "id": "729286",
+    "name": "Karina White Grafis",
+    "price": 395000,
+    "category": "perempuan",
+    "color": "Putih",
+    "images": [
+      "storefront/assets/729286-0.webp",
+      "storefront/assets/729286-1.webp",
+      "storefront/assets/729286-2.webp"
+    ],
+    "url": "https://kimonik.com/p/karina-white-grafis-i.729286",
+    "options": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL",
+      "BIG SIZE"
+    ],
+    "collection": "Karina",
+    "rank": 1
+  },
+  {
+    "id": "729285",
+    "name": "Karina Poppy",
+    "price": 395000,
+    "category": "perempuan",
+    "color": "Merah",
+    "images": [
+      "storefront/assets/729285-0.webp",
+      "storefront/assets/729285-1.webp",
+      "storefront/assets/729285-2.webp"
+    ],
+    "url": "https://kimonik.com/p/karina-poppy-i.729285",
+    "options": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL",
+      "BIG SIZE"
+    ],
+    "collection": "Karina",
+    "rank": 2
+  },
+  {
+    "id": "729284",
+    "name": "Karina Black Ntt",
+    "price": 395000,
+    "category": "perempuan",
+    "color": "Hitam",
+    "images": [
+      "storefront/assets/729284-0.webp",
+      "storefront/assets/729284-1.webp",
+      "storefront/assets/729284-2.webp"
+    ],
+    "url": "https://kimonik.com/p/karina-black-ntt-i.729284",
+    "options": [],
+    "collection": "Karina",
+    "rank": 3
+  },
+  {
+    "id": "729206",
+    "name": "Karina Coral",
+    "price": 395000,
+    "category": "perempuan",
+    "color": "Merah",
+    "images": [
+      "storefront/assets/729206-0.webp",
+      "storefront/assets/729206-1.webp",
+      "storefront/assets/729206-2.webp",
+      "storefront/assets/729206-3.webp"
+    ],
+    "url": "https://kimonik.com/p/karina-coral-i.729206",
+    "options": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL",
+      "BIG SIZE"
+    ],
+    "collection": "Karina",
+    "rank": 4
+  },
+  {
+    "id": "729204",
+    "name": "Karina Dandelion Shirt",
+    "price": 250000,
+    "category": "pria",
+    "color": "Netral",
+    "images": [
+      "storefront/assets/729204-0.webp",
+      "storefront/assets/729204-1.webp"
+    ],
+    "url": "https://kimonik.com/p/karina-dandelion-shirt-i.729204",
+    "options": [
+      "LENGAN PENDEK S",
+      "LENGAN PENDEK M",
+      "LENGAN PENDEK L",
+      "LENGAN PENDEK XL",
+      "LENGAN PENDEK XXL",
+      "LENGAN PANJANG XL",
+      "LENGAN PANJANG XXL",
+      "LENGAN PANJANG S",
+      "LENGAN PANJANG M",
+      "LENGAN PANJANG L"
+    ],
+    "collection": "Karina",
+    "rank": 5
+  },
+  {
+    "id": "729203",
+    "name": "Karina White Grafis Shirt",
+    "price": 250000,
+    "category": "pria",
+    "color": "Putih",
+    "images": [
+      "storefront/assets/729203-0.webp",
+      "storefront/assets/729203-1.webp"
+    ],
+    "url": "https://kimonik.com/p/karina-white-grafis-shirt-i.729203",
+    "options": [
+      "LENGAN PENDEK S",
+      "LENGAN PENDEK M",
+      "LENGAN PENDEK L",
+      "LENGAN PENDEK XL",
+      "LENGAN PENDEK XXL",
+      "LENGAN PANJANG S",
+      "LENGAN PANJANG M",
+      "LENGAN PANJANG L",
+      "LENGAN PANJANG XL",
+      "LENGAN PANJANG XXL"
+    ],
+    "collection": "Karina",
+    "rank": 6
+  },
+  {
+    "id": "729202",
+    "name": "Karina Poppy Shirt",
+    "price": 250000,
+    "category": "pria",
+    "color": "Merah",
+    "images": [
+      "storefront/assets/729202-0.webp",
+      "storefront/assets/729202-1.webp"
+    ],
+    "url": "https://kimonik.com/p/karina-poppy-shirt-i.729202",
+    "options": [
+      "LENGAN PENDEK S",
+      "LENGAN PENDEK M",
+      "LENGAN PENDEK L",
+      "LENGAN PENDEK XL",
+      "LENGAN PENDEK XXL",
+      "LENGAN PANJANG S",
+      "LENGAN PANJANG M",
+      "LENGAN PANJANG L",
+      "LENGAN PANJANG XL",
+      "LENGAN PANJANG XXL"
+    ],
+    "collection": "Karina",
+    "rank": 7
+  },
+  {
+    "id": "729198",
+    "name": "Karina Black Ntt Shirt",
+    "price": 250000,
+    "category": "pria",
+    "color": "Hitam",
+    "images": [
+      "storefront/assets/729198-0.webp",
+      "storefront/assets/729198-1.webp"
+    ],
+    "url": "https://kimonik.com/p/karina-black-ntt-shirt-i.729198",
+    "options": [
+      "LENGAN PENDEK S",
+      "LENGAN PENDEK M",
+      "LENGAN PENDEK L",
+      "LENGAN PENDEK XL",
+      "LENGAN PENDEK XXL",
+      "LENGAN PANJANG S",
+      "LENGAN PANJANG M",
+      "LENGAN PANJANG L",
+      "LENGAN PANJANG XL",
+      "LENGAN PANJANG XXL"
+    ],
+    "collection": "Karina",
+    "rank": 8
+  },
+  {
+    "id": "729197",
+    "name": "Karina Coral Shirt",
+    "price": 250000,
+    "category": "pria",
+    "color": "Merah",
+    "images": [
+      "storefront/assets/729197-0.webp",
+      "storefront/assets/729197-1.webp"
+    ],
+    "url": "https://kimonik.com/p/karina-coral-shirt-i.729197",
+    "options": [
+      "LENGAN PENDEK S",
+      "LENGAN PENDEK M",
+      "LENGAN PENDEK L",
+      "LENGAN PENDEK XL",
+      "LENGAN PENDEK XXL",
+      "LENGAN PANJANG S",
+      "LENGAN PANJANG M",
+      "LENGAN PANJANG L",
+      "LENGAN PANJANG XL",
+      "LENGAN PANJANG XXL"
+    ],
+    "collection": "Karina",
+    "rank": 9
+  },
+  {
+    "id": "729194",
+    "name": "Mawar Outer A White Pink",
+    "price": 125000,
+    "category": "outer",
+    "color": "Pink",
+    "images": [
+      "storefront/assets/729194-0.webp",
+      "storefront/assets/729194-1.webp",
+      "storefront/assets/729194-2.webp",
+      "storefront/assets/729194-3.webp"
+    ],
+    "url": "https://kimonik.com/p/mawar-outer-a-white-pink-i.729194",
+    "options": [
+      "INNER SAJA",
+      "ROK TUTU SAJA",
+      "OUTER SAJA",
+      "SET SEMUA"
+    ],
+    "collection": "Mawar",
+    "rank": 10
+  },
+  {
+    "id": "729193",
+    "name": "Mawar Outer A Tosca",
+    "price": 125000,
+    "category": "outer",
+    "color": "Tosca",
+    "images": [
+      "storefront/assets/729193-0.webp",
+      "storefront/assets/729193-1.webp",
+      "storefront/assets/729193-2.webp"
+    ],
+    "url": "https://kimonik.com/p/mawar-outer-a-tosca-i.729193",
+    "options": [
+      "INNER SAJA",
+      "ROK TUTU SAJA",
+      "OUTER SAJA",
+      "SET SEMUA"
+    ],
+    "collection": "Mawar",
+    "rank": 11
+  }
+]
